@@ -22,6 +22,7 @@ jobs:
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
       - run: bun run fonts
+      - run: bun run og
       - run: bun run check
       - run: bun run build
       - uses: actions/upload-pages-artifact@v3

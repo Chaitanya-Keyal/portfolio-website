@@ -14,6 +14,9 @@
 
 <div class="resume reveal">
 	<p class="meta-row">
+		<!-- rel=external: the pdf is produced in CI, so the prerender crawler
+		     must not try to follow this link at build time. -->
+		<a href="/resume.pdf" rel="external">pdf</a>
 		<a href="/resume.txt" data-sveltekit-reload>raw</a>
 	</p>
 	<pre>{text}</pre>
@@ -27,6 +30,7 @@
 	.meta-row {
 		display: flex;
 		justify-content: flex-end;
+		gap: 18px;
 		font-size: 12.5px;
 		margin-bottom: 14px;
 	}
