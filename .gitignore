@@ -1,0 +1,8 @@
+node_modules/
+build/
+.svelte-kit/
+vite.config.ts.timestamp-*
+
+# generated
+static/fonts/
+static/og/
