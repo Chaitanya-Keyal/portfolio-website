@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import { pages } from '$lib/tui/registry';
 
 	// Filled client-side: static hosting serves this page for every unknown URL.
@@ -21,7 +22,7 @@
 	}
 
 	$effect(() => {
-		missing = location.pathname;
+		missing = location.pathname.slice(base.length) || '/';
 		const sought = missing.replace(/^\/+/, '');
 		suggestions = pages
 			.map((p) => ({ ...p, score: distance(sought, p.path.replace(/^\/+/, '')) }))
@@ -42,13 +43,13 @@
 		<p class="hint">did you mean:</p>
 		<ul>
 			{#each suggestions as s (s.path)}
-				<li><a href={s.path}>{s.path}</a></li>
+				<li><a href="{base}{s.path}">{s.path}</a></li>
 			{/each}
 		</ul>
 	{:else}
 		<ul>
 			{#each pages.filter((p) => p.rail) as p (p.path)}
-				<li><a href={p.path}>{p.path}</a></li>
+				<li><a href="{base}{p.path}">{p.path}</a></li>
 			{/each}
 		</ul>
 	{/if}

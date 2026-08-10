@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import Meta from '$lib/components/Meta.svelte';
 	import Monogram from '$lib/components/Monogram.svelte';
 	import { profile } from '$lib/data/profile';
@@ -52,7 +53,7 @@
 			<li><a href="mailto:{profile.contact.email}">{profile.contact.email}</a></li>
 			<li><a href={profile.contact.github} rel="me noopener">github/Chaitanya-Keyal ↗</a></li>
 			<li><a href={profile.contact.linkedin} rel="me noopener">linkedin/chaitanya-keyal ↗</a></li>
-			<li><a href="/resume">resume</a></li>
+			<li><a href="{base}/resume">resume</a></li>
 		</ul>
 	</section>
 

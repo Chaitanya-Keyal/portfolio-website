@@ -2,6 +2,7 @@
 	import '../app.css';
 	import { onMount } from 'svelte';
 	import { afterNavigate, goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import { page } from '$app/state';
 	import { profile } from '$lib/data/profile';
 	import Rail from '$lib/tui/Rail.svelte';
@@ -18,7 +19,8 @@
 	let shellFocused = $state(false);
 	let shell = $state<{ focusPrompt: () => void; exec: (command: string) => void }>();
 
-	const cwd = $derived(page.url.pathname);
+	// App-internal path with the deployment base stripped — the shell's cwd.
+	const cwd = $derived(page.url.pathname.slice(base.length).replace(/\/$/, '') || '/');
 	const mode = $derived(booting ? 'boot' : shellFocused ? 'insert' : 'normal');
 
 	onMount(() => {
@@ -32,7 +34,7 @@
 			sessionStorage.setItem('booted', '1');
 		} catch {}
 		const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-		if (page.url.pathname === '/' && !seen && !reducedMotion) booting = true;
+		if (cwd === '/' && !seen && !reducedMotion) booting = true;
 	});
 
 	function finishBoot() {
@@ -49,10 +51,10 @@
 	});
 
 	function navigate(to: string) {
-		if (to.endsWith('.txt')) location.href = to;
+		if (to.endsWith('.txt')) location.href = base + to;
 		// keepFocus: navigating from the prompt (`cd`, `man`) must not kick you
 		// out of the terminal mid-session.
-		else goto(to, { keepFocus: true });
+		else goto(base + to, { keepFocus: true });
 	}
 
 	function applyTheme(next: Theme) {

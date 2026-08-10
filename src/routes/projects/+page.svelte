@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import Meta from '$lib/components/Meta.svelte';
 	import { projects } from '$lib/data/projects';
 </script>
@@ -14,7 +15,7 @@
 	<ul>
 		{#each projects as project (project.slug)}
 			<li>
-				<a href="/projects/{project.slug}">{project.slug}</a>
+				<a href="{base}/projects/{project.slug}">{project.slug}</a>
 				<span>{project.oneLiner}</span>
 			</li>
 		{/each}

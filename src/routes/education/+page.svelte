@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import Meta from '$lib/components/Meta.svelte';
 	import { profile } from '$lib/data/profile';
 
@@ -54,8 +55,8 @@
 	<section>
 		<h2>on campus</h2>
 		<ul>
-			<li>Core member of cruX, the programming club — see <a href="/work/crux">crux</a>.</li>
-			<li>Undergraduate TA at the Central Analytical Laboratory, maintaining <a href="/projects/onlinecal">onlinecal</a>.</li>
+			<li>Core member of cruX, the programming club — see <a href="{base}/work/crux">crux</a>.</li>
+			<li>Undergraduate TA at the Central Analytical Laboratory, maintaining <a href="{base}/projects/onlinecal">onlinecal</a>.</li>
 		</ul>
 	</section>
 </article>

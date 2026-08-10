@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import Meta from '$lib/components/Meta.svelte';
 	import { experience } from '$lib/data/experience';
 </script>
@@ -14,7 +15,7 @@
 	<ul>
 		{#each experience as job (job.slug)}
 			<li>
-				<a href="/work/{job.slug}">{job.slug}</a>
+				<a href="{base}/work/{job.slug}">{job.slug}</a>
 				<div>
 					<p class="org">{job.org}</p>
 					<p class="line">{job.oneLiner} · <span class="period">{job.period}</span></p>

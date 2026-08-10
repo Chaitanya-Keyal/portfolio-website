@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import { run, complete } from './registry';
 	import type { Theme } from './theme';
 
@@ -117,7 +118,7 @@
 				break;
 			case 'cat': {
 				try {
-					const response = await fetch(outcome.url);
+					const response = await fetch(base + outcome.url);
 					const text = await response.text();
 					append(...text.split('\n').map((line) => ({ text: line, kind: 'out' as const })));
 				} catch {

@@ -1,25 +1,5 @@
-/* ---------- fonts ---------- */
-@font-face {
-	font-family: 'Fira Code';
-	font-style: normal;
-	font-weight: 400;
-	font-display: swap;
-	src: url('/fonts/fira-code-latin-400-normal.woff2') format('woff2');
-}
-@font-face {
-	font-family: 'Fira Code';
-	font-style: normal;
-	font-weight: 500;
-	font-display: swap;
-	src: url('/fonts/fira-code-latin-500-normal.woff2') format('woff2');
-}
-@font-face {
-	font-family: 'Fira Code';
-	font-style: normal;
-	font-weight: 700;
-	font-display: swap;
-	src: url('/fonts/fira-code-latin-700-normal.woff2') format('woff2');
-}
+/* Fonts are declared in app.html so %sveltekit.assets% keeps their URLs
+   correct under any base path. */
 
 /* ---------- themes ----------
    Default (no data-theme attribute) is Tokyo Night. Each theme redefines the

@@ -24,6 +24,15 @@ jobs:
       - run: bun run fonts
       - run: bun run og
       - run: bun run check
+      - name: resolve base path
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Without a custom domain, project Pages serves under /<repo>.
+          cname=$(gh api "repos/${GITHUB_REPOSITORY}/pages" --jq '.cname // empty' || true)
+          if [ -z "$cname" ]; then
+            echo "BASE_PATH=/${GITHUB_REPOSITORY#*/}" >> "$GITHUB_ENV"
+          fi
       - run: bun run build
       - uses: actions/upload-pages-artifact@v3
         with:

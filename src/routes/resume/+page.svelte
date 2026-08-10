@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import Meta from '$lib/components/Meta.svelte';
 	import { resumeText } from '$lib/data/resume-text';
 	import { profile } from '$lib/data/profile';
@@ -16,8 +17,8 @@
 	<p class="meta-row">
 		<!-- rel=external: the pdf is produced in CI, so the prerender crawler
 		     must not try to follow this link at build time. -->
-		<a href="/resume.pdf" rel="external">pdf</a>
-		<a href="/resume.txt" data-sveltekit-reload>raw</a>
+		<a href="{base}/resume.pdf" rel="external">pdf</a>
+		<a href="{base}/resume.txt" data-sveltekit-reload>raw</a>
 	</p>
 	<pre>{text}</pre>
 </div>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import { page } from '$app/state';
 	import { pages } from '$lib/tui/registry';
 
@@ -9,7 +10,7 @@
 	}
 
 	function current(path: string): boolean {
-		return page.url.pathname === path;
+		return page.url.pathname === base + path || page.url.pathname === `${base}${path}/`;
 	}
 </script>
 
@@ -20,7 +21,7 @@
 			{#each sections as section (section.path)}
 				<li>
 					<a
-						href={section.path}
+						href="{base}{section.path}"
 						data-sveltekit-reload={section.file ? true : undefined}
 						aria-current={current(section.path) ? 'page' : undefined}
 					>
@@ -29,7 +30,7 @@
 				</li>
 				{#each children(section) as child (child.path)}
 					<li class="child">
-						<a href={child.path} aria-current={current(child.path) ? 'page' : undefined}>
+						<a href="{base}{child.path}" aria-current={current(child.path) ? 'page' : undefined}>
 							{child.name}
 						</a>
 					</li>

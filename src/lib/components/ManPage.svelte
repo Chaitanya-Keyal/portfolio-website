@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import type { ManDoc } from './mandoc';
 
 	interface Props {
@@ -58,7 +59,7 @@
 			<h2>see also</h2>
 			<p class="seealso">
 				{#each doc.seeAlso as ref (ref.href)}
-					<a href={ref.href}>{ref.label}</a>
+					<a href="{base}{ref.href}">{ref.label}</a>
 				{/each}
 			</p>
 		</section>
