@@ -1,0 +1,9 @@
+{
+	"name": "Chaitanya Keyal",
+	"short_name": "okaybro",
+	"icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }],
+	"start_url": "/",
+	"display": "browser",
+	"background_color": "#1a1b26",
+	"theme_color": "#1a1b26"
+}
