@@ -31,7 +31,7 @@
 	}
 
 	h1 {
-		font-size: 13px;
+		font-size: 0.8125rem;
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
@@ -56,7 +56,7 @@
 
 	.line {
 		color: var(--muted);
-		font-size: 13.5px;
+		font-size: 0.8438rem;
 	}
 
 	.period {

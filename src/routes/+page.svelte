@@ -66,7 +66,7 @@
 	}
 
 	h1 {
-		font-size: clamp(22px, 4vw, 30px);
+		font-size: clamp(1.375rem, 4vw, 1.875rem);
 		font-weight: 700;
 		color: var(--fg);
 		margin-bottom: 12px;
@@ -74,19 +74,19 @@
 
 	.tagline {
 		color: var(--cyan);
-		font-size: 14px;
+		font-size: 0.875rem;
 		letter-spacing: 0.04em;
 		margin-bottom: 10px;
 	}
 
 	.edu {
 		color: var(--muted);
-		font-size: 13.5px;
+		font-size: 0.8438rem;
 	}
 
 	.status {
 		color: var(--green);
-		font-size: 13.5px;
+		font-size: 0.8438rem;
 		margin-top: 14px;
 	}
 
@@ -95,7 +95,7 @@
 	}
 
 	h2 {
-		font-size: 13px;
+		font-size: 0.8125rem;
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.08em;

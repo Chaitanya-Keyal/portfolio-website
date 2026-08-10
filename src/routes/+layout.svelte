@@ -151,7 +151,8 @@
 		padding: 10px;
 		gap: 8px;
 		background: var(--bg-panel);
-		grid-template-columns: 220px 1fr;
+		/* rem so the rail keeps pace with the scaled type on large screens */
+		grid-template-columns: 14rem 1fr;
 		grid-template-rows: 1fr auto auto;
 		grid-template-areas:
 			'rail main'

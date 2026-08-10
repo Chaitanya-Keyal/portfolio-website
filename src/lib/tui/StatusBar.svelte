@@ -29,7 +29,7 @@
 		border: 1px solid var(--border);
 		background: var(--bg);
 		color: var(--muted);
-		font-size: 12.5px;
+		font-size: 0.7812rem;
 		white-space: nowrap;
 	}
 
@@ -38,7 +38,7 @@
 		background: var(--accent);
 		color: var(--bg);
 		font-weight: 700;
-		font-size: 11px;
+		font-size: 0.6875rem;
 		letter-spacing: 0.1em;
 		text-transform: uppercase;
 		padding: 3px 10px;

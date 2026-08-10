@@ -233,7 +233,7 @@
 
 	.term {
 		padding: 7px 20px;
-		font-size: 13.5px;
+		font-size: 0.8438rem;
 		overflow-y: auto;
 		/* Raw characters only, like a real shell: Fira Code's contextual
 		   ligatures mis-shape around the input caret (`../` renders as `./`). */
@@ -302,7 +302,7 @@
 	/* Under 16px, iOS Safari zooms the page on focus. */
 	@media (pointer: coarse) {
 		input {
-			font-size: 16px;
+			font-size: 1rem;
 		}
 	}
 

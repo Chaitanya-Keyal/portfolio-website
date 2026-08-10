@@ -49,14 +49,14 @@
 		z-index: 30;
 		background: var(--bg);
 		padding: 24px;
-		font-size: 14px;
+		font-size: 0.875rem;
 		cursor: pointer;
 	}
 
 	.banner {
 		margin: 0 0 16px;
 		color: var(--accent);
-		font-size: 13px;
+		font-size: 0.8125rem;
 		line-height: 1.25;
 		text-shadow: 0 0 10px color-mix(in srgb, currentColor 35%, transparent);
 	}

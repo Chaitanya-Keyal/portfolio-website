@@ -57,7 +57,7 @@
 	pre {
 		margin: 48px 0 0;
 		color: var(--faint);
-		font-size: 11px;
+		font-size: 0.6875rem;
 		line-height: 1.2;
 		user-select: none;
 		cursor: default;

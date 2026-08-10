@@ -73,7 +73,7 @@
 
 	.child a {
 		padding-left: 38px;
-		font-size: 13px;
+		font-size: 0.8125rem;
 	}
 
 	.compact {
@@ -101,7 +101,7 @@
 		a[aria-current='page'] {
 			text-align: center;
 			padding: 12px 0;
-			font-size: 13px;
+			font-size: 0.8125rem;
 			overflow: hidden;
 		}
 		.full {

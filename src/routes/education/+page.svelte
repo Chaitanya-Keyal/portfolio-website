@@ -70,7 +70,7 @@
 		display: flex;
 		justify-content: space-between;
 		color: var(--faint);
-		font-size: 13px;
+		font-size: 0.8125rem;
 		margin-bottom: 28px;
 	}
 
@@ -80,7 +80,7 @@
 
 	h1,
 	h2 {
-		font-size: 13px;
+		font-size: 0.8125rem;
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
