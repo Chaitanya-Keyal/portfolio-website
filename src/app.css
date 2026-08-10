@@ -1,0 +1,357 @@
+/* ---------- fonts ---------- */
+@font-face {
+	font-family: 'Fira Code';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url('/fonts/fira-code-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+	font-family: 'Fira Code';
+	font-style: normal;
+	font-weight: 500;
+	font-display: swap;
+	src: url('/fonts/fira-code-latin-500-normal.woff2') format('woff2');
+}
+@font-face {
+	font-family: 'Fira Code';
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url('/fonts/fira-code-latin-700-normal.woff2') format('woff2');
+}
+
+/* ---------- themes ----------
+   Default (no data-theme attribute) is Tokyo Night. Each theme redefines the
+   same token set; components only ever read tokens. `--muted` must stay
+   AA-readable on `--bg` — the classic Tokyo Night comment color does not, so
+   it is reserved for `--faint` (borders, ornament, never running text). */
+:root {
+	--bg: #1a1b26;
+	--bg-panel: #16161e;
+	--bg-hl: #292e42;
+	--border: #2f3549;
+	--fg: #c0caf5;
+	--muted: #8b93b8;
+	--faint: #565f89;
+	--accent: #7aa2f7;
+	--green: #9ece6a;
+	--purple: #bb9af7;
+	--cyan: #7dcfff;
+	--red: #f7768e;
+	--yellow: #e0af68;
+}
+:root[data-theme='one-dark'] {
+	--bg: #282c34;
+	--bg-panel: #21252b;
+	--bg-hl: #3a3f4b;
+	--border: #3e4451;
+	--fg: #abb2bf;
+	--muted: #8e95a2;
+	--faint: #5c6370;
+	--accent: #61afef;
+	--green: #98c379;
+	--purple: #c678dd;
+	--cyan: #56b6c2;
+	--red: #e06c75;
+	--yellow: #e5c07b;
+}
+:root[data-theme='gruvbox'] {
+	--bg: #282828;
+	--bg-panel: #1d2021;
+	--bg-hl: #3c3836;
+	--border: #504945;
+	--fg: #ebdbb2;
+	--muted: #a89984;
+	--faint: #7c6f64;
+	--accent: #83a598;
+	--green: #b8bb26;
+	--purple: #d3869b;
+	--cyan: #8ec07c;
+	--red: #fb4934;
+	--yellow: #fabd2f;
+}
+:root[data-theme='paper'] {
+	--bg: #faf9f5;
+	--bg-panel: #efede6;
+	--bg-hl: #e2dfd3;
+	--border: #c9c4b4;
+	--fg: #26251f;
+	--muted: #55524a;
+	--faint: #8d897c;
+	--accent: #1f5fa8;
+	--green: #3e7d3a;
+	--purple: #6d4ea3;
+	--cyan: #23697d;
+	--red: #b3364a;
+	--yellow: #8a6d1f;
+}
+
+/* ---------- base ---------- */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	height: 100dvh;
+	background: var(--bg);
+	color: var(--fg);
+	font-family: 'Fira Code', ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
+	font-size: 15px;
+	line-height: 1.7;
+	font-variant-ligatures: contextual;
+	-webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+dl,
+dd,
+figure {
+	margin: 0;
+}
+
+ul,
+ol {
+	padding: 0;
+	list-style: none;
+}
+
+a {
+	color: var(--accent);
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+button {
+	font: inherit;
+	color: inherit;
+	background: none;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+}
+
+:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 1px;
+	border-radius: 1px;
+}
+
+::selection {
+	background: var(--bg-hl);
+}
+
+/* ---------- scrollbars: thin, square, in-theme everywhere ----------
+   The standard properties win in Firefox and Chromium 121+; the -webkit rules
+   exist for Safari only. Thumb uses --faint, not --border: it has to be
+   findable and grabbable, not camouflaged. */
+* {
+	scrollbar-width: thin;
+	scrollbar-color: var(--faint) transparent;
+}
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+::-webkit-scrollbar-thumb {
+	background: var(--faint);
+}
+::-webkit-scrollbar-thumb:hover {
+	background: var(--muted);
+}
+::-webkit-scrollbar-corner {
+	background: transparent;
+}
+
+/* ---------- TUI panes ----------
+   Every region of the frame is a bordered box with its title embedded in the
+   border, the way lazygit and ranger draw theirs. */
+.pane {
+	position: relative;
+	border: 1px solid var(--border);
+	background: var(--bg);
+	min-height: 0;
+}
+
+.pane-title {
+	position: absolute;
+	top: 0;
+	left: 14px;
+	transform: translateY(-55%);
+	z-index: 1;
+	background: var(--bg-panel);
+	padding: 0 8px;
+	font-size: 11.5px;
+	letter-spacing: 0.08em;
+	color: var(--muted);
+	white-space: nowrap;
+}
+
+/* ---------- effects ----------
+   The paper theme opts out of all of these: paper is print, not phosphor —
+   dark scanlines and glow halos on a light ground read as smudge. */
+h1,
+h2 {
+	text-shadow: 0 0 9px color-mix(in srgb, currentColor 32%, transparent);
+}
+
+a:hover,
+a:focus-visible {
+	text-shadow: 0 0 10px color-mix(in srgb, currentColor 65%, transparent);
+}
+
+:root[data-theme='paper'] :is(h1, h2, a:hover, a:focus-visible) {
+	text-shadow: none;
+}
+
+/* CRT: aperture grille + scanlines + vignette + a slow breathe and roll band.
+   Both layers are will-change-promoted so scrolling never repaints them.
+   4px stripe period survives fractional display scaling without moire crawl.
+   On by default; `:crt` toggles (data-crt='off'). */
+:root:not([data-crt='off']):not([data-theme='paper']) body::before {
+	content: '';
+	position: fixed;
+	inset: 0;
+	z-index: 15;
+	pointer-events: none;
+	background:
+		radial-gradient(ellipse at center, transparent 58%, rgba(0, 0, 0, 0.28)),
+		repeating-linear-gradient(to bottom, transparent 0 3px, rgba(0, 0, 0, 0.15) 3px 4px),
+		repeating-linear-gradient(
+			to right,
+			rgba(255, 60, 80, 0.035) 0 1px,
+			rgba(60, 255, 140, 0.028) 1px 2px,
+			rgba(60, 120, 255, 0.035) 2px 3px
+		);
+	will-change: transform;
+	animation: crt-breathe 5s ease-in-out infinite;
+}
+
+:root:not([data-crt='off']):not([data-theme='paper']) body::after {
+	content: '';
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	height: 14vh;
+	z-index: 15;
+	pointer-events: none;
+	background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.03), transparent);
+	will-change: transform;
+	animation: crt-roll 9s linear infinite;
+}
+
+@keyframes crt-breathe {
+	50% {
+		opacity: 0.8;
+	}
+}
+
+@keyframes crt-roll {
+	from {
+		transform: translateY(-16vh);
+	}
+	to {
+		transform: translateY(102vh);
+	}
+}
+
+/* Pane content rises in, line by line. */
+.reveal > * {
+	animation: rise 0.35s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+.reveal > *:nth-child(2) { animation-delay: 40ms; }
+.reveal > *:nth-child(3) { animation-delay: 80ms; }
+.reveal > *:nth-child(4) { animation-delay: 120ms; }
+.reveal > *:nth-child(5) { animation-delay: 160ms; }
+.reveal > *:nth-child(6) { animation-delay: 200ms; }
+.reveal > *:nth-child(n + 7) { animation-delay: 240ms; }
+
+@keyframes rise {
+	from {
+		opacity: 0;
+		transform: translateY(5px);
+	}
+}
+
+.cursor-block {
+	display: inline-block;
+	color: var(--accent);
+	animation: blink 1.1s step-start infinite;
+}
+
+@keyframes blink {
+	50% {
+		opacity: 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		transition-duration: 0.01ms !important;
+	}
+	body::after {
+		display: none;
+	}
+}
+
+/* ---------- print: drop the chrome, keep the content ---------- */
+@media print {
+	:root {
+		--bg: #fff;
+		--bg-panel: #fff;
+		--bg-hl: #eee;
+		--border: #bbb;
+		--fg: #000;
+		--muted: #333;
+		--faint: #666;
+		--accent: #000;
+		--green: #000;
+		--purple: #000;
+		--cyan: #000;
+		--red: #000;
+		--yellow: #000;
+	}
+	body {
+		height: auto;
+	}
+	body::before {
+		display: none;
+	}
+	.no-print,
+	nav {
+		display: none !important;
+	}
+	main {
+		overflow: visible !important;
+	}
+	a {
+		text-decoration: underline;
+	}
+	h1,
+	h2,
+	a:hover {
+		text-shadow: none;
+	}
+}
