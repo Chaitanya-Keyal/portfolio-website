@@ -62,45 +62,64 @@
 
 <style>
 	.home {
-		max-width: 72ch;
+		max-width: none;
 	}
 
+	section,
+	.edu,
+	.status {
+		max-width: 80ch;
+	}
+
+	/* Display-scale hero. Fira Code advance is 0.6em and the name plus cursor
+	   is 16 glyphs, so pane-width ÷ 9.6 spans it in exactly one line.
+	   24rem ≈ rail + gaps + main padding. */
 	h1 {
-		font-size: clamp(1.375rem, 4vw, 1.875rem);
+		font-size: clamp(2rem, calc((100vw - 24rem) / 9.6), 15rem);
+		line-height: 1.05;
+		white-space: nowrap;
 		font-weight: 700;
+		letter-spacing: -0.02em;
 		color: var(--fg);
-		margin-bottom: 12px;
+		margin-bottom: 24px;
+	}
+
+	@media (max-width: 719px) {
+		h1 {
+			/* No rail column on phones — only the main padding. */
+			font-size: calc((100vw - 4rem) / 9.6);
+		}
 	}
 
 	.tagline {
 		color: var(--cyan);
-		font-size: 0.875rem;
-		letter-spacing: 0.04em;
-		margin-bottom: 10px;
+		font-size: clamp(1rem, 1.6vw, 1.75rem);
+		letter-spacing: 0.05em;
+		margin-bottom: 16px;
 	}
 
 	.edu {
 		color: var(--muted);
-		font-size: 0.8438rem;
+		font-size: clamp(0.8438rem, 1.1vw, 1.125rem);
 	}
 
 	.status {
 		color: var(--green);
-		font-size: 0.8438rem;
-		margin-top: 14px;
+		font-size: clamp(0.8438rem, 1.1vw, 1.125rem);
+		margin-top: 18px;
 	}
 
 	section {
-		margin-top: 36px;
+		margin-top: 44px;
 	}
 
 	h2 {
-		font-size: 0.8125rem;
+		font-size: clamp(0.8125rem, 0.95vw, 1rem);
 		font-weight: 700;
 		text-transform: uppercase;
-		letter-spacing: 0.08em;
+		letter-spacing: 0.1em;
 		color: var(--yellow);
-		margin-bottom: 10px;
+		margin-bottom: 12px;
 	}
 
 	.skills dd {
