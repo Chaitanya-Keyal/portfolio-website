@@ -8,8 +8,8 @@ progressive enhancement, so it all works with JavaScript off.
 It also speaks plain text:
 
 ```sh
-curl okaybro.dev/resume.txt
-curl okaybro.dev/man/seedsigner
+curl -L okaybro.dev/resume.txt
+curl -L okaybro.dev/man/seedsigner
 ```
 
 ## Stack

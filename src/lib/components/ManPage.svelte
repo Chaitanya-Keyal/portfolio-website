@@ -65,7 +65,7 @@
 		</section>
 	{/if}
 
-	<p class="curl">also a man page: <code>curl okaybro.dev/man/{doc.slug}</code></p>
+	<p class="curl">also a man page: <code>curl -L okaybro.dev/man/{doc.slug}</code></p>
 </article>
 
 <style>
