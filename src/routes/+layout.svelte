@@ -1,7 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import { onMount } from 'svelte';
-	import { afterNavigate, goto } from '$app/navigation';
+	import { afterNavigate, beforeNavigate, goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import { page } from '$app/state';
 	import { profile } from '$lib/data/profile';
@@ -17,37 +17,84 @@
 	let booting = $state(false);
 	let poweringOn = $state(false);
 	let shellFocused = $state(false);
-	let shell = $state<{ focusPrompt: () => void; exec: (command: string) => void }>();
+	let shell = $state<{
+		focusPrompt: () => void;
+		exec: (command: string) => void;
+		element: () => HTMLElement | undefined;
+	}>();
 
 	// App-internal path with the deployment base stripped — the shell's cwd.
 	const cwd = $derived(page.url.pathname.slice(base.length).replace(/\/$/, '') || '/');
 	const mode = $derived(booting ? 'boot' : shellFocused ? 'insert' : 'normal');
+	// Home is a live session: the fetch output sits at the top with the prompt
+	// under it. Everywhere else the shell docks to the bottom of the frame.
+	const atHome = $derived(cwd === '/');
+
+	/** Lets the frame paint again. Held back from before the first paint. */
+	function reveal() {
+		delete document.documentElement.dataset.boot;
+	}
 
 	onMount(() => {
 		theme = currentTheme();
-		// Boot exactly once per session, and only when the session starts on the
-		// homepage — marked seen on any first page view so client-side
-		// navigation never replays it.
-		let seen = true;
-		try {
-			seen = sessionStorage.getItem('booted') === '1';
-			sessionStorage.setItem('booted', '1');
-		} catch {}
-		const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-		if (cwd === '/' && !seen && !reducedMotion) booting = true;
+		// Whether to boot was settled before the first paint, by the head script
+		// on the home page — deciding it here would let the page paint and then
+		// drop the overlay over it a moment later. That script only exists on
+		// the home page, so the flag implies we are on it.
+		if (document.documentElement.dataset.boot === 'pending') booting = true;
+		else reveal();
 	});
 
 	function finishBoot() {
 		if (!booting) return;
 		booting = false;
+		reveal();
 		poweringOn = true;
 	}
+
+	// Sliding the terminal between session and docked. Both states share a
+	// bottom edge — the status bar — so the whole move is one number: how tall
+	// the terminal is. Growing it walks its top edge up over the page, shrinking
+	// it walks back down. The column never changes width, so nothing inside is
+	// ever rewrapped, and docked the page above resizes in step, which keeps the
+	// seam between them continuous instead of snapping.
+	const SLIDE_MS = 340; // keep in step with --slide in app.css
+	let slide: Animation | undefined;
+	let from: number | undefined;
+
+	// OLDPWD for `cd -`. Recorded on any navigation, not just `cd`, so it also
+	// takes you back from wherever a link in the rail dropped you.
+	let previous = $state('');
+
+	// The height is measured before the new page renders. A running slide is
+	// included, since getBoundingClientRect() reports the height it is
+	// animating through — interrupting halfway then carries on from where it
+	// visually is rather than jumping.
+	beforeNavigate(() => {
+		previous = cwd;
+		from = shell?.element()?.getBoundingClientRect().height;
+	});
 
 	// The scroll container is #main, not the window, so SvelteKit's own
 	// post-navigation scroll reset never reaches it — without this, the next
 	// page opens at the previous page's scroll offset.
 	afterNavigate(() => {
 		document.getElementById('main')?.scrollTo(0, 0);
+
+		const el = shell?.element();
+		const start = from;
+		from = undefined;
+		if (!el || start === undefined) return;
+
+		slide?.cancel(); // drop the animated height, so the rect below is the real one
+		const end = el.getBoundingClientRect().height;
+		// Same height (most navigations) or motion turned down: nothing to do.
+		if (Math.abs(end - start) < 1 || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+		slide = el.animate([{ height: `${start}px` }, { height: `${end}px` }], {
+			duration: SLIDE_MS,
+			easing: 'cubic-bezier(0.2, 0.7, 0.3, 1)'
+		});
 	});
 
 	function navigate(to: string) {
@@ -86,7 +133,8 @@
 		if (event.metaKey || event.ctrlKey || event.altKey) return;
 		switch (event.key) {
 			// `i` too: the status bar advertises NORMAL/INSERT, so the vim
-			// reflex should work.
+			// reflex should work. These open the prompt without typing
+			// themselves into it.
 			case ':':
 			case '/':
 			case 'i':
@@ -94,8 +142,15 @@
 				shell?.focusPrompt();
 				break;
 			case '?':
+				event.preventDefault();
 				shell?.exec('help');
 				break;
+			default:
+				// Anything else printable: the page is a terminal with a prompt
+				// on it, so typing should land there rather than nowhere. No
+				// preventDefault — focusing during keydown lets the character
+				// through to the input it just moved to.
+				if (event.key.length === 1) shell?.focusPrompt();
 		}
 	}
 
@@ -111,7 +166,12 @@
 
 <a class="skip no-print" href="#main">skip to content</a>
 
-<div class="frame" class:power-on={poweringOn} onanimationend={() => (poweringOn = false)}>
+<div
+	class="frame"
+	class:power-on={poweringOn}
+	data-home={atHome || undefined}
+	onanimationend={() => (poweringOn = false)}
+>
 	<Rail />
 	<div class="pane pane-main">
 		<span class="pane-title" aria-hidden="true">{cwd === '/' ? '~' : `~${cwd}`}</span>
@@ -122,6 +182,8 @@
 	<Shell
 		bind:this={shell}
 		{cwd}
+		{previous}
+		session={atHome}
 		onnav={navigate}
 		ontheme={applyTheme}
 		oncrt={toggleCrt}
@@ -156,11 +218,43 @@
 		background: var(--bg-panel);
 		/* rem so the rail keeps pace with the scaled type on large screens */
 		grid-template-columns: 14rem 1fr;
+		/* The rail runs the full height so the shell shares a column with main:
+		   the two shell positions then differ only in where the row starts, and
+		   nothing about it ever changes width. */
 		grid-template-rows: 1fr auto auto;
 		grid-template-areas:
 			'rail main'
-			'cmd  cmd'
+			'rail cmd'
 			'status status';
+	}
+
+	/* Home is one terminal, not two panes stacked: the fetch output is
+	   content-height, the session takes the rest of the column, and the seam
+	   between them — gap and shared border — goes, so it reads as a single
+	   view you just ran neofetch in. minmax(0, auto) rather than auto so that
+	   on a short window main gives way and scrolls itself, instead of pushing
+	   the prompt off the bottom.
+
+	   Only above the phone breakpoint: down there the layout is one column and
+	   the shell stays docked. */
+	@media (min-width: 720px) {
+		.frame[data-home] {
+			grid-template-rows: minmax(0, auto) 1fr auto;
+			row-gap: 0;
+		}
+		/* The other half of the seam, on the same clock as the shell's. */
+		.frame[data-home] .pane-main {
+			border-bottom-color: transparent;
+			transition: border-bottom-color 120ms linear calc(var(--slide) - 120ms);
+		}
+		/* The status bar keeps the gap that row-gap: 0 just took away. */
+		.frame[data-home] :global(footer) {
+			margin-top: 8px;
+		}
+		/* The prompt is the next line after the output, not a new section. */
+		.frame[data-home] main {
+			padding-bottom: 10px;
+		}
 	}
 
 	/* CRT power-on after the boot sequence. */
@@ -196,17 +290,21 @@
 		   its intrinsic width up through the grid and past the viewport. */
 		min-width: 0;
 		overflow-y: auto;
-		padding: 30px clamp(20px, 5vw, 56px) 48px;
+		padding: 30px var(--pane-pad) 48px;
 	}
 	main:focus {
 		outline: none;
 	}
 
+	/* Phone: one column, the rail is a tab bar at the bottom, and the shell
+	   stays docked — the fetch output is taller than the screen here, so there
+	   is no room to sit a prompt under it. */
 	@media (max-width: 719px) {
 		.frame {
 			padding: 8px;
 			gap: 6px;
 			grid-template-columns: 1fr;
+			grid-template-rows: 1fr auto auto auto;
 			grid-template-areas:
 				'main'
 				'cmd'

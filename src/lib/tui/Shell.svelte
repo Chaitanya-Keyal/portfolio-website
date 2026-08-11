@@ -5,12 +5,16 @@
 
 	interface Props {
 		cwd: string;
+		/** Where the last navigation came from — OLDPWD, for `cd -`. */
+		previous: string;
+		/** Sitting under the page as a live session, rather than docked. */
+		session: boolean;
 		onnav: (to: string) => void;
 		ontheme: (theme: Theme) => void;
 		oncrt: () => 'on' | 'off';
 		onfocuschange: (focused: boolean) => void;
 	}
-	let { cwd, onnav, ontheme, oncrt, onfocuschange }: Props = $props();
+	let { cwd, previous, session, onnav, ontheme, oncrt, onfocuschange }: Props = $props();
 
 	interface Line {
 		text: string;
@@ -21,6 +25,7 @@
 	let value = $state('');
 	let input = $state<HTMLInputElement>();
 	let scrollback = $state<HTMLElement>();
+	let root = $state<HTMLElement>();
 
 	const display = $derived(cwd === '/' ? '~' : `~${cwd}`);
 	const ps1 = $derived(`okaybro@dev:${display}$`);
@@ -36,6 +41,12 @@
 
 	export function focusPrompt() {
 		input?.focus();
+	}
+
+	/** The pane itself, which the layout resizes to move it between its
+	 * docked and session positions. */
+	export function element() {
+		return root;
 	}
 
 	export function exec(command: string) {
@@ -84,6 +95,18 @@
 		if (scrollback) scrollback.scrollTop = scrollback.scrollHeight;
 	});
 
+	// The prompt is the last line, so it has to stay in view when the pane
+	// changes size and not just when it prints. Sliding between docked and
+	// session resizes it over a third of a second; without this the prompt
+	// drifts up out of the scrollback and you have to go looking for it.
+	$effect(() => {
+		const el = scrollback;
+		if (!el) return;
+		const observer = new ResizeObserver(() => (el.scrollTop = el.scrollHeight));
+		observer.observe(el);
+		return () => observer.disconnect();
+	});
+
 	function remember(entry: string) {
 		history = [...history.filter((h) => h !== entry), entry].slice(-50);
 		try {
@@ -98,7 +121,7 @@
 		historyIndex = -1;
 		if (entry) remember(entry);
 		append({ text: `${ps1} ${entry}`, kind: 'cmd' });
-		const outcome = run(entry, cwd);
+		const outcome = run(entry, cwd, previous);
 		switch (outcome.kind) {
 			case 'print':
 				append(...outcome.lines.map((text) => ({ text, kind: 'out' as const })));
@@ -107,6 +130,7 @@
 				append(...outcome.lines.map((text) => ({ text, kind: 'err' as const })));
 				break;
 			case 'nav':
+				if (outcome.clear) lines = [];
 				onnav(outcome.to);
 				break;
 			case 'theme':
@@ -187,8 +211,9 @@
      the pane to do it. -->
 <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
 <div
+	bind:this={root}
 	class="shell no-print"
-	class:open={lines.length > 0}
+	class:session
 	onclick={() => {
 		if (getSelection()?.isCollapsed) input?.focus({ preventScroll: true });
 	}}
@@ -226,32 +251,73 @@
 		border: 1px solid var(--border);
 		background: var(--bg);
 		cursor: text;
+		/* The layout animates this box's height to move it. Part-way through,
+		   the terminal inside is taller than the box, so it has to clip.
+		   There is deliberately no :focus-within ring: as a session this box is
+		   half of one rectangle with the page, and lighting either half or the
+		   whole page reads as a glitch. The caret and the status bar's mode say
+		   where focus is. */
+		overflow: hidden;
 	}
-	.shell:focus-within {
-		border-color: var(--accent);
+
+	/* As a session it is the bottom half of one continuous box with the page
+	   above it, so it drops the border they would otherwise share and fills
+	   whatever height the column leaves it. Phones never get this: down there
+	   the layout is one column and the shell stays docked. */
+	@media (min-width: 720px) {
+		.shell.session {
+			display: flex;
+			flex-direction: column;
+			/* Transparent rather than removed: the border stays in the box model
+			   so nothing shifts by a pixel, and a colour can be faded. It fades
+			   at the end of the slide, because a seam that opens the moment the
+			   terminal starts moving reads as a borderless box flying up the
+			   page. Leaving home it snaps straight back — there is no
+			   transition declared without this class — which is right, since it
+			   is becoming a separate pane again. */
+			border-top-color: transparent;
+			transition: border-top-color 120ms linear calc(var(--slide) - 120ms);
+			/* Anchored to the bottom of its row and sized explicitly rather than
+			   stretched, so that animating its height moves the top edge and
+			   leaves the bottom against the status bar — the same way it
+			   behaves docked, where the row is content-sized. That symmetry is
+			   what lets one property carry the whole transition. */
+			align-self: end;
+			height: 100%;
+		}
 	}
 
 	.term {
 		padding: 7px 20px;
 		font-size: 0.8438rem;
 		overflow-y: auto;
+		/* Grows a line at a time with what it has printed, up to the height of
+		   `help` — the longest thing the shell prints, so the output people
+		   reach for first fits — after which the scrollback scrolls. */
+		max-height: min(27.2em, 50dvh);
 		/* Raw characters only, like a real shell: Fira Code's contextual
 		   ligatures mis-shape around the input caret (`../` renders as `./`). */
 		font-variant-ligatures: none;
 		font-feature-settings: 'calt' 0;
 	}
-	/* Opens to one fixed height instead of growing line by line — the layout
-	   shifts once; `clear` collapses it back. The height is `help`, the longest
-	   thing the shell prints: its output plus the echoed command and the
-	   prompt, sixteen lines at the inherited 1.7 line-height, so the first
-	   thing anyone types never needs scrolling. */
-	.shell.open .term {
-		height: min(27.2em, 50dvh);
-	}
 	/* A phone has no room to give half its screen to the terminal. */
 	@media (max-width: 719px) {
-		.shell.open .term {
-			height: min(27.2em, 32dvh);
+		.term {
+			max-height: min(27.2em, 32dvh);
+		}
+	}
+
+	/* As a session it behaves like a real terminal instead: the prompt sits
+	   directly under whatever has been printed, and the terminal is however
+	   much room the column has left rather than a fixed slab. */
+	@media (min-width: 720px) {
+		.shell.session .term {
+			flex: 1;
+			min-height: 0;
+			max-height: none;
+			/* Same gutter as the page above, so the prompt lines up under the
+			   output rather than sitting in its own indent. */
+			padding-inline: var(--pane-pad);
 		}
 	}
 

@@ -7,6 +7,15 @@
    AA-readable on `--bg` — the classic Tokyo Night comment color does not, so
    it is reserved for `--faint` (borders, ornament, never running text). */
 :root {
+	/* The content gutter. Shared, because on the home page the page body and
+	   the terminal under it are one view and their text has to line up. */
+	--pane-pad: clamp(20px, 5vw, 56px);
+
+	/* How long the terminal takes to move between docked and session. Shared:
+	   +layout.svelte drives the move, and the seam between the two panes fades
+	   on the same clock so it closes as the terminal arrives. */
+	--slide: 340ms;
+
 	--bg: #1a1b26;
 	--bg-panel: #16161e;
 	--bg-hl: #292e42;
@@ -281,6 +290,14 @@ a:focus-visible {
 	}
 }
 
+/* Held back until the boot sequence has had its say. The flag is set while the
+   head is parsed, so the page never paints and is then covered over; the layout
+   clears it either immediately or when the boot finishes. The overlay itself
+   sits outside the frame, so it is unaffected. */
+:root[data-boot] .frame {
+	visibility: hidden;
+}
+
 /* Pane content rises in, line by line. */
 .reveal > * {
 	animation: rise 0.35s cubic-bezier(0.2, 0.7, 0.3, 1) both;
@@ -317,6 +334,10 @@ a:focus-visible {
 	*::after {
 		animation-duration: 0.01ms !important;
 		transition-duration: 0.01ms !important;
+		/* Delays too, or a transition timed to land at the end of a movement
+		   that no longer happens is left hanging on its own. */
+		animation-delay: 0s !important;
+		transition-delay: 0s !important;
 	}
 	body::after {
 		display: none;

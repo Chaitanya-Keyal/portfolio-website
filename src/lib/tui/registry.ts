@@ -68,7 +68,9 @@ function docAt(route: string) {
 /** What running a command means; navigation and settings are applied by the
  * layout, printing by the shell. */
 export type Outcome =
-	| { kind: 'nav'; to: string }
+	/** `clear` wipes the scrollback on the way, for commands whose output is
+	 * the page itself and which should look like they redrew the screen. */
+	| { kind: 'nav'; to: string; clear?: boolean }
 	| { kind: 'theme'; theme: Theme }
 	| { kind: 'crt' }
 	| { kind: 'print'; lines: string[] }
@@ -86,7 +88,7 @@ interface CommandSpec {
 	hidden?: boolean;
 	/** Real commands kept off the help list to keep it short. Still complete. */
 	unlisted?: boolean;
-	run: (args: string[], cwd: string) => Outcome;
+	run: (args: string[], cwd: string, previous: string) => Outcome;
 }
 
 /* ---------- command implementations ---------- */
@@ -121,8 +123,13 @@ function ls(args: string[], cwd: string): Outcome {
 	return { kind: 'print', lines: [entries.map((e) => (e.file ? e.name : `${e.name}/`)).join('  ')] };
 }
 
-function cd(args: string[], cwd: string): Outcome {
+function cd(args: string[], cwd: string, previous: string): Outcome {
 	const target = args[0];
+	// bash's OLDPWD: back to wherever you were last, however you got here.
+	if (target === '-') {
+		if (!previous || previous === cwd) return { kind: 'error', lines: ['cd: OLDPWD not set'] };
+		return { kind: 'nav', to: previous };
+	}
 	if (!target || target === '~' || target === '/') return { kind: 'nav', to: '/' };
 	const route = resolvePath(cwd, target);
 	if (route === '/') return { kind: 'nav', to: '/' };
@@ -246,7 +253,7 @@ function cowsay(text: string): string[] {
 
 export const commands: CommandSpec[] = [
 	{ name: 'ls', usage: 'ls [dir]', description: 'list directory', run: ls },
-	{ name: 'cd', usage: 'cd <dir>', description: 'change directory', run: cd },
+	{ name: 'cd', usage: 'cd [dir|-]', description: 'change directory', run: cd },
 	{ name: 'pwd', usage: 'pwd', description: 'print working directory', unlisted: true, run: (_, cwd) => ({ kind: 'print', lines: [displayPath(cwd)] }) },
 	{ name: 'man', usage: 'man [page]', description: 'read a manual page', run: man },
 	{ name: 'cat', usage: 'cat <file>', description: 'print a file', run: cat },
@@ -257,7 +264,9 @@ export const commands: CommandSpec[] = [
 		usage: 'neofetch',
 		description: 'the identity card (home)',
 		unlisted: true,
-		run: () => ({ kind: 'nav', to: '/' })
+		// Clears on the way, so the home page reads as what it just printed
+		// rather than as the tail of a session that scrolled past.
+		run: () => ({ kind: 'nav', to: '/', clear: true })
 	},
 	{ name: 'contact', usage: 'contact', description: 'where to reach me', run: () => ({ kind: 'print', lines: [`email     ${profile.contact.email}`, `github    ${profile.contact.github}`, `linkedin  ${profile.contact.linkedin}`] }) },
 	{ name: 'theme', usage: 'theme [name]', description: 'switch colorscheme', run: (args) => theme(args) },
@@ -360,14 +369,15 @@ const ALIASES: Record<string, string> = {
 	':q!': ':q'
 };
 
-export function run(input: string, cwd: string): Outcome {
+/** `previous` is OLDPWD — where the last navigation came from, for `cd -`. */
+export function run(input: string, cwd: string, previous = ''): Outcome {
 	const trimmed = input.trim();
 	if (!trimmed) return { kind: 'none' };
 	const [rawName, ...args] = trimmed.split(/\s+/);
 	const name = ALIASES[rawName] ?? rawName;
 	const command = commands.find((c) => c.name === name);
 	if (!command) return { kind: 'error', lines: [`bash: ${rawName}: command not found (try \`help\`)`] };
-	return command.run(args, cwd);
+	return command.run(args, cwd, previous);
 }
 
 /* ---------- tab completion, shell-style ---------- */

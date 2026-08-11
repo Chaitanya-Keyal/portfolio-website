@@ -77,6 +77,15 @@
 		return () => observer.disconnect();
 	});
 
+	// Runs while the head is parsed, before anything paints, and only on this
+	// page — which is the only one that boots. Deciding this after hydration
+	// showed the page for a moment before the overlay covered it. The timeout
+	// is a failsafe: if the layout never comes up, the page still appears.
+	const bootProbe = `try{var d=document.documentElement;
+if(sessionStorage.getItem('booted')!=='1'&&!matchMedia('(prefers-reduced-motion: reduce)').matches)d.dataset.boot='pending';
+sessionStorage.setItem('booted','1');
+setTimeout(function(){delete d.dataset.boot},3000)}catch(e){}`;
+
 	const jsonLd = JSON.stringify({
 		'@context': 'https://schema.org',
 		'@type': 'Person',
@@ -92,10 +101,14 @@
 <Meta title="Chaitanya Keyal — backend systems · AI agents · open source" description={profile.summary} path="/" />
 
 <svelte:head>
+	{@html `<script>${bootProbe}</script>`}
 	{@html `<script type="application/ld+json">${jsonLd}</script>`}
 </svelte:head>
 
-<div class="fetch reveal">
+<!-- No `reveal` here, unlike the other pages: this output belongs to the
+     terminal below it, and having it rise in while the terminal slides up to
+     meet it is two animations disagreeing about what is moving. -->
+<div class="fetch">
 	<div class="logo" class:cramped bind:this={logo} style:--px-size={size ? `${size}px` : null}>
 		<PixelPortrait />
 	</div>
@@ -161,7 +174,11 @@
 	   the pixel size. The script above replaces this with the size that matches
 	   the text height; the rem keeps it proportional when it cannot run. */
 	.logo {
-		--px-size: 0.3125rem;
+		/* What the fit lands on is near-constant in rem — 0.428 to 0.479 across
+		   every width the portrait shows at — so starting here means the
+		   corrected size is a couple of percent away instead of forty, and the
+		   first paint does not visibly resize. It is also the size with no JS. */
+		--px-size: 0.4375rem;
 		flex-shrink: 0;
 	}
 
