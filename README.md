@@ -28,7 +28,9 @@ bun run fonts   # once: copy Fira Code subsets into static/
 bun run dev
 ```
 
-`bun run build` outputs a fully static site in `build/`.
+`bun run build` outputs a fully static site in `build/`. `bun run check` type-checks
+and `bun run test` covers the shell's logic — path resolution, the command table,
+tab completion and man-page rendering. Both run in CI before a deploy.
 
 The home page's portrait is a grid of half-block characters generated from
 `assets/pfp.png` — `src/lib/components/PixelPortrait.svelte` is written by
