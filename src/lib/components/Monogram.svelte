@@ -1,17 +1,31 @@
 <script lang="ts">
-	// The one allowed easter egg: the mark decodes itself on arrival.
-	// Solid blocks only: outline glyphs (╔╝═) turn the K's arms into an H
-	// crossbar once the mark is scaled up.
+	// Portrait rendered from the source photo; it decodes itself on arrival.
 	const ART = [
-		' ██████    ███    ███',
-		'███        ███  ███  ',
-		'███        ██████    ',
-		'███        ██████    ',
-		'███        ███  ███  ',
-		' ██████    ███    ███'
+		'           .   ==+.                     ',
+		'      .::-::===**+--==:::--             ',
+		'        +**###%####%#**###%-            ',
+		'        =**%#%%@@@@@@@%%%%@%:           ',
+		'       +@%@@@@@@@%###@@@@@@%*:          ',
+		'       -#@=+++=--::::=#@@@@@#+-         ',
+		'        :*-++==*#%#*+--*@@@@#:.         ',
+		'          #@@+-*%%##*=:-%@@%*           ',
+		'          :=- ..-=:.  .:+#+-+.          ',
+		'           .=*#*+++=====*+-             ',
+		'          :###*#**%*+***#+-             ',
+		'         :***-:-=++++*##%+=             ',
+		'          =+--++=-=*#%%@#               ',
+		' :  ..-..-*#+====*%@@@#+:         .     ',
+		' :=+++*++###%*%@@@@@%=  .: +-  :=-.     ',
+		'  +#%%*++*#%+:==+#=-.  .  =@#+--.-= =++.',
+		'  =**#*+*###= .          +@%%%%#*++-*%#:',
+		' .*%##****+*= .==++-:   *@%%%@%%###*+==.',
+		' -**+++*##**+=+=++*%*::*@%%%%@%%%%%%%##:',
+		'.==++*#%%#**%:.=+**-  *@%##%%%%%%%%%##%:',
+		':#%%##%%#*##%.-+++:  *@%%%@@%%%%%%%%%%@-',
+		'.+++=++*+=+++.----. -*+++**+++++++++++*:'
 	];
 
-	const POOL = '█▓▒░╬╣║╔╝<>/\\+=*';
+	const POOL = ' .:-=+*#%@';
 
 	let lines = $state(ART);
 	let settled = true;
@@ -61,9 +75,13 @@
 		margin: 0;
 		color: var(--logo-color, var(--faint));
 		font-size: var(--logo-size, 0.6875rem);
-		line-height: 1.15;
+		line-height: 1.05;
 		user-select: none;
 		cursor: default;
+		/* Ligatures would fuse the art's ==, --, *+ runs into single glyphs
+		   and shear the picture apart. */
+		font-variant-ligatures: none;
+		font-feature-settings: 'calt' 0;
 	}
 	pre:hover {
 		color: var(--accent);

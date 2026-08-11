@@ -98,9 +98,11 @@
 	}
 
 	.logo {
-		--logo-size: clamp(1rem, 1.7vw, 1.9rem);
+		/* 40 columns wide: sized so the portrait reads without crowding the
+		   info column. */
+		--logo-size: clamp(0.6rem, 0.98vw, 1.25rem);
 		--logo-color: var(--accent);
-		padding-top: 4px;
+		padding-top: 2px;
 		flex-shrink: 0;
 	}
 
@@ -162,7 +164,7 @@
 			gap: 16px;
 		}
 		.logo {
-			--logo-size: 0.75rem;
+			--logo-size: min(0.8rem, 2.1vw);
 			width: 100%;
 		}
 		.row {
