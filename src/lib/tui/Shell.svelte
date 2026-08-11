@@ -201,7 +201,7 @@
 		{/each}
 		<div class="promptline">
 			<label for="prompt" class="ps1">
-				<span class="user">okaybro@dev</span><span class="colon">:</span><span class="cwd">{'‎' + display}</span><span class="dollar">$</span>
+				<span class="user">okaybro@dev</span><span class="colon">:</span><span class="cwd">{display}</span><span class="dollar">$</span>
 			</label>
 			<input
 				id="prompt"
@@ -241,9 +241,18 @@
 		font-feature-settings: 'calt' 0;
 	}
 	/* Opens to one fixed height instead of growing line by line — the layout
-	   shifts once; `clear` collapses it back. */
+	   shifts once; `clear` collapses it back. The height is `help`, the longest
+	   thing the shell prints: its output plus the echoed command and the
+	   prompt, sixteen lines at the inherited 1.7 line-height, so the first
+	   thing anyone types never needs scrolling. */
 	.shell.open .term {
-		height: min(320px, 36dvh);
+		height: min(27.2em, 50dvh);
+	}
+	/* A phone has no room to give half its screen to the terminal. */
+	@media (max-width: 719px) {
+		.shell.open .term {
+			height: min(27.2em, 32dvh);
+		}
 	}
 
 	.term p {
@@ -321,6 +330,12 @@
 			direction: rtl;
 			text-align: left;
 			vertical-align: bottom;
+		}
+		/* A left-to-right mark, so the leading `~/` is not reordered by the rtl
+		   above. It lives in CSS because an inline one ends up in anything
+		   copied out of the terminal. */
+		.cwd::before {
+			content: '\200E';
 		}
 	}
 </style>
