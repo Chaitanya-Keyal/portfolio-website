@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { profile } from '$lib/data/profile';
+
 	interface Props {
 		theme: string;
 		mode: string;
@@ -14,7 +16,15 @@
 			◐ {theme}
 		</button>
 		<span class="sep" aria-hidden="true">·</span>
-		<span class="stamp">{__COMMIT__} · {__BUILT__}</span>
+		<span class="stamp">
+			<!-- Local builds have no commit to point at. -->
+			{#if __COMMIT__ === 'dev'}
+				{__COMMIT__}
+			{:else}
+				<a href="{profile.repo}/commit/{__COMMIT__}" rel="noopener">{__COMMIT__}</a>
+			{/if}
+			· {__BUILT__}
+		</span>
 	</span>
 </footer>
 

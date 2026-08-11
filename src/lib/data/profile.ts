@@ -28,6 +28,7 @@ export const profile = {
 		github: 'https://github.com/Chaitanya-Keyal',
 		linkedin: 'https://linkedin.com/in/chaitanya-keyal'
 	},
+	repo: 'https://github.com/Chaitanya-Keyal/portfolio-website',
 	skills: {
 		languages: ['Python', 'TypeScript', 'Go', 'C/C++', 'Java'],
 		ai: ['LangChain', 'LangGraph', 'RAG pipelines', 'AI agents'],
