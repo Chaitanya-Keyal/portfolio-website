@@ -58,6 +58,11 @@ function displayPath(route: string): string {
 	return route === '/' ? '~' : `~${route}`;
 }
 
+/** The manual page for a route, if it has one. */
+function docAt(route: string) {
+	return docBySlug(route.split('/').pop() ?? '');
+}
+
 /* ---------- outcomes ---------- */
 
 /** What running a command means; navigation and settings are applied by the
@@ -79,6 +84,8 @@ interface CommandSpec {
 	description: string;
 	/** Easter eggs: runnable, but absent from help and completion. */
 	hidden?: boolean;
+	/** Real commands kept off the help list to keep it short. Still complete. */
+	unlisted?: boolean;
 	run: (args: string[], cwd: string) => Outcome;
 }
 
@@ -106,7 +113,11 @@ function ls(args: string[], cwd: string): Outcome {
 	if (!page && route !== '/') return { kind: 'error', lines: [`ls: no such file or directory: ${target}`] };
 	if (page?.file) return { kind: 'print', lines: [page.name] };
 	const entries = childrenOf(route);
-	if (entries.length === 0) return { kind: 'print', lines: ['(nothing here — try `man`)'] };
+	if (entries.length === 0) {
+		// Only point at `man` when there is actually a page behind it.
+		const hint = docAt(route) ? ' — try `man`' : '';
+		return { kind: 'print', lines: [`(nothing here${hint})`] };
+	}
 	return { kind: 'print', lines: [entries.map((e) => (e.file ? e.name : `${e.name}/`)).join('  ')] };
 }
 
@@ -123,15 +134,26 @@ function cd(args: string[], cwd: string): Outcome {
 
 /** Prints the page into the terminal, the way man(1) actually behaves;
  * `cd` is the one that navigates. */
-function man(args: string[]): Outcome {
+function man(args: string[], cwd: string): Outcome {
 	const target = args[0]?.replace(/\.1$/, '');
+	// Bare `man` reads the page you are standing in, which is where `ls` sends
+	// people when a page has nothing under it.
+	const route = target ? resolvePath(cwd, target) : cwd;
+	const doc = docAt(route);
+	if (doc) {
+		return {
+			kind: 'print',
+			lines: [...manLines(doc), '', `(full page: cd ${docPath(doc)})`]
+		};
+	}
+	// A section is a directory of pages, so name the ones it holds.
+	const entries = childrenOf(route).filter((p) => !p.file);
+	if (entries.length > 0) {
+		const names = entries.map((e) => e.name).join(', ');
+		return { kind: 'print', lines: [`man: ${displayPath(route)} is a section — pages: ${names}`] };
+	}
 	if (!target) return { kind: 'error', lines: ['what manual page do you want?'] };
-	const doc = docBySlug(target);
-	if (!doc) return { kind: 'error', lines: [`no manual entry for ${target}`] };
-	return {
-		kind: 'print',
-		lines: [...manLines(doc), '', `(full page: cd ${docPath(doc)})`]
-	};
+	return { kind: 'error', lines: [`no manual entry for ${target}`] };
 }
 
 function cat(args: string[], cwd: string): Outcome {
@@ -225,8 +247,8 @@ function cowsay(text: string): string[] {
 export const commands: CommandSpec[] = [
 	{ name: 'ls', usage: 'ls [dir]', description: 'list directory', run: ls },
 	{ name: 'cd', usage: 'cd <dir>', description: 'change directory', run: cd },
-	{ name: 'pwd', usage: 'pwd', description: 'print working directory', run: (_, cwd) => ({ kind: 'print', lines: [displayPath(cwd)] }) },
-	{ name: 'man', usage: 'man <page>', description: 'read a manual page', run: (args) => man(args) },
+	{ name: 'pwd', usage: 'pwd', description: 'print working directory', unlisted: true, run: (_, cwd) => ({ kind: 'print', lines: [displayPath(cwd)] }) },
+	{ name: 'man', usage: 'man [page]', description: 'read a manual page', run: man },
 	{ name: 'cat', usage: 'cat <file>', description: 'print a file', run: cat },
 	{ name: 'tree', usage: 'tree', description: 'site map', run: () => ({ kind: 'print', lines: treeLines() }) },
 	{ name: 'whoami', usage: 'whoami', description: 'who is this', run: () => ({ kind: 'print', lines: [`${profile.name.toLowerCase()} — ${profile.tagline}`] }) },
@@ -234,32 +256,30 @@ export const commands: CommandSpec[] = [
 		name: 'neofetch',
 		usage: 'neofetch',
 		description: 'the identity card (home)',
+		unlisted: true,
 		run: () => ({ kind: 'nav', to: '/' })
 	},
 	{ name: 'contact', usage: 'contact', description: 'where to reach me', run: () => ({ kind: 'print', lines: [`email     ${profile.contact.email}`, `github    ${profile.contact.github}`, `linkedin  ${profile.contact.linkedin}`] }) },
 	{ name: 'theme', usage: 'theme [name]', description: 'switch colorscheme', run: (args) => theme(args) },
 	{ name: 'crt', usage: 'crt', description: 'toggle scanlines', run: () => ({ kind: 'crt' }) },
-	{ name: 'echo', usage: 'echo <text>', description: 'echo', run: (args) => ({ kind: 'print', lines: [args.join(' ')] }) },
+	{ name: 'echo', usage: 'echo <text>', description: 'echo', unlisted: true, run: (args) => ({ kind: 'print', lines: [args.join(' ')] }) },
 	{ name: 'clear', usage: 'clear', description: 'clear the screen', run: () => ({ kind: 'clear' }) },
 	{
 		name: 'help',
 		usage: 'help',
 		description: 'this list',
+		unlisted: true,
 		run: () => ({
 			kind: 'print',
 			lines: [
-				'commands:',
-				...commands.filter((c) => !c.hidden).map((c) => `  ${c.usage.padEnd(14)}${c.description}`),
+				'some of what works here:',
+				...commands
+					.filter((c) => !c.hidden && !c.unlisted)
+					.map((c) => `  ${c.usage.padEnd(14)}${c.description}`),
 				'',
 				'keys: : or / to type here · tab complete · esc to leave'
 			]
 		})
-	},
-	{
-		name: 'exit',
-		usage: 'exit',
-		description: 'log out',
-		run: () => ({ kind: 'print', lines: ['logout', 'connection to okaybro.dev closed.', '…just kidding. you can check out any time you like.'] })
 	},
 	{
 		name: 'sudo',
