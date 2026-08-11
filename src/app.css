@@ -120,6 +120,15 @@ figure {
 	margin: 0;
 }
 
+/* The UA stylesheet sets `pre { font-family: monospace }`, and that element
+   rule beats the family inherited from body — leaving every <pre> in the
+   system font, at a different advance width. */
+pre,
+code,
+kbd {
+	font-family: inherit;
+}
+
 ul,
 ol {
 	padding: 0;
