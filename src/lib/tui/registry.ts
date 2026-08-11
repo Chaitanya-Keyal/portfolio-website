@@ -84,20 +84,6 @@ interface CommandSpec {
 
 /* ---------- command implementations ---------- */
 
-const fetchLines = (): string[] => {
-	const p = profile;
-	return [
-		`${p.handle}@dev`,
-		'───────────',
-		`os        ${p.education.school} — ${p.education.short} '${p.education.classOf % 100}`,
-		`role      ${p.role}`,
-		`status    ${p.status}`,
-		`packages  ${projects.length} (${projects.map((x) => x.slug).join(', ')})`,
-		`contact   ${p.contact.email}`,
-		`shell     Fira Code · ${themes.join(' / ')}`
-	];
-};
-
 const treeLines = (): string[] => {
 	const lines = ['.'];
 	const tops = childrenOf('/');
@@ -244,7 +230,12 @@ export const commands: CommandSpec[] = [
 	{ name: 'cat', usage: 'cat <file>', description: 'print a file', run: cat },
 	{ name: 'tree', usage: 'tree', description: 'site map', run: () => ({ kind: 'print', lines: treeLines() }) },
 	{ name: 'whoami', usage: 'whoami', description: 'who is this', run: () => ({ kind: 'print', lines: [`${profile.name.toLowerCase()} — ${profile.tagline}`] }) },
-	{ name: 'fetch', usage: 'fetch', description: 'identity card', run: () => ({ kind: 'print', lines: fetchLines() }) },
+	{
+		name: 'neofetch',
+		usage: 'neofetch',
+		description: 'the identity card (home)',
+		run: () => ({ kind: 'nav', to: '/' })
+	},
 	{ name: 'contact', usage: 'contact', description: 'where to reach me', run: () => ({ kind: 'print', lines: [`email     ${profile.contact.email}`, `github    ${profile.contact.github}`, `linkedin  ${profile.contact.linkedin}`] }) },
 	{ name: 'theme', usage: 'theme [name]', description: 'switch colorscheme', run: (args) => theme(args) },
 	{ name: 'crt', usage: 'crt', description: 'toggle scanlines', run: () => ({ kind: 'crt' }) },
@@ -335,7 +326,9 @@ export const commands: CommandSpec[] = [
 ];
 
 const ALIASES: Record<string, string> = {
-	neofetch: 'fetch',
+	fetch: 'neofetch',
+	fastfetch: 'neofetch',
+	screenfetch: 'neofetch',
 	l: 'ls',
 	la: 'ls',
 	ll: 'ls',

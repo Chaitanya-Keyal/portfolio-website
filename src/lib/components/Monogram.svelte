@@ -1,12 +1,14 @@
 <script lang="ts">
 	// The one allowed easter egg: the mark decodes itself on arrival.
+	// Solid blocks only: outline glyphs (╔╝═) turn the K's arms into an H
+	// crossbar once the mark is scaled up.
 	const ART = [
-		' ██████╗██╗  ██╗',
-		'██╔════╝██║ ██╔╝',
-		'██║     █████╔╝ ',
-		'██║     ██╔═██╗ ',
-		'╚██████╗██║  ██╗',
-		' ╚═════╝╚═╝  ╚═╝'
+		' ██████    ███    ███',
+		'███        ███  ███  ',
+		'███        ██████    ',
+		'███        ██████    ',
+		'███        ███  ███  ',
+		' ██████    ███    ███'
 	];
 
 	const POOL = '█▓▒░╬╣║╔╝<>/\\+=*';
@@ -54,11 +56,12 @@
 >{lines.join('\n')}</pre>
 
 <style>
+	/* Size and color are set by the host via --logo-size / --logo-color. */
 	pre {
-		margin: 48px 0 0;
-		color: var(--faint);
-		font-size: 0.6875rem;
-		line-height: 1.2;
+		margin: 0;
+		color: var(--logo-color, var(--faint));
+		font-size: var(--logo-size, 0.6875rem);
+		line-height: 1.15;
 		user-select: none;
 		cursor: default;
 	}
