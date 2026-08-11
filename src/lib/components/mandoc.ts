@@ -102,8 +102,10 @@ export function manLines(doc: ManDoc): string[] {
 		'',
 		doc.didTitle.toUpperCase(),
 		...doc.did.flatMap((d) => wrap(d, '  • ', '    ')),
+		// Wrapped like everything else: a long URL is one unbreakable word, so
+		// it drops to its own indented line rather than running past 80.
 		...(doc.proof.length > 0
-			? ['', 'PROOF', ...doc.proof.map((p) => `  → ${p.label}: ${p.href}`)]
+			? ['', 'PROOF', ...doc.proof.flatMap((p) => wrap(`→ ${p.label}: ${p.href}`, '  ', '    '))]
 			: [])
 	];
 }
