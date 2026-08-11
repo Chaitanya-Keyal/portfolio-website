@@ -2,6 +2,7 @@ node_modules/
 build/
 .svelte-kit/
 vite.config.ts.timestamp-*
+__pycache__/
 
 # generated
 static/fonts/

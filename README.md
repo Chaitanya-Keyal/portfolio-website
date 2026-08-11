@@ -30,6 +30,10 @@ bun run dev
 
 `bun run build` outputs a fully static site in `build/`.
 
+The home page's portrait is a grid of half-block characters generated from
+`assets/pfp.png` — `src/lib/components/PixelPortrait.svelte` is written by
+`bun run portrait` (needs Pillow and numpy) and should not be edited by hand.
+
 ## License
 
 MIT

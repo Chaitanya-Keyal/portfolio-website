@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import Meta from '$lib/components/Meta.svelte';
-	import Monogram from '$lib/components/Monogram.svelte';
+	import PixelPortrait from '$lib/components/PixelPortrait.svelte';
 	import { profile } from '$lib/data/profile';
 	import { projects } from '$lib/data/projects';
 	import { experience } from '$lib/data/experience';
@@ -18,6 +18,64 @@
 
 	// Reads the live theme, so the strip is the palette you are looking at.
 	const swatches = ['--red', '--green', '--yellow', '--accent', '--purple', '--cyan', '--muted', '--faint'];
+
+	// The portrait is a fixed grid of characters, so its height is exactly
+	// proportional to the character size. Measure it once, then solve for the
+	// size that stands it flush with the text beside it — rows can be added to
+	// the list below and the two columns still line up top and bottom.
+	let logo = $state<HTMLElement>();
+	let info = $state<HTMLElement>();
+	let size = $state(0);
+	let cramped = $state(false);
+
+	// Bounds on the character size, and the width the text column is entitled to
+	// keep — whatever is left over is the portrait's.
+	const MIN_PX = 5;
+	const MAX_PX = 14;
+	const INFO_MIN_REM = 34;
+
+	$effect(() => {
+		const logoEl = logo;
+		const infoEl = info;
+		const row = infoEl?.parentElement;
+		if (!logoEl || !infoEl || !row) return;
+
+		// Portrait height and width for a 1px character, taken from whatever size
+		// CSS starts it at; constant thereafter. The basis has to come off the
+		// <pre>'s own font-size — a custom property reads back unresolved.
+		let perPxHigh = 0;
+		let perPxWide = 0;
+
+		// An arrow declared after the guard above, so the element types stay
+		// narrowed inside it.
+		const fit = () => {
+			if (!perPxHigh) {
+				const pre = logoEl.querySelector('pre');
+				const box = logoEl.getBoundingClientRect();
+				if (!pre || !box.height) return; // hidden by the phone layout
+				const unit = parseFloat(getComputedStyle(pre).fontSize);
+				perPxHigh = box.height / unit;
+				perPxWide = box.width / unit;
+			}
+			// Room is measured off the row rather than the portrait, so it stays
+			// true once the portrait is out of the flow.
+			const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+			const gap = parseFloat(getComputedStyle(row).columnGap) || 0;
+			const room = (row.clientWidth - gap - INFO_MIN_REM * rem) / perPxWide;
+			cramped = room < MIN_PX;
+			if (cramped) return;
+
+			const target = infoEl.getBoundingClientRect().height / perPxHigh;
+			const next = Math.min(target, room, MAX_PX);
+			// Ignoring hair-thin corrections keeps a resize from oscillating:
+			// the portrait's width feeds back into how the text wraps.
+			if (Math.abs(next - size) > 0.05) size = next;
+		};
+
+		const observer = new ResizeObserver(fit);
+		observer.observe(infoEl);
+		return () => observer.disconnect();
+	});
 
 	const jsonLd = JSON.stringify({
 		'@context': 'https://schema.org',
@@ -38,9 +96,11 @@
 </svelte:head>
 
 <div class="fetch reveal">
-	<div class="logo"><Monogram /></div>
+	<div class="logo" class:cramped bind:this={logo} style:--px-size={size ? `${size}px` : null}>
+		<PixelPortrait />
+	</div>
 
-	<div class="info">
+	<div class="info" bind:this={info}>
 		<h1><span class="user">{profile.handle}</span><span class="at">@</span><span class="user">dev</span></h1>
 		<p class="rule" aria-hidden="true">{rule}</p>
 
@@ -97,13 +157,18 @@
 		flex-wrap: wrap;
 	}
 
+	/* The portrait is a grid of half-block characters, so the character size is
+	   the pixel size. The script above replaces this with the size that matches
+	   the text height; the rem keeps it proportional when it cannot run. */
 	.logo {
-		/* 40 columns wide: sized so the portrait reads without crowding the
-		   info column. */
-		--logo-size: clamp(0.6rem, 0.98vw, 1.25rem);
-		--logo-color: var(--accent);
-		padding-top: 2px;
+		--px-size: 0.3125rem;
 		flex-shrink: 0;
+	}
+
+	/* Too narrow to seat the portrait without squeezing the text into a ragged
+	   column — the text wins. */
+	.logo.cramped {
+		display: none;
 	}
 
 	.info {
@@ -160,12 +225,10 @@
 	}
 
 	@media (max-width: 719px) {
-		.fetch {
-			gap: 16px;
-		}
+		/* No room for the portrait beside the info on a phone, and stacking it
+		   just pushes everything below the fold. */
 		.logo {
-			--logo-size: min(0.8rem, 2.1vw);
-			width: 100%;
+			display: none;
 		}
 		.row {
 			grid-template-columns: 5.5rem 1fr;

@@ -9,6 +9,7 @@
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"fonts": "node scripts/copy-fonts.js",
+		"portrait": "python3 scripts/pixel-portrait.py",
 		"prepare": "svelte-kit sync",
 		"og": "bun scripts/og-images.js"
 	},
