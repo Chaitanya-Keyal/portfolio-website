@@ -15,7 +15,6 @@
 </script>
 
 <nav class="pane" aria-label="Site">
-	<span class="pane-title" aria-hidden="true">okaybro@dev</span>
 	<div class="scroll">
 		<ul>
 			{#each sections as section (section.path)}
@@ -82,9 +81,6 @@
 
 	/* Phone: the rail becomes a bottom tab bar; project links live in the page. */
 	@media (max-width: 719px) {
-		nav :global(.pane-title) {
-			display: none;
-		}
 		.scroll {
 			padding: 0;
 			overflow: visible;

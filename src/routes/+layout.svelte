@@ -85,8 +85,11 @@
 		if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement) return;
 		if (event.metaKey || event.ctrlKey || event.altKey) return;
 		switch (event.key) {
+			// `i` too: the status bar advertises NORMAL/INSERT, so the vim
+			// reflex should work.
 			case ':':
 			case '/':
+			case 'i':
 				event.preventDefault();
 				shell?.focusPrompt();
 				break;
