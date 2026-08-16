@@ -5,9 +5,8 @@
 </script>
 
 <Meta
-	title="projects — Chaitanya Keyal"
+	page="/projects"
 	description={`Selected projects: ${projects.map((p) => p.name).join(', ')}.`}
-	path="/projects"
 />
 
 <div class="index reveal">

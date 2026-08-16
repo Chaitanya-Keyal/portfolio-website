@@ -1,20 +1,4 @@
-export interface ProofLink {
-	label: string;
-	href: string;
-}
-
-export interface Project {
-	slug: string;
-	name: string;
-	/** man-page NAME line: lowercase, one clause */
-	oneLiner: string;
-	context: string;
-	period: string;
-	stack: string[];
-	description: string;
-	highlights: string[];
-	proof: ProofLink[];
-}
+import type { Project } from '$lib/types';
 
 export const projects: Project[] = [
 	{
@@ -33,7 +17,10 @@ export const projects: Project[] = [
 			'Hardened CI/CD and refactored core screens for maintainability.'
 		],
 		proof: [
-			{ label: 'merged commits', href: 'https://github.com/SeedSigner/seedsigner/commits?author=Chaitanya-Keyal' },
+			{
+				label: 'merged commits',
+				href: 'https://github.com/SeedSigner/seedsigner/commits?author=Chaitanya-Keyal'
+			},
 			{ label: 'project', href: 'https://github.com/SeedSigner/seedsigner' }
 		]
 	},
@@ -101,7 +88,3 @@ export const projects: Project[] = [
 		proof: [{ label: 'source', href: 'https://github.com/Chaitanya-Keyal/asynchrony' }]
 	}
 ];
-
-export function projectBySlug(slug: string): Project | undefined {
-	return projects.find((p) => p.slug === slug);
-}

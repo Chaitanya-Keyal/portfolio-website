@@ -97,11 +97,10 @@
 		});
 	});
 
+	// keepFocus: navigating from the prompt (`cd`, `man`) must not kick you out
+	// of the terminal mid-session. Files never arrive here — `cat` opens those.
 	function navigate(to: string) {
-		if (to.endsWith('.txt')) location.href = base + to;
-		// keepFocus: navigating from the prompt (`cd`, `man`) must not kick you
-		// out of the terminal mid-session.
-		else goto(base + to, { keepFocus: true });
+		goto(base + to, { keepFocus: true });
 	}
 
 	function applyTheme(next: Theme) {
@@ -185,6 +184,7 @@
 		{previous}
 		session={atHome}
 		onnav={navigate}
+		onopen={(url) => (location.href = base + url)}
 		ontheme={applyTheme}
 		oncrt={toggleCrt}
 		onfocuschange={(focused) => (shellFocused = focused)}

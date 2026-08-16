@@ -1,5 +1,7 @@
 import { error } from '@sveltejs/kit';
-import { allDocs, docBySlug } from '$lib/components/mandoc';
+import { profile } from '$lib/data/profile';
+import { domain } from '$lib/content';
+import { allDocs, docBySlug } from '$lib/text/mandoc';
 import type { EntryGenerator, RequestHandler } from './$types';
 
 export const prerender = true;
@@ -13,7 +15,7 @@ function roff(slug: string): string {
 	const period = doc.synopsis.find((s) => s.label === 'period')?.value ?? '';
 	const category = doc.category[0] + doc.category.slice(1).toLowerCase();
 	const lines = [
-		`.TH "${doc.slug.toUpperCase()}" 1 "${period}" "okaybro.dev" "${category}"`,
+		`.TH "${doc.slug.toUpperCase()}" 1 "${period}" "${domain}" "${category}"`,
 		'.SH NAME',
 		`${doc.slug} \\- ${doc.oneLiner}`,
 		'.SH SYNOPSIS',
@@ -36,7 +38,7 @@ function roff(slug: string): string {
 		lines.push('.SH "SEE ALSO"', others.map((o) => `${o.slug}(1)`).join(', '));
 	}
 	const path = doc.category === 'PROJECTS' ? `/projects/${doc.slug}` : `/work/${doc.slug}`;
-	lines.push('.SH "SEE ONLINE"', `https://okaybro.dev${path}`);
+	lines.push('.SH "SEE ONLINE"', `${profile.site}${path}`);
 	return lines.join('\n') + '\n';
 }
 

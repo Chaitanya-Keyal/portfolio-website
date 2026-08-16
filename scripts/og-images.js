@@ -5,7 +5,9 @@ import { Resvg } from '@resvg/resvg-js';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 
 import { profile } from '../src/lib/data/profile.ts';
-import { allDocs } from '../src/lib/components/mandoc.ts';
+import { pages } from '../src/lib/data/site.ts';
+import { host } from '../src/lib/data/terminal.ts';
+import { allDocs } from '../src/lib/text/mandoc.ts';
 
 const COLORS = {
 	bezel: '#16161e',
@@ -19,12 +21,18 @@ const COLORS = {
 	yellow: '#e0af68'
 };
 
+// One card per page that has a command to show, plus one per man page. The
+// copy comes from the page list rather than living here, so a card can never
+// drift from the page it previews.
 const cards = [
-	{ key: 'home', command: 'whoami', title: profile.name, detail: profile.tagline },
-	{ key: 'work', command: 'ls work/', title: 'work', detail: 'AI engineering · open source · backend systems' },
-	{ key: 'projects', command: 'ls projects/', title: 'projects', detail: 'five, each with proof attached' },
-	{ key: 'education', command: 'cd education', title: profile.education.school, detail: `${profile.education.short} · class of ${profile.education.classOf}` },
-	{ key: 'resume', command: 'cat resume.txt', title: 'resume', detail: profile.status },
+	...pages
+		.filter((page) => page.command)
+		.map((page) => ({
+			key: page.path === '/' ? 'home' : page.path.slice(1).replaceAll('/', '-'),
+			command: page.command,
+			title: page.path === '/' ? profile.name : page.title,
+			detail: page.path === '/' ? profile.tagline : page.description
+		})),
 	...allDocs.map((doc) => ({
 		key: (doc.category === 'PROJECTS' ? 'projects-' : 'work-') + doc.slug,
 		command: `man ${doc.slug}`,
@@ -74,7 +82,9 @@ function card({ command, title, detail }) {
 									},
 									children: [COLORS.red, COLORS.yellow, COLORS.green].map((c) => ({
 										type: 'div',
-										props: { style: { width: '18px', height: '18px', borderRadius: '9px', background: c } }
+										props: {
+											style: { width: '18px', height: '18px', borderRadius: '9px', background: c }
+										}
 									}))
 								}
 							},
@@ -89,11 +99,14 @@ function card({ command, title, detail }) {
 										flexGrow: 1
 									},
 									children: [
-										text(`okaybro@dev:~$ ${command}`, { fontSize: '30px', color: COLORS.green }),
+										text(`${host}:~$ ${command}`, { fontSize: '30px', color: COLORS.green }),
 										text(title, { fontSize: '64px', fontWeight: 700, color: COLORS.fg }),
 										text(detail, { fontSize: '32px', color: COLORS.muted, lineHeight: 1.4 }),
 										{ type: 'div', props: { style: { flexGrow: 1 } } },
-										text('okaybro.dev', { fontSize: '26px', color: COLORS.accent })
+										text(profile.site.replace(/^https?:\/\//, ''), {
+											fontSize: '26px',
+											color: COLORS.accent
+										})
 									]
 								}
 							}

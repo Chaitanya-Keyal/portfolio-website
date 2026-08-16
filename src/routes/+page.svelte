@@ -2,12 +2,15 @@
 	import { base } from '$app/paths';
 	import Meta from '$lib/components/Meta.svelte';
 	import PixelPortrait from '$lib/components/PixelPortrait.svelte';
+	import { education } from '$lib/data/education';
 	import { profile } from '$lib/data/profile';
+	import { host } from '$lib/data/terminal';
 	import { projects } from '$lib/data/projects';
 	import { experience } from '$lib/data/experience';
 
-	const title = `${profile.handle}@dev`;
-	const rule = '─'.repeat(title.length);
+	const rule = '─'.repeat(host.length);
+	/** Link text: the URL without its protocol, the way a terminal would show it. */
+	const bare = (url: string) => url.replace(/^https?:\/\//, '');
 
 	const skills = [
 		['languages', profile.skills.languages],
@@ -17,7 +20,16 @@
 	] as const;
 
 	// Reads the live theme, so the strip is the palette you are looking at.
-	const swatches = ['--red', '--green', '--yellow', '--accent', '--purple', '--cyan', '--muted', '--faint'];
+	const swatches = [
+		'--red',
+		'--green',
+		'--yellow',
+		'--accent',
+		'--purple',
+		'--cyan',
+		'--muted',
+		'--faint'
+	];
 
 	// The portrait is a fixed grid of characters, so its height is exactly
 	// proportional to the character size. Measure it once, then solve for the
@@ -93,16 +105,22 @@ setTimeout(function(){delete d.dataset.boot},3000)}catch(e){}`;
 		url: profile.site,
 		email: `mailto:${profile.contact.email}`,
 		sameAs: [profile.contact.github, profile.contact.linkedin],
-		alumniOf: profile.education.school,
+		alumniOf: education.school,
 		description: profile.summary
 	});
 </script>
 
-<Meta title="Chaitanya Keyal — backend systems · AI agents · open source" description={profile.summary} path="/" />
+<Meta page="/" />
 
 <svelte:head>
-	{@html `<script>${bootProbe}</script>`}
-	{@html `<script type="application/ld+json">${jsonLd}</script>`}
+	<!-- Both are built here, from constants above — no user input reaches them,
+	     and an inline <script> in the head cannot be written any other way. The
+	     escaped slash keeps a literal closing tag out of the source, which would
+	     otherwise end this component's own script block for an HTML parser. -->
+	<!-- eslint-disable-next-line svelte/no-at-html-tags, no-useless-escape -->
+	{@html `<script>${bootProbe}<\/script>`}
+	<!-- eslint-disable-next-line svelte/no-at-html-tags, no-useless-escape -->
+	{@html `<script type="application/ld+json">${jsonLd}<\/script>`}
 </svelte:head>
 
 <!-- No `reveal` here, unlike the other pages: this output belongs to the
@@ -114,26 +132,54 @@ setTimeout(function(){delete d.dataset.boot},3000)}catch(e){}`;
 	</div>
 
 	<div class="info" bind:this={info}>
-		<h1><span class="user">{profile.handle}</span><span class="at">@</span><span class="user">dev</span></h1>
+		<h1>
+			<span class="user">{profile.handle}</span><span class="at">@</span><span class="user"
+				>dev</span
+			>
+		</h1>
 		<p class="rule" aria-hidden="true">{rule}</p>
 
 		<dl>
-			<div class="row"><dt>name</dt><dd class="strong">{profile.name}</dd></div>
-			<div class="row"><dt>os</dt><dd>{profile.education.school}</dd></div>
-			<div class="row"><dt>kernel</dt><dd>{profile.education.degree}</dd></div>
-			<div class="row"><dt>uptime</dt><dd>class of {profile.education.classOf}</dd></div>
-			<div class="row"><dt>shell</dt><dd>{profile.tagline}</dd></div>
-			<div class="row"><dt>role</dt><dd>{profile.role}</dd></div>
+			<div class="row">
+				<dt>name</dt>
+				<dd class="strong">{profile.name}</dd>
+			</div>
+			<div class="row">
+				<dt>os</dt>
+				<dd>{education.school}</dd>
+			</div>
+			<div class="row">
+				<dt>kernel</dt>
+				<dd>{education.degree}</dd>
+			</div>
+			<div class="row">
+				<dt>uptime</dt>
+				<dd>class of {education.classOf}</dd>
+			</div>
+			<div class="row">
+				<dt>shell</dt>
+				<dd>{profile.tagline}</dd>
+			</div>
+			<div class="row">
+				<dt>role</dt>
+				<dd>{profile.role}</dd>
+			</div>
 			<div class="row">
 				<dt>packages</dt>
 				<dd>{projects.length} projects · {experience.length} roles</dd>
 			</div>
-			<div class="row"><dt>status</dt><dd class="status">{profile.status}</dd></div>
+			<div class="row">
+				<dt>status</dt>
+				<dd class="status">{profile.status}</dd>
+			</div>
 
 			<div class="spacer"></div>
 
 			{#each skills as [group, items] (group)}
-				<div class="row"><dt>{group}</dt><dd>{items.join(', ')}</dd></div>
+				<div class="row">
+					<dt>{group}</dt>
+					<dd>{items.join(', ')}</dd>
+				</div>
 			{/each}
 
 			<div class="spacer"></div>
@@ -144,15 +190,19 @@ setTimeout(function(){delete d.dataset.boot},3000)}catch(e){}`;
 			</div>
 			<div class="row">
 				<dt>github</dt>
-				<dd><a href={profile.contact.github} rel="me noopener">github.com/Chaitanya-Keyal</a></dd>
+				<dd>
+					<a href={profile.contact.github} rel="me noopener">{bare(profile.contact.github)}</a>
+				</dd>
 			</div>
 			<div class="row">
 				<dt>linkedin</dt>
-				<dd><a href={profile.contact.linkedin} rel="me noopener">linkedin.com/in/chaitanya-keyal</a></dd>
+				<dd>
+					<a href={profile.contact.linkedin} rel="me noopener">{bare(profile.contact.linkedin)}</a>
+				</dd>
 			</div>
 			<div class="row">
 				<dt>resume</dt>
-				<dd><a href="{base}/resume">okaybro.dev/resume</a></dd>
+				<dd><a href="{base}/resume">{bare(profile.site)}/resume</a></dd>
 			</div>
 		</dl>
 

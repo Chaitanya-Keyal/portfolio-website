@@ -302,12 +302,24 @@ a:focus-visible {
 .reveal > * {
 	animation: rise 0.35s cubic-bezier(0.2, 0.7, 0.3, 1) both;
 }
-.reveal > *:nth-child(2) { animation-delay: 40ms; }
-.reveal > *:nth-child(3) { animation-delay: 80ms; }
-.reveal > *:nth-child(4) { animation-delay: 120ms; }
-.reveal > *:nth-child(5) { animation-delay: 160ms; }
-.reveal > *:nth-child(6) { animation-delay: 200ms; }
-.reveal > *:nth-child(n + 7) { animation-delay: 240ms; }
+.reveal > *:nth-child(2) {
+	animation-delay: 40ms;
+}
+.reveal > *:nth-child(3) {
+	animation-delay: 80ms;
+}
+.reveal > *:nth-child(4) {
+	animation-delay: 120ms;
+}
+.reveal > *:nth-child(5) {
+	animation-delay: 160ms;
+}
+.reveal > *:nth-child(6) {
+	animation-delay: 200ms;
+}
+.reveal > *:nth-child(n + 7) {
+	animation-delay: 240ms;
+}
 
 @keyframes rise {
 	from {

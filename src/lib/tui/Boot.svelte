@@ -1,28 +1,17 @@
 <script lang="ts">
+	import { banner, bootLines } from '$lib/data/terminal';
+
 	interface Props {
 		ondone: () => void;
 	}
 	let { ondone }: Props = $props();
-
-	const BANNER = String.raw`       _              _
-  ___ | | ____ _ _  _| |__  _ _ ___
- / _ \| |/ / _' | || | '_ \| '_/ _ \
- \___/|_|\_\__,_|\_, |_.__/|_| \___/
-                 |__/`;
-
-	const lines = [
-		'okaybro-boot 1.0',
-		'[  OK  ] mount /projects',
-		'[  OK  ] load profile: chaitanya keyal',
-		'[  OK  ] start ui'
-	];
 
 	let visible = $state(0);
 
 	$effect(() => {
 		const timer = setInterval(() => {
 			visible += 1;
-			if (visible >= lines.length) {
+			if (visible >= bootLines.length) {
 				clearInterval(timer);
 				setTimeout(ondone, 350);
 			}
@@ -33,10 +22,9 @@
 
 <!-- Keyboard dismissal lives in the layout's global handler (any key while
      booting); this surface only needs the pointer path. -->
-<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
 <div class="boot" role="presentation" onclick={ondone} aria-hidden="true">
-	<pre class="banner">{BANNER}</pre>
-	{#each lines.slice(0, visible) as line (line)}
+	<pre class="banner">{banner}</pre>
+	{#each bootLines.slice(0, visible) as line (line)}
 		<p>{line}</p>
 	{/each}
 	<p class="cursor">▮</p>

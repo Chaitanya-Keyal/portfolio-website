@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { complete, commands, pages, resolvePath, run } from './registry';
+import { pages } from '$lib/data/site';
+import { commands, run } from './commands';
+import { complete } from './completion';
+import { resolvePath } from './filesystem';
 
 /** The shell's filesystem is the route table, so these walk real paths. */
 describe('resolvePath', () => {
@@ -59,7 +62,15 @@ describe('ls', () => {
 		const out = run('ls', '/');
 		expect(out.kind).toBe('print');
 		expect(out.kind === 'print' && out.lines[0]).toContain('work/');
-		expect(out.kind === 'print' && out.lines[0]).toContain('resume.txt');
+		expect(out.kind === 'print' && out.lines[0]).toContain('resume/');
+	});
+
+	it('keeps the resume files inside the resume directory', () => {
+		const root = run('ls', '/');
+		expect(root.kind === 'print' && root.lines[0]).not.toContain('resume.txt');
+		const dir = run('ls', '/resume');
+		expect(dir.kind === 'print' && dir.lines[0]).toContain('resume.txt');
+		expect(dir.kind === 'print' && dir.lines[0]).toContain('resume.pdf');
 	});
 
 	it('points at `man` only where there is a page behind it', () => {
@@ -112,13 +123,34 @@ describe('man', () => {
 });
 
 describe('cat', () => {
-	it('reads a file', () => {
-		expect(run('cat resume.txt', '/')).toEqual({ kind: 'cat', url: '/resume.txt' });
+	it('reads a text file at its published url, not its shell path', () => {
+		expect(run('cat resume/resume.txt', '/')).toEqual({ kind: 'cat', url: '/resume.txt' });
+		expect(run('cat resume.txt', '/resume')).toEqual({ kind: 'cat', url: '/resume.txt' });
 	});
 
-	it('refuses a directory and reports a missing path', () => {
-		expect(run('cat work', '/').kind).toBe('error');
+	it('hands a binary to the browser rather than printing it', () => {
+		expect(run('cat resume/resume.pdf', '/')).toEqual({ kind: 'open', url: '/resume.pdf' });
+	});
+
+	// End pages open rather than print: `man` is the one that prints them, and
+	// both `cd` and `cat` should get you to a page whichever you reach for.
+	it('opens an end page, the same as cd would', () => {
+		expect(run('cat work/onfinance', '/')).toEqual({ kind: 'nav', to: '/work/onfinance' });
+		expect(run('cat onfinance', '/work')).toEqual(run('cd onfinance', '/work'));
+		expect(run('cat education', '/')).toEqual({ kind: 'nav', to: '/education' });
+	});
+
+	it('refuses anything with pages under it, the way cat refuses a directory', () => {
+		for (const dir of ['cat work', 'cat projects', 'cat resume']) {
+			const out = run(dir, '/');
+			expect(out.kind).toBe('error');
+			expect(out.kind === 'error' && out.lines[0]).toContain('is a directory');
+		}
+	});
+
+	it('reports a missing path', () => {
 		expect(run('cat nope.txt', '/').kind).toBe('error');
+		expect(run('cat', '/').kind).toBe('error');
 	});
 });
 

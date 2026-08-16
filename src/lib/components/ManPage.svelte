@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import type { ManDoc } from './mandoc';
+	import { domain } from '$lib/content';
+	import type { ManDoc } from '$lib/text/mandoc';
 
 	interface Props {
 		doc: ManDoc;
@@ -65,7 +66,7 @@
 		</section>
 	{/if}
 
-	<p class="curl">also a man page: <code>curl -L okaybro.dev/man/{doc.slug}</code></p>
+	<p class="curl">also a man page: <code>curl -L {domain}/man/{doc.slug}</code></p>
 </article>
 
 <style>

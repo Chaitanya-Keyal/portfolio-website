@@ -1,5 +1,6 @@
-import { projects, type Project, type ProofLink } from '$lib/data/projects';
-import { experience, type Experience } from '$lib/data/experience';
+import { experience } from '$lib/data/experience';
+import { projects } from '$lib/data/projects';
+import type { Experience, ProofLink, Project } from '$lib/types';
 
 /** One shape for every man-page-style document on the site. */
 export interface ManDoc {

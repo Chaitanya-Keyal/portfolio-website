@@ -1,3 +1,4 @@
+import { education } from '$lib/data/education';
 import { profile } from '$lib/data/profile';
 import { projects } from '$lib/data/projects';
 
@@ -9,7 +10,7 @@ function build(): string {
 		'',
 		`> ${profile.summary}`,
 		'',
-		`${profile.role}. ${profile.education.degree}, ${profile.education.school}, class of ${profile.education.classOf}. ${profile.status}.`,
+		`${profile.role}. ${education.degree}, ${education.school}, class of ${education.classOf}. ${profile.status}.`,
 		'',
 		'## Projects',
 		'',

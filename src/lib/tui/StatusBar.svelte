@@ -42,7 +42,9 @@
 				<a href="{profile.repo}/commit/{__COMMIT__}" rel="noopener">{__COMMIT__}</a>
 			{/if}
 			<!-- Holds its width while empty, so nothing shifts when it starts. -->
-			<span class="clock">{#if clock}· {clock}{/if}</span>
+			<span class="clock"
+				>{#if clock}· {clock}{/if}</span
+			>
 		</span>
 	</span>
 </footer>

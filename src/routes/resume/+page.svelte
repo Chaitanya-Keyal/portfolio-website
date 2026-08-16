@@ -1,17 +1,12 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import Meta from '$lib/components/Meta.svelte';
-	import { resumeText } from '$lib/data/resume-text';
-	import { profile } from '$lib/data/profile';
+	import { resumeText } from '$lib/text/resume';
 
 	const text = resumeText();
 </script>
 
-<Meta
-	title="resume — Chaitanya Keyal"
-	description="Resume: {profile.summary}"
-	path="/resume"
-/>
+<Meta page="/resume" />
 
 <div class="resume reveal">
 	<p class="meta-row">

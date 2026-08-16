@@ -1,4 +1,4 @@
-import { resumeText } from '$lib/data/resume-text';
+import { resumeText } from '$lib/text/resume';
 
 export const prerender = true;
 

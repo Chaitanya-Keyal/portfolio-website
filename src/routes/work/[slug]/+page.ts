@@ -1,5 +1,6 @@
 import { error } from '@sveltejs/kit';
-import { experienceBySlug, experience } from '$lib/data/experience';
+import { experienceBySlug } from '$lib/content';
+import { experience } from '$lib/data/experience';
 import type { EntryGenerator, PageLoad } from './$types';
 
 export const entries: EntryGenerator = () => experience.map(({ slug }) => ({ slug }));

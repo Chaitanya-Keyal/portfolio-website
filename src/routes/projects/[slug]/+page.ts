@@ -1,5 +1,6 @@
 import { error } from '@sveltejs/kit';
-import { projectBySlug, projects } from '$lib/data/projects';
+import { projectBySlug } from '$lib/content';
+import { projects } from '$lib/data/projects';
 import type { EntryGenerator, PageLoad } from './$types';
 
 export const entries: EntryGenerator = () => projects.map(({ slug }) => ({ slug }));

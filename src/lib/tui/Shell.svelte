@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import { run, complete } from './registry';
+	import { host } from '$lib/data/terminal';
+	import { run } from './commands';
+	import { complete } from './completion';
 	import type { Theme } from './theme';
 
 	interface Props {
@@ -10,11 +12,13 @@
 		/** Sitting under the page as a live session, rather than docked. */
 		session: boolean;
 		onnav: (to: string) => void;
+		/** Hand a file to the browser — a PDF cannot be printed into a terminal. */
+		onopen: (url: string) => void;
 		ontheme: (theme: Theme) => void;
 		oncrt: () => 'on' | 'off';
 		onfocuschange: (focused: boolean) => void;
 	}
-	let { cwd, previous, session, onnav, ontheme, oncrt, onfocuschange }: Props = $props();
+	let { cwd, previous, session, onnav, onopen, ontheme, oncrt, onfocuschange }: Props = $props();
 
 	interface Line {
 		text: string;
@@ -28,7 +32,7 @@
 	let root = $state<HTMLElement>();
 
 	const display = $derived(cwd === '/' ? '~' : `~${cwd}`);
-	const ps1 = $derived(`okaybro@dev:${display}$`);
+	const ps1 = $derived(`${host}:${display}$`);
 
 	const HISTORY_KEY = 'shell-history';
 	let history: string[] = [];
@@ -76,7 +80,10 @@
 		const base = lines.length;
 		let i = 0;
 		const draw = () => {
-			lines = [...lines.slice(0, base), ...frames[i].map((text) => ({ text, kind: 'out' as const }))];
+			lines = [
+				...lines.slice(0, base),
+				...frames[i].map((text) => ({ text, kind: 'out' as const }))
+			];
 		};
 		draw();
 		animation = setInterval(() => {
@@ -150,6 +157,10 @@
 				}
 				break;
 			}
+			case 'open':
+				append({ text: `opening ${outcome.url.split('/').pop()}…`, kind: 'out' });
+				onopen(outcome.url);
+				break;
 			case 'animate':
 				animate(outcome.frames, outcome.interval);
 				break;
@@ -226,7 +237,9 @@
 		{/each}
 		<div class="promptline">
 			<label for="prompt" class="ps1">
-				<span class="user">okaybro@dev</span><span class="colon">:</span><span class="cwd">{display}</span><span class="dollar">$</span>
+				<span class="user">{host}</span><span class="colon">:</span><span class="cwd"
+					>{display}</span
+				><span class="dollar">$</span>
 			</label>
 			<input
 				id="prompt"

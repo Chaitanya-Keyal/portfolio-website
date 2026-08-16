@@ -4,11 +4,7 @@
 	import { experience } from '$lib/data/experience';
 </script>
 
-<Meta
-	title="work — Chaitanya Keyal"
-	description="Work history: AI engineering, open-source Bitcoin development, backend systems."
-	path="/work"
-/>
+<Meta page="/work" />
 
 <div class="index reveal">
 	<h1>work</h1>

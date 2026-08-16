@@ -1,10 +1,13 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import { pages } from '$lib/tui/registry';
+	import { profile } from '$lib/data/profile';
+	import { pages } from '$lib/data/site';
+	import { urlOf } from '$lib/content';
+	import { messages } from '$lib/data/terminal';
 
 	// Filled client-side: static hosting serves this page for every unknown URL.
 	let missing = $state('/…');
-	let suggestions = $state<{ name: string; path: string }[]>([]);
+	let suggestions = $state<{ name: string; href: string }[]>([]);
 
 	function distance(a: string, b: string): number {
 		const rows = Array.from({ length: a.length + 1 }, (_, i) => [i, ...Array(b.length).fill(0)]);
@@ -28,22 +31,23 @@
 			.map((p) => ({ ...p, score: distance(sought, p.path.replace(/^\/+/, '')) }))
 			.filter((p) => p.score <= Math.max(3, sought.length / 2))
 			.sort((a, b) => a.score - b.score)
-			.slice(0, 3);
+			.slice(0, 3)
+			.map((p) => ({ name: p.name, href: urlOf(p) }));
 	});
 </script>
 
 <svelte:head>
-	<title>404 — Chaitanya Keyal</title>
+	<title>404 — {profile.name}</title>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
 <div class="notfound reveal">
-	<p class="err glitch">zsh: no such file or directory: <span>{missing}</span></p>
+	<p class="err glitch">{messages.noSuchPath} <span>{missing}</span></p>
 	{#if suggestions.length > 0}
-		<p class="hint">did you mean:</p>
+		<p class="hint">{messages.didYouMean}</p>
 		<ul>
-			{#each suggestions as s (s.path)}
-				<li><a href="{base}{s.path}">{s.path}</a></li>
+			{#each suggestions as s (s.href)}
+				<li><a href="{base}{s.href}">{s.href}</a></li>
 			{/each}
 		</ul>
 	{:else}

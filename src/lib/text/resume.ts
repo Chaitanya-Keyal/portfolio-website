@@ -1,6 +1,7 @@
-import { profile } from './profile';
-import { experience } from './experience';
-import { projects } from './projects';
+import { education } from '$lib/data/education';
+import { profile } from '$lib/data/profile';
+import { experience } from '$lib/data/experience';
+import { projects } from '$lib/data/projects';
 
 const WIDTH = 80;
 
@@ -27,7 +28,8 @@ function wrap(text: string, indent = 2): string[] {
 /** The one resume: feeds /resume (page), /resume.txt (raw), and `cat`. */
 export function resumeText(): string {
 	const lines: string[] = [];
-	const center = (text: string) => ' '.repeat(Math.max(0, Math.floor((WIDTH - text.length) / 2))) + text;
+	const center = (text: string) =>
+		' '.repeat(Math.max(0, Math.floor((WIDTH - text.length) / 2))) + text;
 
 	lines.push(center(profile.name.toUpperCase()));
 	lines.push(center(`${profile.contact.email} · ${profile.contact.github}`));
@@ -35,8 +37,8 @@ export function resumeText(): string {
 	lines.push('');
 	lines.push('EDUCATION');
 	lines.push(rule());
-	lines.push(`  ${profile.education.school}`);
-	lines.push(`  ${profile.education.degree} · class of ${profile.education.classOf}`);
+	lines.push(`  ${education.school}`);
+	lines.push(`  ${education.degree} · class of ${education.classOf}`);
 	lines.push('');
 	lines.push('EXPERIENCE');
 	lines.push(rule());

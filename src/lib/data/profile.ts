@@ -6,21 +6,6 @@ export const profile = {
 	summary:
 		'AI engineering intern and open-source developer — backend systems, AI agents, and Bitcoin tooling.',
 	role: 'AI engineering intern · open-source developer',
-	education: {
-		school: 'BITS Pilani, Hyderabad',
-		degree: 'B.E. Computer Science + M.Sc. Mathematics',
-		short: 'CS + Math',
-		minor: 'Data Science',
-		classOf: 2028,
-		coursework: [
-			'Data Structures & Algorithms',
-			'Database Systems',
-			'Data Mining',
-			'Partial Differential Equations',
-			'Differential Geometry',
-			'Functional Analysis'
-		]
-	},
 	// Shown on home and every lane page; keep in sync with the resume.
 	status: 'Open to Summer 2027 internships — AI infra · backend · Bitcoin',
 	contact: {

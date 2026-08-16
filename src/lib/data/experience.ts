@@ -1,19 +1,4 @@
-import type { ProofLink } from './projects';
-
-export interface Experience {
-	slug: string;
-	org: string;
-	role: string;
-	period: string;
-	/** man-page NAME line: lowercase, one clause */
-	oneLiner: string;
-	description: string;
-	stack: string[];
-	points: string[];
-	proof: ProofLink[];
-	/** related pages on this site */
-	related: { label: string; href: string }[];
-}
+import type { Experience } from '$lib/types';
 
 export const experience: Experience[] = [
 	{
@@ -49,7 +34,10 @@ export const experience: Experience[] = [
 			'~20 commits merged into upstream dev, including commits in the v0.8.7 release.'
 		],
 		proof: [
-			{ label: 'merged commits', href: 'https://github.com/SeedSigner/seedsigner/commits?author=Chaitanya-Keyal' }
+			{
+				label: 'merged commits',
+				href: 'https://github.com/SeedSigner/seedsigner/commits?author=Chaitanya-Keyal'
+			}
 		],
 		related: [{ label: 'seedsigner', href: '/projects/seedsigner' }]
 	},
@@ -92,7 +80,3 @@ export const experience: Experience[] = [
 		]
 	}
 ];
-
-export function experienceBySlug(slug: string): Experience | undefined {
-	return experience.find((e) => e.slug === slug);
-}

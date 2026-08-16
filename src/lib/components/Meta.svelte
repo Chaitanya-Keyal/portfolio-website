@@ -1,25 +1,35 @@
 <script lang="ts">
 	import { profile } from '$lib/data/profile';
+	import { pageAt } from '$lib/content';
 
 	interface Props {
-		title: string;
-		description: string;
-		path: string;
+		/** The page's path; its title and description come from the page list. */
+		page: string;
+		/** Overrides, for pages whose copy is computed from their content. */
+		title?: string;
+		description?: string;
 	}
-	let { title, description, path }: Props = $props();
+	let { page, title, description }: Props = $props();
 
-	const url = $derived(profile.site + (path === '/' ? '' : path));
+	const entry = $derived(pageAt(page));
+	const heading = $derived(title ?? entry?.title ?? entry?.name ?? '');
+	const blurb = $derived(description ?? entry?.description ?? '');
+
+	// Every tab ends with the name; the home title already leads with it, so it
+	// is not appended twice.
+	const full = $derived(heading.includes(profile.name) ? heading : `${heading} — ${profile.name}`);
+	const url = $derived(profile.site + (page === '/' ? '' : page));
 	const image = $derived(
-		`${profile.site}/og/${path === '/' ? 'home' : path.slice(1).replaceAll('/', '-')}.png`
+		`${profile.site}/og/${page === '/' ? 'home' : page.slice(1).replaceAll('/', '-')}.png`
 	);
 </script>
 
 <svelte:head>
-	<title>{title}</title>
-	<meta name="description" content={description} />
+	<title>{full}</title>
+	<meta name="description" content={blurb} />
 	<link rel="canonical" href={url} />
-	<meta property="og:title" content={title} />
-	<meta property="og:description" content={description} />
+	<meta property="og:title" content={full} />
+	<meta property="og:description" content={blurb} />
 	<meta property="og:url" content={url} />
 	<meta property="og:type" content="website" />
 	<meta property="og:site_name" content={profile.name} />

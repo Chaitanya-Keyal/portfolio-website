@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import { page } from '$app/state';
-	import { pages } from '$lib/tui/registry';
+	import { pages } from '$lib/data/site';
 
 	const sections = pages.filter((p) => p.rail);
 
 	function children(section: (typeof pages)[number]) {
-		return pages.filter((p) => !p.rail && p.path.startsWith(`${section.path}/`));
+		return pages.filter((p) => !p.rail && !p.file && p.path.startsWith(`${section.path}/`));
 	}
 
 	function current(path: string): boolean {
