@@ -23,6 +23,7 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: bun run fonts
       - run: bun run og
+      - run: bun run lint
       - run: bun run check
       - run: bun run test
       - name: resolve base path

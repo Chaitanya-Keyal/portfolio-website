@@ -1,0 +1,13 @@
+node_modules
+build
+.svelte-kit
+bun.lock
+package-lock.json
+
+# Generated, and whitespace-significant: the portrait is a <pre> of half-block
+# characters where a reflow would visibly break the picture.
+src/lib/components/PixelPortrait.svelte
+
+# Copied in by `bun run fonts` / `bun run og`.
+static/fonts
+static/og
