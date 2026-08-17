@@ -78,6 +78,7 @@ export const projects: Project[] = [
 	{
 		slug: 'bitsgpt',
 		name: 'BitsGPT',
+		hidden: true,
 		oneLiner: 'multi-agent RAG chatbot for campus queries',
 		context: 'cruX, BITS Hyderabad programming club',
 		period: '2024',
@@ -93,6 +94,7 @@ export const projects: Project[] = [
 	{
 		slug: 'chrono-search',
 		name: 'Chronofactorem search',
+		hidden: true,
 		oneLiner: 'Elasticsearch-powered search service for BITS timetables',
 		context: 'cruX, BITS Hyderabad programming club',
 		period: '2024',
@@ -134,6 +136,7 @@ export const projects: Project[] = [
 	{
 		slug: 'chrono2gcal',
 		name: 'Chrono2GCal',
+		hidden: true,
 		oneLiner: 'syncs BITS timetables into Google Calendar',
 		context: 'Personal project, used by BITS students',
 		period: '2023 to present',
