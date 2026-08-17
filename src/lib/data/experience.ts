@@ -70,13 +70,14 @@ export const experience: Experience[] = [
 		stack: ['Python', 'LangGraph', 'Elasticsearch'],
 		points: [
 			'Built BitsGPT, a multi-agent RAG chatbot (LangGraph + vector DB) for academic queries.',
-			'Contributed to Chronofactorem, with Elasticsearch-powered search service indexing the full course catalog + timetables for sub-second retrieval.',
+			'Contributed to Chronofactorem, with an Elasticsearch-powered search service.',
 			'Built Chrono2GCal, a Python tool auto-syncing semester timetables to Google Calendar.'
 		],
 		links: [{ label: 'club github', href: 'https://github.com/crux-bphc' }],
 		related: [
 			{ label: 'bitsgpt', href: '/projects/bitsgpt' },
-			{ label: 'chrono-search', href: '/projects/chrono-search' }
+			{ label: 'chrono-search', href: '/projects/chrono-search' },
+			{ label: 'chrono2gcal', href: '/projects/chrono2gcal' }
 		]
 	}
 ];
