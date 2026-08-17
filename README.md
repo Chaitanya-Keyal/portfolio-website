@@ -46,6 +46,10 @@ Prettier; `bun run lint` checks it and runs ESLint; `bun run check` type-checks;
 `bun run test` covers the shell's logic, path resolution, the command table, tab
 completion and man-page rendering. All three run in CI before a deploy.
 
+Git hooks are installed by `bun install`: commits format and lint the staged
+files, pushes run the type-check and the tests. Both are skippable with
+`--no-verify` when you need to.
+
 The home page's portrait is a grid of half-block characters generated from
 `assets/pfp.png`, `src/lib/components/PixelPortrait.svelte` is written by
 `bun run portrait` (needs Pillow and numpy) and should not be edited by hand.

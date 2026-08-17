@@ -13,8 +13,17 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"fonts": "node scripts/copy-fonts.js",
 		"portrait": "python3 scripts/pixel-portrait.py",
-		"prepare": "svelte-kit sync",
+		"prepare": "svelte-kit sync && husky",
 		"og": "bun scripts/og-images.js"
+	},
+	"lint-staged": {
+		"*.{js,ts,svelte}": [
+			"prettier --write",
+			"eslint --fix --no-warn-ignored"
+		],
+		"*.{css,json,md,html,yml,yaml}": [
+			"prettier --write"
+		]
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
@@ -29,6 +38,8 @@
 		"eslint-plugin-svelte": "^3.23.0",
 		"firacode": "^6.2.0",
 		"globals": "^17.11.0",
+		"husky": "^9.1.7",
+		"lint-staged": "^17.3.0",
 		"prettier": "^3.9.6",
 		"prettier-plugin-svelte": "^4.1.1",
 		"satori": "^0.29.0",
