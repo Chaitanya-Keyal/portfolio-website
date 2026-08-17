@@ -7,7 +7,7 @@ export const profile = {
 		'AI engineering intern and open-source developer working on backend systems, AI agents, and Bitcoin tooling.',
 	role: 'AI engineering intern · open-source developer',
 	// Shown on home and every lane page; keep in sync with the resume.
-	status: 'Open to Summer 2027 internships: AI infra · backend · Bitcoin',
+	status: 'Open to Summer 2027 internships: AI agents · backend · Bitcoin',
 	contact: {
 		email: 'chaitanyakeyal@gmail.com',
 		github: 'https://github.com/Chaitanya-Keyal',
@@ -16,8 +16,8 @@ export const profile = {
 	repo: 'https://github.com/Chaitanya-Keyal/portfolio-website',
 	skills: {
 		languages: ['Python', 'TypeScript', 'Go', 'C/C++', 'Java'],
-		ai: ['LangChain', 'LangGraph', 'RAG pipelines', 'AI agents'],
-		backend: ['Django', 'FastAPI', 'PostgreSQL', 'MongoDB', 'Elasticsearch', 'Redis'],
-		infra: ['Docker', 'AWS', 'GCP', 'GitHub Actions', 'Linux', 'Nginx']
+		ai: ['LangChain', 'LangGraph', 'Vector DBs', 'Agentic systems', 'LLMs'],
+		backend: ['FastAPI', 'Django', 'PostgreSQL', 'MongoDB', 'Elasticsearch', 'Redis'],
+		infra: ['Docker', 'AWS', 'Kubernetes', 'GitHub Actions', 'Linux']
 	}
 } as const;

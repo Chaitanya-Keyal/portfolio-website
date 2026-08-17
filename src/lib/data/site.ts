@@ -14,7 +14,7 @@ export const pages: Page[] = [
 		path: '/',
 		rail: '~',
 		short: '~',
-		title: 'Chaitanya Keyal: backend systems · AI agents · open source',
+		title: profile.name + ': ' + profile.tagline,
 		description: profile.summary,
 		command: 'whoami'
 	},
@@ -24,7 +24,7 @@ export const pages: Page[] = [
 		rail: 'work/',
 		short: 'work',
 		title: 'work',
-		description: 'Work history: AI engineering, open-source Bitcoin development, backend systems.',
+		description: 'Work history: ' + experience.map((e) => e.org).join(', ') + '.',
 		command: 'ls work/'
 	},
 	...experience.map((e) => ({ name: e.slug, path: `/work/${e.slug}` })),
@@ -34,7 +34,7 @@ export const pages: Page[] = [
 		rail: 'projects/',
 		short: 'proj',
 		title: 'projects',
-		description: 'Things I have built: Bitcoin tooling, AI agents, search, and campus software.',
+		description: 'Things I have built: Bitcoin tooling, AI agents, autonomous systems, and more.',
 		command: 'ls projects/'
 	},
 	...projects.map((p) => ({ name: p.slug, path: `/projects/${p.slug}` })),

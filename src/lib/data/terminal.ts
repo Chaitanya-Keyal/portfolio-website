@@ -11,6 +11,7 @@ export const banner = String.raw`       _              _
 
 export const bootLines = [
 	`${profile.handle}-boot 1.0`,
+	'[  OK  ] mount /work',
 	'[  OK  ] mount /projects',
 	`[  OK  ] load profile: ${profile.name.toLowerCase()}`,
 	'[  OK  ] start ui'
@@ -37,7 +38,7 @@ export const eggs = {
 	vim: "vim: you're already in something better.",
 	nano: 'nano: too easy. this shell has standards.',
 	emacs: 'emacs: a fine operating system. this site ships with a shell instead.',
-	quit: "this isn't vim. (respect the reflex, though.)",
+	quit: "this isn't vim.",
 	rmRoot: "rm: it's a portfolio, not a footgun.",
 	rmDenied: 'rm: permission denied (nice try)'
 };
