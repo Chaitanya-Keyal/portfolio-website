@@ -1,7 +1,7 @@
 /** The shapes of everything in data/. Kept out of those files so they stay
  * nothing but the information itself. */
 
-export interface ProofLink {
+export interface Link {
 	label: string;
 	href: string;
 }
@@ -16,7 +16,7 @@ export interface Project {
 	stack: string[];
 	description: string;
 	highlights: string[];
-	proof: ProofLink[];
+	links: Link[];
 }
 
 export interface Experience {
@@ -29,7 +29,7 @@ export interface Experience {
 	description: string;
 	stack: string[];
 	points: string[];
-	proof: ProofLink[];
+	links: Link[];
 	/** related pages on this site */
 	related: { label: string; href: string }[];
 }

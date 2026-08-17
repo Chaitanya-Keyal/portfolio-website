@@ -16,7 +16,7 @@ export const experience: Experience[] = [
 			'Orchestrated end-to-end pipelines spanning document parsing, action-item generation, evidence review, and risk analysis.',
 			'Migrated the backend service to PostgreSQL from MongoDB, improving query performance by 2 to 3x.'
 		],
-		proof: [],
+		links: [],
 		related: []
 	},
 	{
@@ -29,14 +29,14 @@ export const experience: Experience[] = [
 			'Summer of Bitcoin places students into open-source Bitcoin projects through a competitive selection. About 50 to 60 students are selected globally each year, from roughly 5,000 applicants. I was selected twice, both times to work on SeedSigner, an air-gapped Bitcoin signing device.',
 		stack: ['Python', 'Bitcoin', 'GitHub Actions', 'Raspberry Pi'],
 		points: [
-			'Now one of the top contributors to SeedSigner, involved in 60+ PRs and issues.',
+			'Now one of the top contributors to SeedSigner, involved in 80+ PRs and issues.',
 			'Stayed on between and after both terms: features, bugfixes, release chores, PR review and translations.',
 			'2026 term: translation automation and the review workflow around it.',
 			'2025 term: extended BIP-85 support, so child seeds load directly on-device.'
 		],
-		proof: [
+		links: [
 			{
-				label: 'My contributions',
+				label: 'my contributions',
 				href: 'https://github.com/SeedSigner/seedsigner/issues?q=involves%3AChaitanya-Keyal+sort%3Aupdated-desc'
 			}
 		],
@@ -56,7 +56,7 @@ export const experience: Experience[] = [
 			'Cut API latency from ~5s to ~1s through architectural changes and resource management.',
 			'Built an agentic booking system integrating ONDC, Uber, and Rapido through browser automation.'
 		],
-		proof: [],
+		links: [],
 		related: []
 	},
 	{
@@ -73,7 +73,7 @@ export const experience: Experience[] = [
 			'Contributed to Chronofactorem, with Elasticsearch-powered search service indexing the full course catalog + timetables for sub-second retrieval.',
 			'Built Chrono2GCal, a Python tool auto-syncing semester timetables to Google Calendar.'
 		],
-		proof: [{ label: 'club github', href: 'https://github.com/crux-bphc' }],
+		links: [{ label: 'club github', href: 'https://github.com/crux-bphc' }],
 		related: [
 			{ label: 'bitsgpt', href: '/projects/bitsgpt' },
 			{ label: 'chrono-search', href: '/projects/chrono-search' }

@@ -27,9 +27,9 @@ function roff(slug: string): string {
 	for (const item of doc.did) {
 		lines.push('.IP \\(bu 2', item);
 	}
-	if (doc.proof.length > 0) {
-		lines.push('.SH PROOF');
-		for (const link of doc.proof) {
+	if (doc.links.length > 0) {
+		lines.push('.SH LINKS');
+		for (const link of doc.links) {
 			lines.push('.IP \\(bu 2', `${link.label}: ${link.href}`);
 		}
 	}

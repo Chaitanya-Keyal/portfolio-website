@@ -45,13 +45,15 @@
 		</ul>
 	</section>
 
-	{#if doc.proof.length > 0}
+	{#if doc.links.length > 0}
 		<section>
-			<h2>proof</h2>
-			<ul class="proof">
-				{#each doc.proof as link (link.href)}
+			<h2>links</h2>
+			<ul class="links">
+				{#each doc.links as link (link.href)}
 					<li>
-						<a href={link.href} rel="me noopener">{link.label} <Icon name="external" /></a>
+						<a href={link.href} rel="me noopener">
+							<Icon name="external" />{link.label}
+						</a>
 					</li>
 				{/each}
 			</ul>
@@ -133,8 +135,18 @@
 		color: var(--accent);
 	}
 
-	.proof li::before {
-		content: '→';
+	/* The icon is the bullet: one mark instead of an arrow at the front and a
+	   second icon at the end saying the same thing. */
+	.links li {
+		padding-left: 0;
+	}
+	.links li::before {
+		content: none;
+	}
+	.links a {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
 	}
 
 	.seealso {

@@ -1,6 +1,6 @@
 import { experience } from '$lib/data/experience';
 import { projects } from '$lib/data/projects';
-import type { Experience, ProofLink, Project } from '$lib/types';
+import type { Experience, Link, Project } from '$lib/types';
 
 /** One shape for every man-page-style document on the site. */
 export interface ManDoc {
@@ -12,13 +12,11 @@ export interface ManDoc {
 	description: string;
 	didTitle: string;
 	did: string[];
-	proof: ProofLink[];
+	links: Link[];
 	seeAlso: { label: string; href: string }[];
 }
 
 export function projectDoc(project: Project): ManDoc {
-	const index = projects.findIndex((p) => p.slug === project.slug);
-	const neighbours = [projects[index - 1], projects[index + 1]].filter(Boolean);
 	return {
 		slug: project.slug,
 		category: 'PROJECTS',
@@ -30,10 +28,10 @@ export function projectDoc(project: Project): ManDoc {
 			{ label: 'stack', value: project.stack.join(', ') }
 		],
 		description: project.description,
-		didTitle: 'what i did',
+		didTitle: 'highlights',
 		did: project.highlights,
-		proof: project.proof,
-		seeAlso: neighbours.map((n) => ({ label: n.slug, href: `/projects/${n.slug}` }))
+		links: project.links,
+		seeAlso: []
 	};
 }
 
@@ -49,9 +47,9 @@ export function workDoc(job: Experience): ManDoc {
 			{ label: 'stack', value: job.stack.join(', ') }
 		],
 		description: job.description,
-		didTitle: 'what i did',
+		didTitle: 'highlights',
 		did: job.points,
-		proof: job.proof,
+		links: job.links,
 		seeAlso: job.related
 	};
 }
@@ -107,8 +105,8 @@ export function manLines(doc: ManDoc): string[] {
 		...doc.did.flatMap((d) => wrap(d, '  • ', '    ')),
 		// Wrapped like everything else: a long URL is one unbreakable word, so
 		// it drops to its own indented line rather than running past 80.
-		...(doc.proof.length > 0
-			? ['', 'PROOF', ...doc.proof.flatMap((p) => wrap(`→ ${p.label}: ${p.href}`, '  ', '    '))]
+		...(doc.links.length > 0
+			? ['', 'LINKS', ...doc.links.flatMap((p) => wrap(`-> ${p.label}: ${p.href}`, '  ', '    '))]
 			: [])
 	];
 }

@@ -51,7 +51,7 @@ export function resumeText(): string {
 	lines.push(rule());
 	for (const project of projects) {
 		lines.push(`  ${project.name} | ${project.oneLiner}`);
-		lines.push(`    ${project.proof[0].href}`);
+		lines.push(`    ${project.links[0].href}`);
 	}
 	lines.push('');
 	lines.push('SKILLS');
