@@ -1,6 +1,6 @@
 import { pages } from '$lib/data/site';
 import { pageAt } from '$lib/content';
-import { listed } from '$lib/visibility';
+import { hiddenLast, listed } from '$lib/visibility';
 import type { Page } from '$lib/types';
 import { docBySlug } from '$lib/text/mandoc';
 
@@ -15,7 +15,7 @@ export function childrenOf(route: string, all = false): Page[] {
 	const kids = pages.filter(
 		(p) => p.path !== '/' && p.path.startsWith(prefix) && !p.path.slice(prefix.length).includes('/')
 	);
-	return all ? kids : listed(kids);
+	return all ? hiddenLast(kids) : listed(kids);
 }
 
 /** How an entry is written in a listing. Hidden ones get a leading dot, the way

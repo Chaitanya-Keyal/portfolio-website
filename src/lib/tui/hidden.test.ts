@@ -63,7 +63,7 @@ vi.mock('$lib/data/experience', () => ({
 }));
 
 const { pageAt } = await import('$lib/content');
-const { listed } = await import('$lib/visibility');
+const { hiddenLast, listed } = await import('$lib/visibility');
 const { pages } = await import('$lib/data/site');
 const { childrenOf, treeLines } = await import('./filesystem');
 const { run } = await import('./commands');
@@ -76,6 +76,25 @@ const linesOf = (out: ReturnType<typeof run>) =>
 describe('listed', () => {
 	it('drops hidden items and keeps the rest in order', () => {
 		expect(listed([{ hidden: true }, {}, { hidden: false }])).toEqual([{}, { hidden: false }]);
+	});
+});
+
+describe('hiddenLast', () => {
+	it('moves hidden items to the end without reordering either group', () => {
+		const items = [
+			{ id: 'a' },
+			{ id: 'b', hidden: true },
+			{ id: 'c' },
+			{ id: 'd', hidden: true },
+			{ id: 'e' }
+		];
+		expect(hiddenLast(items).map((i) => i.id)).toEqual(['a', 'c', 'e', 'b', 'd']);
+	});
+
+	it('keeps every item, and leaves a list with nothing hidden untouched', () => {
+		const plain: { id: string; hidden?: boolean }[] = [{ id: 'a' }, { id: 'b' }];
+		expect(hiddenLast(plain)).toEqual(plain);
+		expect(hiddenLast([{ hidden: true }, { hidden: true }])).toHaveLength(2);
 	});
 });
 
@@ -137,6 +156,7 @@ describe('childrenOf', () => {
 	it('hides by default and reveals when asked', () => {
 		const names = (all?: boolean) => childrenOf('/projects', all).map((p) => p.name);
 		expect(names()).toEqual(['shown']);
+		// Hidden last, which here is also the order the data gave them.
 		expect(names(true)).toEqual(['shown', 'secret']);
 	});
 });
