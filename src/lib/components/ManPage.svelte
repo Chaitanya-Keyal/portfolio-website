@@ -17,7 +17,7 @@
 
 	<section>
 		<h1>name</h1>
-		<p><strong>{doc.name}</strong> — {doc.oneLiner}</p>
+		<p><strong>{doc.name}</strong> - {doc.oneLiner}</p>
 	</section>
 
 	<section>

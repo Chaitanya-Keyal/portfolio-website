@@ -8,7 +8,7 @@ export const prerender = true;
 
 export const entries: EntryGenerator = () => allDocs.map(({ slug }) => ({ slug }));
 
-/** These pages aren't just styled like man pages — `man -l` renders this. */
+/** These pages aren't just styled like man pages, `man -l` renders this. */
 function roff(slug: string): string {
 	const doc = docBySlug(slug);
 	if (!doc) error(404, 'no such page');

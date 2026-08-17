@@ -2,7 +2,7 @@
 
 The same trick chafa uses: one character per two vertical pixels, the top half
 painted by the glyph and the bottom half by its background. Output is a static
-Svelte component — run this only when the source photo changes.
+Svelte component, run this only when the source photo changes.
 
     python3 scripts/pixel-portrait.py
 
@@ -34,7 +34,7 @@ LUMA = np.array([0.2126, 0.7152, 0.0722])
 # midtone: 1.0 leaves them alone, 0 flattens the garment completely.
 SUIT_HIGHLIGHTS = 0.5
 # How far inside the silhouette to look for a replacement colour, in source
-# pixels — wide enough to clear the halo, tight enough to stay local.
+# pixels, wide enough to clear the halo, tight enough to stay local.
 DEFRINGE_RADIUS = 6
 
 
@@ -48,7 +48,7 @@ def defringe(img: Image.Image) -> Image.Image:
     """Give the cut-out's soft edge the colour of the subject just inside it.
 
     Background removal leaves those pixels carrying whatever was behind the
-    subject — here a blown-out sky — and now that the edge keeps its real
+    subject, here a blown-out sky, and now that the edge keeps its real
     alpha, that tint reads as a bright halo along the shoulders.
     """
     a = np.asarray(img).astype(float)
@@ -182,7 +182,7 @@ def main() -> None:
     # rows, add a line box between every pair.
     markup = ''.join(lines)
     OUT.write_text(
-        f'''<!-- Generated from {SRC} by scripts/pixel-portrait.py — do not edit by hand.
+        f'''<!-- Generated from {SRC} by scripts/pixel-portrait.py. Do not edit by hand.
      {COLS} x {rows} pixels as half-block characters. -->
 <pre class="portrait" aria-hidden="true">{markup}</pre>
 

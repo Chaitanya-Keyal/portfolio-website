@@ -31,7 +31,7 @@
 		margin-bottom: 14px;
 	}
 
-	/* The text is column-formatted for 80ch — never wrap it, scroll it. */
+	/* The text is column-formatted for 80ch, never wrap it, scroll it. */
 	pre {
 		margin: 0;
 		font-size: 0.8125rem;

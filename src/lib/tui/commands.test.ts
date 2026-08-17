@@ -75,7 +75,7 @@ describe('ls', () => {
 
 	it('points at `man` only where there is a page behind it', () => {
 		const leaf = run('ls', '/work/crux');
-		expect(leaf.kind === 'print' && leaf.lines[0]).toBe('(nothing here — try `man`)');
+		expect(leaf.kind === 'print' && leaf.lines[0]).toBe('(nothing here, try `man`)');
 		const bare = run('ls', '/education');
 		expect(bare.kind === 'print' && bare.lines[0]).toBe('(nothing here)');
 	});

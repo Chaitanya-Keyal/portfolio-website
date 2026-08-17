@@ -37,7 +37,7 @@
 </script>
 
 <svelte:head>
-	<title>404 — {profile.name}</title>
+	<title>404 | {profile.name}</title>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 

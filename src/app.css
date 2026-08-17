@@ -4,7 +4,7 @@
 /* ---------- themes ----------
    Default (no data-theme attribute) is Tokyo Night. Each theme redefines the
    same token set; components only ever read tokens. `--muted` must stay
-   AA-readable on `--bg` — the classic Tokyo Night comment color does not, so
+   AA-readable on `--bg`, the classic Tokyo Night comment color does not, so
    it is reserved for `--faint` (borders, ornament, never running text). */
 :root {
 	/* The content gutter. Shared, because on the home page the page body and
@@ -130,7 +130,7 @@ figure {
 }
 
 /* The UA stylesheet sets `pre { font-family: monospace }`, and that element
-   rule beats the family inherited from body — leaving every <pre> in the
+   rule beats the family inherited from body, leaving every <pre> in the
    system font, at a different advance width. */
 pre,
 code,
@@ -222,7 +222,7 @@ button {
 }
 
 /* ---------- effects ----------
-   The paper theme opts out of all of these: paper is print, not phosphor —
+   The paper theme opts out of all of these: paper is print, not phosphor,
    dark scanlines and glow halos on a light ground read as smudge. */
 h1,
 h2 {

@@ -87,13 +87,13 @@ function wrap(text: string, first: string, indent: string): string[] {
 	return lines;
 }
 
-/** Rendered man-page text — used by the shell's `man` and /man/<slug>. */
+/** Rendered man-page text, used by the shell's `man` and /man/<slug>. */
 export function manLines(doc: ManDoc): string[] {
 	return [
 		`${doc.slug.toUpperCase()}${' '.repeat(Math.max(1, 40 - doc.slug.length))}${doc.category}`,
 		'',
 		'NAME',
-		...wrap(`${doc.name} — ${doc.oneLiner}`, '  ', '  '),
+		...wrap(`${doc.name} - ${doc.oneLiner}`, '  ', '  '),
 		'',
 		'SYNOPSIS',
 		...doc.synopsis.map((s) => `  ${s.label.padEnd(9)}${s.value}`),

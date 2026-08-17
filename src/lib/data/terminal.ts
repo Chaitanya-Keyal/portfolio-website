@@ -21,7 +21,7 @@ export const host = `${profile.handle}@dev`;
 
 export const messages = {
 	empty: '(nothing here)',
-	emptyWithPage: '(nothing here — try `man`)',
+	emptyWithPage: '(nothing here, try `man`)',
 	manPrompt: 'what manual page do you want?',
 	notFound: (name: string) => `bash: ${name}: command not found (try \`help\`)`,
 	helpHeader: 'some of what works here:',

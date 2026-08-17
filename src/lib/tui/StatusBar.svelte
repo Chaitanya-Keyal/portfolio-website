@@ -8,7 +8,7 @@
 	}
 	let { theme, mode, onthemecycle }: Props = $props();
 
-	// My clock, not the visitor's — the point of it is where I am, so the zone
+	// My clock, not the visitor's: the point of it is where I am, so the zone
 	// is fixed and labelled. sv-SE is the locale whose short date and medium
 	// time formats are already ISO-shaped.
 	const ZONE = 'Asia/Kolkata';
@@ -104,7 +104,7 @@
 		text-align: right;
 	}
 
-	/* Phone: mode + theme only — the build stamp is desktop furniture. */
+	/* Phone: mode + theme only; the build stamp is desktop furniture. */
 	@media (max-width: 719px) {
 		.meta .sep,
 		.stamp {

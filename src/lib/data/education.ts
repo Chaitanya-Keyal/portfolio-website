@@ -23,7 +23,7 @@ export const education = {
 			linkText: 'onlinecal'
 		},
 		{
-			text: 'Member of cruX, the programming and computing club — see',
+			text: 'Member of cruX, the programming and computing club, see',
 			link: '/work/crux',
 			linkText: 'crux'
 		},

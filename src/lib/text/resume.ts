@@ -43,14 +43,14 @@ export function resumeText(): string {
 	lines.push('EXPERIENCE');
 	lines.push(rule());
 	for (const job of experience) {
-		lines.push(`  ${job.org} — ${job.role} (${job.period})`);
+		lines.push(`  ${job.org} | ${job.role} (${job.period})`);
 		for (const point of job.points) lines.push(...wrap(`* ${point}`, 4));
 		lines.push('');
 	}
 	lines.push('PROJECTS');
 	lines.push(rule());
 	for (const project of projects) {
-		lines.push(`  ${project.name} — ${project.oneLiner}`);
+		lines.push(`  ${project.name} | ${project.oneLiner}`);
 		lines.push(`    ${project.proof[0].href}`);
 	}
 	lines.push('');

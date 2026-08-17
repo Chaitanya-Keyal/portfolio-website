@@ -9,7 +9,7 @@
 
 <Meta
 	title={data.job.slug}
-	description="{data.job.org} — {data.job.oneLiner}"
+	description="{data.job.org}: {data.job.oneLiner}"
 	page="/work/{data.job.slug}"
 />
 

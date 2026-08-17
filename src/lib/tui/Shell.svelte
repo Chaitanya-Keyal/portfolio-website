@@ -7,12 +7,12 @@
 
 	interface Props {
 		cwd: string;
-		/** Where the last navigation came from — OLDPWD, for `cd -`. */
+		/** Where the last navigation came from (OLDPWD), for `cd -`. */
 		previous: string;
 		/** Sitting under the page as a live session, rather than docked. */
 		session: boolean;
 		onnav: (to: string) => void;
-		/** Hand a file to the browser — a PDF cannot be printed into a terminal. */
+		/** Hand a file to the browser: a PDF cannot be printed into a terminal. */
 		onopen: (url: string) => void;
 		ontheme: (theme: Theme) => void;
 		oncrt: () => 'on' | 'off';
@@ -69,7 +69,7 @@
 		animation = undefined;
 	}
 
-	/** Plays frames in place (each frame replaces the last), then cleans up —
+	/** Plays frames in place (each frame replaces the last), then cleans up:
 	 * the train leaves the station and the scrollback stays tidy. */
 	function animate(frames: string[][], interval: number) {
 		if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -217,7 +217,7 @@
 	}
 </script>
 
-<!-- Clicking the terminal focuses the prompt, like a real one — but never at
+<!-- Clicking the terminal focuses the prompt, like a real one, but never at
      the cost of a text selection someone just dragged, and never scrolling
      the pane to do it. -->
 <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
@@ -252,7 +252,7 @@
 				spellcheck="false"
 				autocomplete="off"
 				autocapitalize="off"
-				aria-label="Shell prompt — try `help`"
+				aria-label="Shell prompt, try `help`"
 			/>
 		</div>
 	</div>
@@ -285,14 +285,14 @@
 			   so nothing shifts by a pixel, and a colour can be faded. It fades
 			   at the end of the slide, because a seam that opens the moment the
 			   terminal starts moving reads as a borderless box flying up the
-			   page. Leaving home it snaps straight back — there is no
-			   transition declared without this class — which is right, since it
+			   page. Leaving home it snaps straight back: there is no
+			   transition declared without this class, which is right, since it
 			   is becoming a separate pane again. */
 			border-top-color: transparent;
 			transition: border-top-color 120ms linear calc(var(--slide) - 120ms);
 			/* Anchored to the bottom of its row and sized explicitly rather than
 			   stretched, so that animating its height moves the top edge and
-			   leaves the bottom against the status bar — the same way it
+			   leaves the bottom against the status bar, the same way it
 			   behaves docked, where the row is content-sized. That symmetry is
 			   what lets one property carry the whole transition. */
 			align-self: end;
@@ -305,8 +305,8 @@
 		font-size: 0.8438rem;
 		overflow-y: auto;
 		/* Grows a line at a time with what it has printed, up to the height of
-		   `help` — the longest thing the shell prints, so the output people
-		   reach for first fits — after which the scrollback scrolls. */
+		   `help`, the longest thing the shell prints, so the output people
+		   reach for first fits, after which the scrollback scrolls. */
 		max-height: min(27.2em, 50dvh);
 		/* Raw characters only, like a real shell: Fira Code's contextual
 		   ligatures mis-shape around the input caret (`../` renders as `./`). */
@@ -394,7 +394,7 @@
 		}
 	}
 
-	/* Phone: the full user@host prompt starves the input of width — show only
+	/* Phone: the full user@host prompt starves the input of width, so show only
 	   the cwd, ellipsized from the left so the deepest segment stays visible. */
 	@media (max-width: 719px) {
 		.user,

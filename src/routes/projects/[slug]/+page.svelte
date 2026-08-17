@@ -9,7 +9,7 @@
 
 <Meta
 	title={data.project.slug}
-	description="{data.project.name} — {data.project.oneLiner}"
+	description="{data.project.name}: {data.project.oneLiner}"
 	page="/projects/{data.project.slug}"
 />
 

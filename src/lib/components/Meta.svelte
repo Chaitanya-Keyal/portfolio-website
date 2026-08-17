@@ -17,7 +17,7 @@
 
 	// Every tab ends with the name; the home title already leads with it, so it
 	// is not appended twice.
-	const full = $derived(heading.includes(profile.name) ? heading : `${heading} — ${profile.name}`);
+	const full = $derived(heading.includes(profile.name) ? heading : `${heading} | ${profile.name}`);
 	const url = $derived(profile.site + (page === '/' ? '' : page));
 	const image = $derived(
 		`${profile.site}/og/${page === '/' ? 'home' : page.slice(1).replaceAll('/', '-')}.png`

@@ -4,9 +4,9 @@ export const projects: Project[] = [
 	{
 		slug: 'seedsigner',
 		name: 'SeedSigner',
-		oneLiner: 'air-gapped Bitcoin hardware wallet — core contributor',
+		oneLiner: 'air-gapped Bitcoin hardware wallet, core contributor',
 		context: 'Summer of Bitcoin 2025 & 2026',
-		period: '2025 — present',
+		period: '2025 to present',
 		stack: ['Python', 'embedded Linux', 'GitHub Actions'],
 		description:
 			'SeedSigner turns a Raspberry Pi into an air-gapped Bitcoin signing device. I have contributed across two Summer of Bitcoin terms, with ~20 commits merged into upstream dev, including commits in the v0.8.7 release.',
@@ -29,7 +29,7 @@ export const projects: Project[] = [
 		name: 'BitsGPT',
 		oneLiner: 'multi-agent RAG chatbot for campus queries',
 		context: 'cruX, BITS Hyderabad programming club',
-		period: '2024 — present',
+		period: '2024 to present',
 		stack: ['Python', 'LangGraph', 'vector DB'],
 		description:
 			'A campus assistant answering academic, course, and placement questions for BITS students. A classifier node routes each query to specialized agents that share tools and memory.',
@@ -62,7 +62,7 @@ export const projects: Project[] = [
 		name: 'onlineCAL',
 		oneLiner: 'live instrument-booking portal for campus researchers',
 		context: 'Central Analytical Laboratory, BITS Hyderabad',
-		period: '2024 — present',
+		period: '2024 to present',
 		stack: ['Python', 'Django', 'MySQL'],
 		description:
 			'The production portal researchers use to book time on lab instruments. Requests flow through faculty and lab-assistant approval chains with per-instrument pricing. I maintain it as the undergraduate TA.',
@@ -75,7 +75,7 @@ export const projects: Project[] = [
 	{
 		slug: 'finquery',
 		name: 'FinQuery AI',
-		oneLiner: 'autonomous NL-to-SQL agent — 1st place, Synchrony hackathon',
+		oneLiner: 'autonomous NL-to-SQL agent, 1st place at the Synchrony hackathon',
 		context: 'Hackathon winner, ₹2,00,000',
 		period: '2025',
 		stack: ['Python', 'LangChain', 'SQL'],

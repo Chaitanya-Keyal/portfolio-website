@@ -33,7 +33,7 @@
 
 	// The portrait is a fixed grid of characters, so its height is exactly
 	// proportional to the character size. Measure it once, then solve for the
-	// size that stands it flush with the text beside it — rows can be added to
+	// size that stands it flush with the text beside it, rows can be added to
 	// the list below and the two columns still line up top and bottom.
 	let logo = $state<HTMLElement>();
 	let info = $state<HTMLElement>();
@@ -41,7 +41,7 @@
 	let cramped = $state(false);
 
 	// Bounds on the character size, and the width the text column is entitled to
-	// keep — whatever is left over is the portrait's.
+	// keep, whatever is left over is the portrait's.
 	const MIN_PX = 5;
 	const MAX_PX = 14;
 	const INFO_MIN_REM = 34;
@@ -54,7 +54,7 @@
 
 		// Portrait height and width for a 1px character, taken from whatever size
 		// CSS starts it at; constant thereafter. The basis has to come off the
-		// <pre>'s own font-size — a custom property reads back unresolved.
+		// <pre>'s own font-size, a custom property reads back unresolved.
 		let perPxHigh = 0;
 		let perPxWide = 0;
 
@@ -90,7 +90,7 @@
 	});
 
 	// Runs while the head is parsed, before anything paints, and only on this
-	// page — which is the only one that boots. Deciding this after hydration
+	// page, which is the only one that boots. Deciding this after hydration
 	// showed the page for a moment before the overlay covered it. The timeout
 	// is a failsafe: if the layout never comes up, the page still appears.
 	const bootProbe = `try{var d=document.documentElement;
@@ -113,7 +113,7 @@ setTimeout(function(){delete d.dataset.boot},3000)}catch(e){}`;
 <Meta page="/" />
 
 <svelte:head>
-	<!-- Both are built here, from constants above — no user input reaches them,
+	<!-- Both are built here, from constants above, no user input reaches them,
 	     and an inline <script> in the head cannot be written any other way. The
 	     escaped slash keeps a literal closing tag out of the source, which would
 	     otherwise end this component's own script block for an HTML parser. -->
@@ -224,8 +224,8 @@ setTimeout(function(){delete d.dataset.boot},3000)}catch(e){}`;
 	   the pixel size. The script above replaces this with the size that matches
 	   the text height; the rem keeps it proportional when it cannot run. */
 	.logo {
-		/* What the fit lands on is near-constant in rem — 0.428 to 0.479 across
-		   every width the portrait shows at — so starting here means the
+		/* What the fit lands on is near-constant in rem, 0.428 to 0.479 across
+		   every width the portrait shows at, so starting here means the
 		   corrected size is a couple of percent away instead of forty, and the
 		   first paint does not visibly resize. It is also the size with no JS. */
 		--px-size: 0.4375rem;
@@ -233,7 +233,7 @@ setTimeout(function(){delete d.dataset.boot},3000)}catch(e){}`;
 	}
 
 	/* Too narrow to seat the portrait without squeezing the text into a ragged
-	   column — the text wins. */
+	   column, the text wins. */
 	.logo.cramped {
 		display: none;
 	}

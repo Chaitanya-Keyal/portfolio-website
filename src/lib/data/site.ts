@@ -3,7 +3,7 @@ import { education } from './education';
 import { experience } from './experience';
 import { projects } from './projects';
 
-/** Every navigable page — the one list behind the rail, the shell's filesystem,
+/** Every navigable page: the one list behind the rail, the shell's filesystem,
  * the sitemap, the 404 suggestions and the per-page metadata. Sub-pages are
  * generated from the work and project entries, so adding one of those adds a
  * route, a rail link and a sitemap entry with it. */
@@ -13,9 +13,9 @@ export const pages: Page[] = [
 		path: '/',
 		rail: '~',
 		short: '~',
-		title: 'Chaitanya Keyal — backend systems · AI agents · open source',
+		title: 'Chaitanya Keyal: backend systems · AI agents · open source',
 		description:
-			'AI engineering intern and open-source developer — backend systems, AI agents, and Bitcoin tooling.',
+			'AI engineering intern and open-source developer working on backend systems, AI agents, and Bitcoin tooling.',
 		command: 'whoami'
 	},
 	{
@@ -53,7 +53,7 @@ export const pages: Page[] = [
 		rail: 'resume',
 		short: 'cv',
 		title: 'resume',
-		description: 'Resume — plain text, PDF, or piped straight into your terminal.',
+		description: 'Resume in plain text, PDF, or piped straight into your terminal.',
 		command: 'cat resume/resume.txt'
 	},
 	{ name: 'resume.txt', path: '/resume/resume.txt', url: '/resume.txt', file: true },

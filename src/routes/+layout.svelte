@@ -23,7 +23,7 @@
 		element: () => HTMLElement | undefined;
 	}>();
 
-	// App-internal path with the deployment base stripped — the shell's cwd.
+	// App-internal path with the deployment base stripped: the shell's cwd.
 	const cwd = $derived(page.url.pathname.slice(base.length).replace(/\/$/, '') || '/');
 	const mode = $derived(booting ? 'boot' : shellFocused ? 'insert' : 'normal');
 	// Home is a live session: the fetch output sits at the top with the prompt
@@ -38,7 +38,7 @@
 	onMount(() => {
 		theme = currentTheme();
 		// Whether to boot was settled before the first paint, by the head script
-		// on the home page — deciding it here would let the page paint and then
+		// on the home page: deciding it here would let the page paint and then
 		// drop the overlay over it a moment later. That script only exists on
 		// the home page, so the flag implies we are on it.
 		if (document.documentElement.dataset.boot === 'pending') booting = true;
@@ -53,7 +53,7 @@
 	}
 
 	// Sliding the terminal between session and docked. Both states share a
-	// bottom edge — the status bar — so the whole move is one number: how tall
+	// bottom edge (the status bar), so the whole move is one number: how tall
 	// the terminal is. Growing it walks its top edge up over the page, shrinking
 	// it walks back down. The column never changes width, so nothing inside is
 	// ever rewrapped, and docked the page above resizes in step, which keeps the
@@ -68,7 +68,7 @@
 
 	// The height is measured before the new page renders. A running slide is
 	// included, since getBoundingClientRect() reports the height it is
-	// animating through — interrupting halfway then carries on from where it
+	// animating through; interrupting halfway then carries on from where it
 	// visually is rather than jumping.
 	beforeNavigate(() => {
 		previous = cwd;
@@ -76,7 +76,7 @@
 	});
 
 	// The scroll container is #main, not the window, so SvelteKit's own
-	// post-navigation scroll reset never reaches it — without this, the next
+	// post-navigation scroll reset never reaches it; without this, the next
 	// page opens at the previous page's scroll offset.
 	afterNavigate(() => {
 		document.getElementById('main')?.scrollTo(0, 0);
@@ -98,7 +98,7 @@
 	});
 
 	// keepFocus: navigating from the prompt (`cd`, `man`) must not kick you out
-	// of the terminal mid-session. Files never arrive here — `cat` opens those.
+	// of the terminal mid-session. Files never arrive here; `cat` opens those.
 	function navigate(to: string) {
 		goto(base + to, { keepFocus: true });
 	}
@@ -147,13 +147,13 @@
 			default:
 				// Anything else printable: the page is a terminal with a prompt
 				// on it, so typing should land there rather than nowhere. No
-				// preventDefault — focusing during keydown lets the character
+				// preventDefault, focusing during keydown lets the character
 				// through to the input it just moved to.
 				if (event.key.length === 1) shell?.focusPrompt();
 		}
 	}
 
-	// Note: no wheel handling anywhere — scrolling is fully native. Each pane
+	// Note: no wheel handling anywhere, scrolling is fully native. Each pane
 	// scrolls under the cursor like any normal app; JS never touches the mouse.
 </script>
 
@@ -230,7 +230,7 @@
 
 	/* Home is one terminal, not two panes stacked: the fetch output is
 	   content-height, the session takes the rest of the column, and the seam
-	   between them — gap and shared border — goes, so it reads as a single
+	   between them, gap and shared border, goes, so it reads as a single
 	   view you just ran neofetch in. minmax(0, auto) rather than auto so that
 	   on a short window main gives way and scrolls itself, instead of pushing
 	   the prompt off the bottom.
@@ -297,7 +297,7 @@
 	}
 
 	/* Phone: one column, the rail is a tab bar at the bottom, and the shell
-	   stays docked — the fetch output is taller than the screen here, so there
+	   stays docked, the fetch output is taller than the screen here, so there
 	   is no room to sit a prompt under it. */
 	@media (max-width: 719px) {
 		.frame {

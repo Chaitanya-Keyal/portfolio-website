@@ -16,7 +16,7 @@ export type Outcome =
 	| { kind: 'print'; lines: string[] }
 	| { kind: 'error'; lines: string[] }
 	| { kind: 'cat'; url: string }
-	/** Not printable — let the browser show it. */
+	/** Not printable: let the browser show it. */
 	| { kind: 'open'; url: string }
 	| { kind: 'animate'; frames: string[][]; interval: number }
 	| { kind: 'clear' }
@@ -88,7 +88,7 @@ function man(args: string[], cwd: string): Outcome {
 	const entries = childrenOf(route).filter((p) => !p.file);
 	if (entries.length > 0) {
 		const names = entries.map((e) => e.name).join(', ');
-		return { kind: 'print', lines: [`man: ${displayPath(route)} is a section — pages: ${names}`] };
+		return { kind: 'print', lines: [`man: ${displayPath(route)} is a section, pages: ${names}`] };
 	}
 	if (!target) return { kind: 'error', lines: [messages.manPrompt] };
 	return { kind: 'error', lines: [`no manual entry for ${target}`] };
@@ -202,7 +202,7 @@ export const commands: CommandSpec[] = [
 		name: 'whoami',
 		usage: 'whoami',
 		description: 'who is this',
-		run: () => ({ kind: 'print', lines: [`${profile.name.toLowerCase()} — ${profile.tagline}`] })
+		run: () => ({ kind: 'print', lines: [`${profile.name.toLowerCase()}: ${profile.tagline}`] })
 	},
 	{
 		name: 'neofetch',
@@ -343,7 +343,7 @@ export const ALIASES: Record<string, string> = {
 	':q!': ':q'
 };
 
-/** `previous` is OLDPWD — where the last navigation came from, for `cd -`. */
+/** `previous` is OLDPWD, where the last navigation came from, for `cd -`. */
 export function run(input: string, cwd: string, previous = ''): Outcome {
 	const trimmed = input.trim();
 	if (!trimmed) return { kind: 'none' };
