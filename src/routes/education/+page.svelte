@@ -14,7 +14,7 @@
 
 	<section>
 		<h1>name</h1>
-		<p><strong>{education.school}</strong> — {education.summary}, class of {education.classOf}</p>
+		<p><strong>{education.school}</strong></p>
 	</section>
 
 	<section>
@@ -30,12 +30,7 @@
 	</section>
 
 	<section>
-		<h2>description</h2>
-		<p>{education.description}</p>
-	</section>
-
-	<section>
-		<h2>selected coursework</h2>
+		<h2>relevant coursework</h2>
 		<ul>
 			{#each education.coursework as course (course)}
 				<li>{course}</li>
@@ -46,8 +41,14 @@
 	<section>
 		<h2>on campus</h2>
 		<ul>
-			{#each education.campus as role (role.link)}
-				<li>{role.text} <a href="{base}{role.link}">{role.linkText}</a>.</li>
+			<!-- Not every role has a page of its own to point at. The space before
+			     the link is `{' '}` because a literal one is collapsed away with
+			     the surrounding newline, and it sits inside the branch so entries
+			     without a link keep their full stop tight. -->
+			{#each education.campus as role (role.text)}
+				<li>
+					{role.text}{#if 'link' in role}{' '}<a href="{base}{role.link}">{role.linkText}</a>{/if}.
+				</li>
 			{/each}
 		</ul>
 	</section>

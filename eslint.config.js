@@ -28,7 +28,10 @@ export default ts.config(
 			// Every link already goes through `base` from $app/paths, which is the
 			// same thing resolve() does for the deployment prefix. Worth revisiting
 			// if the typed-route half of resolve() becomes useful.
-			'svelte/no-navigation-without-resolve': 'off'
+			'svelte/no-navigation-without-resolve': 'off',
+			// `{' '}` is sometimes the only way to keep a space that Svelte would
+			// otherwise collapse along with the newline beside it.
+			'svelte/no-useless-mustaches': 'off'
 		}
 	},
 	{

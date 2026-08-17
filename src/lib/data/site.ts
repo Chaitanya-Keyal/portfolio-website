@@ -44,7 +44,7 @@ export const pages: Page[] = [
 		rail: 'education',
 		short: 'edu',
 		title: 'education',
-		description: `${education.degree}, ${education.school}, class of ${education.classOf}.`,
+		description: `${education.degree}, ${education.schoolShort}, class of ${education.classOf}.`,
 		command: 'cd education'
 	},
 	{

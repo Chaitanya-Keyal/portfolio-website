@@ -10,7 +10,7 @@ function build(): string {
 		'',
 		`> ${profile.summary}`,
 		'',
-		`${profile.role}. ${education.degree}, ${education.school}, class of ${education.classOf}. ${profile.status}.`,
+		`${profile.role}. ${education.degree}, ${education.schoolShort}, class of ${education.classOf}. ${profile.status}.`,
 		'',
 		'## Projects',
 		'',

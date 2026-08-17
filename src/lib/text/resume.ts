@@ -37,7 +37,7 @@ export function resumeText(): string {
 	lines.push('');
 	lines.push('EDUCATION');
 	lines.push(rule());
-	lines.push(`  ${education.school}`);
+	lines.push(`  ${education.schoolShort}`);
 	lines.push(`  ${education.degree} · class of ${education.classOf}`);
 	lines.push('');
 	lines.push('EXPERIENCE');

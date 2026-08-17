@@ -146,7 +146,7 @@ setTimeout(function(){delete d.dataset.boot},3000)}catch(e){}`;
 			</div>
 			<div class="row">
 				<dt>os</dt>
-				<dd>{education.school}</dd>
+				<dd>{education.schoolShort}</dd>
 			</div>
 			<div class="row">
 				<dt>kernel</dt>
