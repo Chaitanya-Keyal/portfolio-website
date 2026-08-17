@@ -1,5 +1,6 @@
 import type { Page } from '$lib/types';
 import { education } from './education';
+import { profile } from './profile';
 import { experience } from './experience';
 import { projects } from './projects';
 
@@ -14,8 +15,7 @@ export const pages: Page[] = [
 		rail: '~',
 		short: '~',
 		title: 'Chaitanya Keyal: backend systems · AI agents · open source',
-		description:
-			'AI engineering intern and open-source developer working on backend systems, AI agents, and Bitcoin tooling.',
+		description: profile.summary,
 		command: 'whoami'
 	},
 	{

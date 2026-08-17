@@ -19,10 +19,12 @@ describe('man pages', () => {
 	});
 
 	// The whole point of the roff rendering is that it survives a plain
-	// terminal, and `curl | less` is 80 columns wide.
-	it('wraps every line inside 80 columns', () => {
+	// terminal, and `curl | less` is 80 columns wide. A bare URL is exempt:
+	// it is one unbreakable token, and wrapping it would corrupt it.
+	it('wraps every line inside 80 columns, except unbreakable ones', () => {
 		for (const doc of allDocs) {
 			for (const line of manLines(doc)) {
+				if (line.trim().split(/\s+/).length === 1) continue;
 				expect(line.length, `${doc.slug}: ${line}`).toBeLessThanOrEqual(80);
 			}
 		}

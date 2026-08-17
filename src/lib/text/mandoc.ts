@@ -27,7 +27,7 @@ export function projectDoc(project: Project): ManDoc {
 		synopsis: [
 			{ label: 'context', value: project.context },
 			{ label: 'period', value: project.period },
-			{ label: 'stack', value: project.stack.join(' · ') }
+			{ label: 'stack', value: project.stack.join(', ') }
 		],
 		description: project.description,
 		didTitle: 'what i did',
@@ -46,7 +46,7 @@ export function workDoc(job: Experience): ManDoc {
 		synopsis: [
 			{ label: 'role', value: job.role },
 			{ label: 'period', value: job.period },
-			{ label: 'stack', value: job.stack.join(' · ') }
+			{ label: 'stack', value: job.stack.join(', ') }
 		],
 		description: job.description,
 		didTitle: 'what i did',
@@ -96,7 +96,9 @@ export function manLines(doc: ManDoc): string[] {
 		...wrap(`${doc.name} - ${doc.oneLiner}`, '  ', '  '),
 		'',
 		'SYNOPSIS',
-		...doc.synopsis.map((s) => `  ${s.label.padEnd(9)}${s.value}`),
+		// Wrapped like every other section, with the continuation lined up under
+		// the value: a long stack list used to run straight past 80 columns.
+		...doc.synopsis.flatMap((s) => wrap(s.value, `  ${s.label.padEnd(9)}`, ' '.repeat(11))),
 		'',
 		'DESCRIPTION',
 		...wrap(doc.description, '  ', '  '),

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import { domain } from '$lib/content';
+	import Icon from './Icon.svelte';
 	import type { ManDoc } from '$lib/text/mandoc';
 
 	interface Props {
@@ -49,7 +50,9 @@
 			<h2>proof</h2>
 			<ul class="proof">
 				{#each doc.proof as link (link.href)}
-					<li><a href={link.href} rel="me noopener">{link.label} ↗</a></li>
+					<li>
+						<a href={link.href} rel="me noopener">{link.label} <Icon name="external" /></a>
+					</li>
 				{/each}
 			</ul>
 		</section>

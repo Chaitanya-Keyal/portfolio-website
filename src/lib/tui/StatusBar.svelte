@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Icon from '$lib/components/Icon.svelte';
 	import { profile } from '$lib/data/profile';
 
 	interface Props {
@@ -31,7 +32,8 @@
 	<span class="mode" class:alt={mode !== 'normal'}>{mode}</span>
 	<span class="meta">
 		<button type="button" class="theme" onclick={onthemecycle} title="switch theme">
-			◐ {theme}
+			<Icon name="contrast" />
+			{theme}
 		</button>
 		<span class="sep" aria-hidden="true">·</span>
 		<span class="stamp">
