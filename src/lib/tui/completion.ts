@@ -1,6 +1,6 @@
 import { allDocs } from '$lib/text/mandoc';
 import { ALIASES, commands } from './commands';
-import { childrenOf, resolvePath } from './filesystem';
+import { childrenOf, displayName, isBranch, resolvePath } from './filesystem';
 import { themes } from './theme';
 
 /* ---------- tab completion, shell-style ---------- */
@@ -23,9 +23,13 @@ function candidatesFor(command: string, cwd: string, partial: string): string[] 
 	const dirPart = slash === -1 ? '' : partial.slice(0, slash + 1);
 	const basePart = slash === -1 ? partial : partial.slice(slash + 1);
 	const baseRoute = dirPart ? resolvePath(cwd, dirPart) : cwd;
-	return childrenOf(baseRoute)
-		.filter((p) => p.name.startsWith(basePart))
-		.map((p) => dirPart + p.name + (p.file ? '' : '/'));
+	// Exactly bash's rule for dotfiles: hidden entries appear only once the dot
+	// has been typed, and they complete under the same dotted name a listing
+	// shows. The trailing slash marks what has something inside it.
+	const all = basePart.startsWith('.');
+	return childrenOf(baseRoute, all)
+		.filter((p) => displayName(p).startsWith(basePart))
+		.map((p) => dirPart + displayName(p) + (isBranch(p, all) ? '/' : ''));
 }
 
 function commonPrefix(options: string[]): string {
@@ -43,7 +47,7 @@ export function complete(input: string, cwd: string): Completion {
 	const candidates =
 		head.length === 0
 			? commands.filter((c) => !c.hidden && c.name.startsWith(partial)).map((c) => c.name)
-			: candidatesFor(ALIASES[head[0]] ?? head[0], cwd, partial);
+			: candidatesFor((ALIASES[head[0]] ?? head[0]).split(/\s+/)[0], cwd, partial);
 	if (candidates.length === 0) return { value: input, options: [] };
 	if (candidates.length === 1) {
 		const completed = candidates[0] + (head.length === 0 ? ' ' : '');

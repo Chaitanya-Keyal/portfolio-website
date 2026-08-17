@@ -2,7 +2,16 @@ import { profile } from '$lib/data/profile';
 import { eggs, messages, trainArt } from '$lib/data/terminal';
 import { docPath, manLines } from '$lib/text/mandoc';
 import { urlOf } from '$lib/content';
-import { childrenOf, displayPath, docAt, pageAt, resolvePath, treeLines } from './filesystem';
+import {
+	childrenOf,
+	displayName,
+	displayPath,
+	docAt,
+	isBranch,
+	pageAt,
+	resolvePath,
+	treeLines
+} from './filesystem';
 import { themes, isTheme, currentTheme, type Theme } from './theme';
 
 /** What running a command means; navigation and settings are applied by the
@@ -36,21 +45,33 @@ interface CommandSpec {
 /* ---------- command implementations ---------- */
 
 function ls(args: string[], cwd: string): Outcome {
+	const flags = args.filter((a) => a.startsWith('-'));
+	const all = flags.some((f) => f.includes('a'));
+	const long = flags.some((f) => f.includes('l'));
 	const target = args.filter((a) => !a.startsWith('-'))[0];
 	const route = target ? resolvePath(cwd, target) : cwd;
 	const page = pageAt(route);
 	if (!page && route !== '/')
 		return { kind: 'error', lines: [`ls: no such file or directory: ${target}`] };
-	if (page?.file) return { kind: 'print', lines: [page.name] };
-	const entries = childrenOf(route);
+	if (page?.file) return { kind: 'print', lines: [displayName(page)] };
+	const entries = childrenOf(route, all);
 	if (entries.length === 0) {
 		// Only point at `man` when there is actually a page behind it.
 		const hint = Boolean(docAt(route));
 		return { kind: 'print', lines: [hint ? messages.emptyWithPage : messages.empty] };
 	}
+	const names = entries.map((e) => displayName(e) + (isBranch(e, all) ? '/' : ''));
+	if (!long) return { kind: 'print', lines: [names.join('  ')] };
+	// The long form has no permissions or sizes to show, so it spends the
+	// column on the one thing a listing cannot otherwise tell you: what the
+	// entry actually is. That is the man page's NAME line where there is one.
+	const width = Math.max(...names.map((n) => n.length)) + 2;
 	return {
 		kind: 'print',
-		lines: [entries.map((e) => (e.file ? e.name : `${e.name}/`)).join('  ')]
+		lines: entries.map((entry, i) => {
+			const about = docAt(entry.path)?.oneLiner ?? entry.description ?? '';
+			return (about ? names[i].padEnd(width) + about : names[i]).trimEnd();
+		})
 	};
 }
 
@@ -181,7 +202,7 @@ function cowsay(text: string): string[] {
 }
 
 export const commands: CommandSpec[] = [
-	{ name: 'ls', usage: 'ls [dir]', description: 'list directory', run: ls },
+	{ name: 'ls', usage: 'ls [-la] [dir]', description: 'list directory', run: ls },
 	{ name: 'cd', usage: 'cd [dir|-]', description: 'change directory', run: cd },
 	{
 		name: 'pwd',
@@ -196,7 +217,10 @@ export const commands: CommandSpec[] = [
 		name: 'tree',
 		usage: 'tree',
 		description: 'site map',
-		run: () => ({ kind: 'print', lines: treeLines() })
+		run: (args) => ({
+			kind: 'print',
+			lines: treeLines(args.some((a) => a.startsWith('-') && a.includes('a')))
+		})
 	},
 	{
 		name: 'whoami',
@@ -257,7 +281,7 @@ export const commands: CommandSpec[] = [
 				messages.helpHeader,
 				...commands
 					.filter((c) => !c.hidden && !c.unlisted)
-					.map((c) => `  ${c.usage.padEnd(14)}${c.description}`),
+					.map((c) => `  ${c.usage.padEnd(16)}${c.description}`),
 				'',
 				messages.helpKeys
 			]
@@ -328,13 +352,16 @@ export const commands: CommandSpec[] = [
 ];
 
 /** Muscle-memory spellings that map onto a real command. */
+/** An expansion is a command line rather than a bare name, so an alias can
+ * carry the flags it is named for: `la` really is `ls -a`. */
 export const ALIASES: Record<string, string> = {
 	fetch: 'neofetch',
 	fastfetch: 'neofetch',
 	screenfetch: 'neofetch',
 	l: 'ls',
-	la: 'ls',
-	ll: 'ls',
+	la: 'ls -a',
+	ll: 'ls -l',
+	lla: 'ls -la',
 	dir: 'ls',
 	open: 'cd',
 	h: 'help',
@@ -348,8 +375,9 @@ export function run(input: string, cwd: string, previous = ''): Outcome {
 	const trimmed = input.trim();
 	if (!trimmed) return { kind: 'none' };
 	const [rawName, ...args] = trimmed.split(/\s+/);
-	const name = ALIASES[rawName] ?? rawName;
+	const [name, ...aliasArgs] = (ALIASES[rawName] ?? rawName).split(/\s+/);
 	const command = commands.find((c) => c.name === name);
 	if (!command) return { kind: 'error', lines: [messages.notFound(rawName)] };
-	return command.run(args, cwd, previous);
+	// The alias's own flags come first, so anything typed can still override.
+	return command.run([...aliasArgs, ...args], cwd, previous);
 }

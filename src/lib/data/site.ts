@@ -1,3 +1,4 @@
+import { listed } from '$lib/visibility';
 import type { Page } from '$lib/types';
 import { education } from './education';
 import { profile } from './profile';
@@ -24,10 +25,15 @@ export const pages: Page[] = [
 		rail: 'work/',
 		short: 'work',
 		title: 'work',
-		description: 'Work history: ' + experience.map((e) => e.org).join(', ') + '.',
+		description:
+			'Work history: ' +
+			listed(experience)
+				.map((e) => e.org)
+				.join(', ') +
+			'.',
 		command: 'ls work/'
 	},
-	...experience.map((e) => ({ name: e.slug, path: `/work/${e.slug}` })),
+	...experience.map((e) => ({ name: e.slug, path: `/work/${e.slug}`, hidden: e.hidden })),
 	{
 		name: 'projects',
 		path: '/projects',
@@ -37,7 +43,7 @@ export const pages: Page[] = [
 		description: 'Things I have built: Bitcoin tooling, AI agents, autonomous systems, and more.',
 		command: 'ls projects/'
 	},
-	...projects.map((p) => ({ name: p.slug, path: `/projects/${p.slug}` })),
+	...projects.map((p) => ({ name: p.slug, path: `/projects/${p.slug}`, hidden: p.hidden })),
 	{
 		name: 'education',
 		path: '/education',

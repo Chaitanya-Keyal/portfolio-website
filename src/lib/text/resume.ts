@@ -1,6 +1,7 @@
 import { education } from '$lib/data/education';
 import { profile } from '$lib/data/profile';
 import { experience } from '$lib/data/experience';
+import { listed } from '$lib/visibility';
 import { projects } from '$lib/data/projects';
 
 const WIDTH = 80;
@@ -42,14 +43,14 @@ export function resumeText(): string {
 	lines.push('');
 	lines.push('EXPERIENCE');
 	lines.push(rule());
-	for (const job of experience) {
+	for (const job of listed(experience)) {
 		lines.push(`  ${job.org} | ${job.role} (${job.period})`);
 		for (const point of job.points) lines.push(...wrap(`* ${point}`, 4));
 		lines.push('');
 	}
 	lines.push('PROJECTS');
 	lines.push(rule());
-	for (const project of projects) {
+	for (const project of listed(projects)) {
 		lines.push(`  ${project.name} | ${project.oneLiner}`);
 		lines.push(`    ${project.links[0].href}`);
 	}

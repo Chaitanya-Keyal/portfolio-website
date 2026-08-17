@@ -80,6 +80,34 @@ describe('ls', () => {
 		expect(bare.kind === 'print' && bare.lines[0]).toBe('(nothing here)');
 	});
 
+	it('marks only what has something inside it', () => {
+		// The slash predicts that `cd` goes somewhere new. A leaf page is still
+		// a place you can cd to, but there is nothing under it, and `cat` opens
+		// it, so dressing it as a directory would mislead on both counts.
+		const root = run('ls', '/');
+		const line = root.kind === 'print' ? root.lines[0] : '';
+		expect(line).toContain('work/');
+		expect(line).toContain('education');
+		expect(line).not.toContain('education/');
+
+		const leaves = run('ls', '/projects');
+		const names = leaves.kind === 'print' ? leaves.lines[0] : '';
+		expect(names).toContain('seedsigner');
+		expect(names).not.toContain('seedsigner/');
+	});
+
+	it('gives the long form a description column, and `ll` means that', () => {
+		const long = run('ls -l', '/projects');
+		const lines = long.kind === 'print' ? long.lines : [];
+		expect(lines.length).toBeGreaterThan(1); // one entry per line, not one row
+		expect(lines[0]).toMatch(/^seedsigner\s+air-gapped Bitcoin signing device$/);
+		expect(run('ll', '/projects')).toEqual(long);
+	});
+
+	it('lets a typed flag join the one an alias carries', () => {
+		expect(run('ll -a', '/projects')).toEqual(run('ls -l -a', '/projects'));
+	});
+
 	it('errors on a path that does not exist', () => {
 		expect(run('ls nowhere', '/').kind).toBe('error');
 	});
@@ -237,7 +265,10 @@ describe('tab completion', () => {
 	// keystroke carries straight on into the path.
 	it('completes paths after a command that takes one', () => {
 		expect(complete('cd wo', '/').value).toBe('cd work/');
-		expect(complete('cd ', '/work').options).toContain('crux/');
+		// `work` has entries under it, `crux` is a leaf, and completion marks
+		// the difference the same way `ls` does.
+		expect(complete('cd ', '/work').options).toContain('crux');
+		expect(complete('cd ', '/work').options).not.toContain('crux/');
 	});
 
 	it('completes through aliases', () => {

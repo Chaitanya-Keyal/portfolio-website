@@ -9,6 +9,9 @@ export interface Link {
 export interface Project {
 	slug: string;
 	name: string;
+	/** Kept out of the rail, the index and the sitemap, like a dotfile. Still
+	 * reachable: `ls -a` lists it, the shell resolves it, the URL works. */
+	hidden?: boolean;
 	/** man-page NAME line: lowercase, one clause */
 	oneLiner: string;
 	context: string;
@@ -22,6 +25,8 @@ export interface Project {
 export interface Experience {
 	slug: string;
 	org: string;
+	/** Listed nowhere, reachable everywhere. See Project.hidden. */
+	hidden?: boolean;
 	role: string;
 	period: string;
 	/** man-page NAME line: lowercase, one clause */
@@ -37,6 +42,8 @@ export interface Experience {
 export interface Page {
 	name: string;
 	path: string;
+	/** Listed nowhere, reachable everywhere. See Project.hidden. */
+	hidden?: boolean;
 	/** Label in the rail; only top-level sections have one. */
 	rail?: string;
 	/** Compact label for the phone tab bar. */

@@ -1,11 +1,12 @@
 import { profile } from '$lib/data/profile';
 import { pages } from '$lib/data/site';
 import { urlOf } from '$lib/content';
+import { listed } from '$lib/visibility';
 
 export const prerender = true;
 
 export function GET(): Response {
-	const urls = pages
+	const urls = listed(pages)
 		.map((page) => {
 			const url = urlOf(page);
 			return `	<url><loc>${profile.site}${url === '/' ? '' : url}</loc></url>`;

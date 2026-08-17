@@ -1,18 +1,18 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import Meta from '$lib/components/Meta.svelte';
+	import { listed } from '$lib/visibility';
 	import { projects } from '$lib/data/projects';
+
+	const shown = listed(projects);
 </script>
 
-<Meta
-	page="/projects"
-	description={`Selected projects: ${projects.map((p) => p.name).join(', ')}.`}
-/>
+<Meta page="/projects" description={`Selected projects: ${shown.map((p) => p.name).join(', ')}.`} />
 
 <div class="index reveal">
 	<h1>projects</h1>
 	<ul>
-		{#each projects as project (project.slug)}
+		{#each shown as project (project.slug)}
 			<li>
 				<a href="{base}/projects/{project.slug}">{project.slug}</a>
 				<span>{project.oneLiner}</span>

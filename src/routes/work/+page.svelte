@@ -1,7 +1,10 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import Meta from '$lib/components/Meta.svelte';
+	import { listed } from '$lib/visibility';
 	import { experience } from '$lib/data/experience';
+
+	const shown = listed(experience);
 </script>
 
 <Meta page="/work" />
@@ -9,7 +12,7 @@
 <div class="index reveal">
 	<h1>work</h1>
 	<ul>
-		{#each experience as job (job.slug)}
+		{#each shown as job (job.slug)}
 			<li>
 				<a href="{base}/work/{job.slug}">{job.slug}</a>
 				<div>

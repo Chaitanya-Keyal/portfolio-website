@@ -3,6 +3,7 @@
 	import Meta from '$lib/components/Meta.svelte';
 	import PixelPortrait from '$lib/components/PixelPortrait.svelte';
 	import { education } from '$lib/data/education';
+	import { listed } from '$lib/visibility';
 	import { profile } from '$lib/data/profile';
 	import { host } from '$lib/data/terminal';
 	import { projects } from '$lib/data/projects';
@@ -166,7 +167,7 @@ setTimeout(function(){delete d.dataset.boot},3000)}catch(e){}`;
 			</div>
 			<div class="row">
 				<dt>packages</dt>
-				<dd>{projects.length} projects · {experience.length} roles</dd>
+				<dd>{listed(projects).length} projects · {listed(experience).length} roles</dd>
 			</div>
 			<div class="row">
 				<dt>status</dt>

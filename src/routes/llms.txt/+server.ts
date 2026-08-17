@@ -1,3 +1,4 @@
+import { listed } from '$lib/visibility';
 import { education } from '$lib/data/education';
 import { profile } from '$lib/data/profile';
 import { projects } from '$lib/data/projects';
@@ -14,7 +15,9 @@ function build(): string {
 		'',
 		'## Projects',
 		'',
-		...projects.map((p) => `- [${p.name}](${profile.site}/projects/${p.slug}): ${p.oneLiner}`),
+		...listed(projects).map(
+			(p) => `- [${p.name}](${profile.site}/projects/${p.slug}): ${p.oneLiner}`
+		),
 		'',
 		'## Links',
 		'',
