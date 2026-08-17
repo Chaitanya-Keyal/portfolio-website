@@ -49,7 +49,7 @@ export const projects: Project[] = [
 		slug: 'asynchrony',
 		name: 'asynchrony',
 		oneLiner: 'autonomous NL-to-SQL agent, 1st place at the Synchrony hackathon',
-		context: 'Hackathon winner, ₹2,00,000',
+		context: 'Hackathon winner, INR 2,00,000',
 		period: 'September 2024',
 		stack: ['Python', 'LangChain', 'SQL'],
 		description:

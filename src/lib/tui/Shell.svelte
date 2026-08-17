@@ -158,7 +158,7 @@
 				break;
 			}
 			case 'open':
-				append({ text: `opening ${outcome.url.split('/').pop()}…`, kind: 'out' });
+				append({ text: `opening ${outcome.url.split('/').pop()}...`, kind: 'out' });
 				onopen(outcome.url);
 				break;
 			case 'animate':

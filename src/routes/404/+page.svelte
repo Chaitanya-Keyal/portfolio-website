@@ -6,7 +6,7 @@
 	import { messages } from '$lib/data/terminal';
 
 	// Filled client-side: static hosting serves this page for every unknown URL.
-	let missing = $state('/…');
+	let missing = $state('/...');
 	let suggestions = $state<{ name: string; href: string }[]>([]);
 
 	function distance(a: string, b: string): number {

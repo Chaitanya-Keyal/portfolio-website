@@ -49,7 +49,7 @@ export const experience: Experience[] = [
 		period: 'Mar 2024 to Mar 2025',
 		oneLiner: 'ONDC platform at 10k+ daily transactions',
 		description:
-			'SellerSetu ran commerce infrastructure on ONDC, India’s open network for digital commerce. I worked on the backend and their agentic booking system.',
+			"SellerSetu ran commerce infrastructure on ONDC, India's open network for digital commerce. I worked on the backend and their agentic booking system.",
 		stack: ['Go', 'Django', 'PostgreSQL', 'LangChain', 'LangGraph'],
 		points: [
 			'Refactored the ONDC monolith into Go/Django microservices handling 10k+ daily transactions at 2x the previous throughput.',

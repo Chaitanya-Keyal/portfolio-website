@@ -27,7 +27,7 @@
 	{#each bootLines.slice(0, visible) as line (line)}
 		<p>{line}</p>
 	{/each}
-	<p class="cursor">▮</p>
+	<p class="cursor"></p>
 </div>
 
 <style>
@@ -53,8 +53,19 @@
 		color: var(--muted);
 	}
 
+	/* Drawn rather than typed: U+25AE sits inside the symbols2 unicode-range
+	   but is not actually in that subset, so as a character it always fell
+	   back to a system font at some other width. */
+	.cursor::before {
+		content: '';
+		display: inline-block;
+		width: 0.6em;
+		height: 1em;
+		vertical-align: -0.15em;
+		background: var(--accent);
+	}
+
 	.cursor {
-		color: var(--accent);
 		animation: blink 1s step-start infinite;
 	}
 
