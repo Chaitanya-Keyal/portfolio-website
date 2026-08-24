@@ -23,8 +23,11 @@ the shell, the text endpoints and the man pages:
 ```
 src/lib/
   data/       nothing but the information: profile · education · experience · projects · site · terminal
+  data/blog/  posts, one markdown file each
   types.ts    the shapes of everything in data/
   content.ts  lookups over it, by slug, by route, the bare domain
+  visibility.ts  what a listing shows, and in what order
+  blog.ts     loads data/blog at build time
   text/       plain-text renderers: mandoc, resume
   tui/        the shell: filesystem, commands, completion, theme, components
   components/ Meta, ManPage, PixelPortrait (generated)
@@ -32,6 +35,27 @@ src/lib/
 
 Adding a project or a role adds its page, its rail link, its man page and its
 sitemap entry with it. No copy is hardcoded in a route.
+
+## Writing a post
+
+Drop a markdown file in `src/lib/data/blog/`. Its filename is its URL.
+
+```markdown
+---
+title: 'What I built and why'
+date: 2026-08-17
+summary: One line, used in the index, the tab and the social card.
+---
+
+Prose. Headings from `##` down.
+```
+
+All three fields are required and the build fails without them. Add
+`hidden: true` to keep it a draft: it stays out of the rail, the index, the
+sitemap and llms.txt, while its URL still works so it can be read and shared.
+
+That same flag works on a project or a role, and `ls -a` in the shell lists
+whatever is hidden.
 
 ## Develop
 

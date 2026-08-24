@@ -7,6 +7,7 @@
 	const sections = pages.filter((p) => p.rail);
 
 	function children(section: (typeof pages)[number]) {
+		if (section.collapsed) return [];
 		return listed(pages.filter((p) => !p.rail && !p.file && p.path.startsWith(`${section.path}/`)));
 	}
 

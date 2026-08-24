@@ -1,7 +1,7 @@
 <script lang="ts">
 	interface Props {
 		/** Which glyph to draw. */
-		name: 'external' | 'contrast';
+		name: 'external' | 'contrast' | 'terminal' | 'reader';
 	}
 	let { name }: Props = $props();
 </script>
@@ -27,6 +27,17 @@
 		<path d="M9.5 3h3.5v3.5" />
 		<path d="M13 3 7.5 8.5" />
 		<path d="M12 10v2.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-8a.5.5 0 0 1 .5-.5H6" />
+	{:else if name === 'terminal'}
+		<!-- A terminal: a window with a prompt caret and a cursor line. -->
+		<rect x="1.75" y="2.75" width="12.5" height="10.5" rx="1" />
+		<path d="M4.5 6.5 6.5 8l-2 1.5" />
+		<path d="M8.5 10h3" />
+	{:else if name === 'reader'}
+		<!-- A document: a page with lines of text on it. -->
+		<rect x="3" y="1.75" width="10" height="12.5" rx="1" />
+		<path d="M5.5 5h5" />
+		<path d="M5.5 8h5" />
+		<path d="M5.5 11h3" />
 	{:else if name === 'contrast'}
 		<!-- Light and dark: a circle with one half filled. -->
 		<circle cx="8" cy="8" r="5.5" />

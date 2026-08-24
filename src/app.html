@@ -53,6 +53,12 @@
 				if (theme) document.documentElement.dataset.theme = theme;
 				const crt = localStorage.getItem('crt');
 				if (crt) document.documentElement.dataset.crt = crt;
+				// A shared post opens as a document, not as someone else's desktop.
+				// Settled here so the first paint is already the right chrome.
+				if (/\/blog\/[^/]+$/.test(location.pathname)) {
+					document.documentElement.dataset.view =
+						localStorage.getItem('view') === 'terminal' ? 'terminal' : 'reader';
+				}
 			} catch {}
 		</script>
 		%sveltekit.head%

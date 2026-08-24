@@ -241,8 +241,11 @@ a:focus-visible {
 /* CRT: aperture grille + scanlines + vignette + a slow breathe and roll band.
    Both layers are will-change-promoted so scrolling never repaints them.
    4px stripe period survives fractional display scaling without moire crawl.
-   On by default; `:crt` toggles (data-crt='off'). */
-:root:not([data-crt='off']):not([data-theme='paper']) body::before {
+   On by default; `:crt` toggles (data-crt='off'). Read mode opts out as a
+   fourth condition rather than overriding afterwards: a later rule would have
+   to out-specify three :not()s, and the stored preference stays untouched so
+   leaving a post brings back whatever was set. */
+:root:not([data-crt='off']):not([data-theme='paper']):not([data-view='reader']) body::before {
 	content: '';
 	position: fixed;
 	inset: 0;
@@ -261,7 +264,7 @@ a:focus-visible {
 	animation: crt-breathe 5s ease-in-out infinite;
 }
 
-:root:not([data-crt='off']):not([data-theme='paper']) body::after {
+:root:not([data-crt='off']):not([data-theme='paper']):not([data-view='reader']) body::after {
 	content: '';
 	position: fixed;
 	left: 0;

@@ -4,6 +4,7 @@ import { education } from './education';
 import { profile } from './profile';
 import { experience } from './experience';
 import { projects } from './projects';
+import { posts } from '$lib/blog';
 
 /** Every navigable page: the one list behind the rail, the shell's filesystem,
  * the sitemap, the 404 suggestions and the per-page metadata. Sub-pages are
@@ -44,6 +45,17 @@ export const pages: Page[] = [
 		command: 'ls projects/'
 	},
 	...projects.map((p) => ({ name: p.slug, path: `/projects/${p.slug}`, hidden: p.hidden })),
+	{
+		name: 'blog',
+		path: '/blog',
+		rail: 'blog/',
+		short: 'blog',
+		collapsed: true,
+		title: 'blog',
+		description: 'Notes on open source, Bitcoin tooling and backend work.',
+		command: 'ls blog/'
+	},
+	...posts.map((p) => ({ name: p.slug, path: `/blog/${p.slug}`, hidden: p.hidden })),
 	{
 		name: 'education',
 		path: '/education',

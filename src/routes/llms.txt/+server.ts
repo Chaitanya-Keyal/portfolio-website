@@ -1,3 +1,4 @@
+import { posts } from '$lib/blog';
 import { listed } from '$lib/visibility';
 import { education } from '$lib/data/education';
 import { profile } from '$lib/data/profile';
@@ -19,6 +20,16 @@ function build(): string {
 			(p) => `- [${p.name}](${profile.site}/projects/${p.slug}): ${p.oneLiner}`
 		),
 		'',
+		...(listed(posts).length
+			? [
+					'## Writing',
+					'',
+					...listed(posts).map(
+						(p) => `- [${p.title}](${profile.site}/blog/${p.slug}): ${p.summary}`
+					),
+					''
+				]
+			: []),
 		'## Links',
 		'',
 		`- [Work history](${profile.site}/work)`,

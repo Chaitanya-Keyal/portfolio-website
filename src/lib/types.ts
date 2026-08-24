@@ -39,6 +39,18 @@ export interface Experience {
 	related: { label: string; href: string }[];
 }
 
+/** A post's frontmatter, as written at the top of its .md file. */
+export interface PostMeta {
+	title: string;
+	/** ISO date, YYYY-MM-DD. Sorted on, and printed. */
+	date: string;
+	/** One line, for the index, the tab and the social card. */
+	summary: string;
+	/** A draft: listed nowhere, but its URL works so it can be read and shared
+	 * before it is finished. Same flag the rest of the site uses. */
+	hidden?: boolean;
+}
+
 export interface Page {
 	name: string;
 	path: string;
@@ -48,6 +60,10 @@ export interface Page {
 	rail?: string;
 	/** Compact label for the phone tab bar. */
 	short?: string;
+	/** A rail section that stays shut: the folder is listed, its contents are
+	 * not. For a section whose children are titles rather than names, where the
+	 * list would be long and would say little. */
+	collapsed?: boolean;
 	/** A plain file, not a page: `cat`-able, not `cd`-able. */
 	file?: boolean;
 	/** Where the file actually lives, when that differs from its shell path.

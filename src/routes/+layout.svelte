@@ -9,6 +9,9 @@
 	import StatusBar from '$lib/tui/StatusBar.svelte';
 	import Shell from '$lib/tui/Shell.svelte';
 	import Boot from '$lib/tui/Boot.svelte';
+	import Reader from '$lib/components/Reader.svelte';
+	import Icon from '$lib/components/Icon.svelte';
+	import { browser } from '$app/environment';
 	import { currentTheme, setTheme, themes, DEFAULT_THEME, type Theme } from '$lib/tui/theme';
 
 	let { children } = $props();
@@ -29,6 +32,48 @@
 	// Home is a live session: the fetch output sits at the top with the prompt
 	// under it. Everywhere else the shell docks to the bottom of the frame.
 	const atHome = $derived(cwd === '/');
+
+	// A post is a document by default: someone opening a shared link should get
+	// the writing, not a stranger's desktop. The choice is settled before the
+	// first paint by the head script, so reading it here rather than in onMount
+	// means the first client render is already the chrome the reader asked for.
+	const isPost = $derived(page.route.id === '/blog/[slug]');
+	function storedView(): 'reader' | 'terminal' {
+		if (!browser) return 'reader';
+		try {
+			// The preference itself, not the pre-paint mirror of it: that attribute
+			// is only set on a post URL, so arriving from anywhere else would read
+			// as unset and quietly ignore a choice already made.
+			return localStorage.getItem('view') === 'terminal' ? 'terminal' : 'reader';
+		} catch {
+			return 'reader';
+		}
+	}
+	let view = $state<'reader' | 'terminal'>(storedView());
+	// Except when you got here by typing. Someone driving the shell asked for a
+	// post by path and is mid-session; dropping the terminal out from under them
+	// would be the interface answering a different question. Anyone else, a
+	// shared link or a click through the site, gets the document.
+	let shellNav = false;
+	let cameFromShell = $state(false);
+	const reading = $derived(isPost && view === 'reader' && !cameFromShell);
+
+	function setView(next: 'reader' | 'terminal') {
+		view = next;
+		// An explicit choice outranks how you arrived.
+		cameFromShell = false;
+		try {
+			localStorage.setItem('view', next);
+		} catch {}
+	}
+
+	// The flag is only true while a post is actually being read, so leaving one
+	// takes the CRT overlay off with it rather than suppressing it site-wide.
+	$effect(() => {
+		const root = document.documentElement;
+		if (reading) root.dataset.view = 'reader';
+		else delete root.dataset.view;
+	});
 
 	/** Lets the frame paint again. Held back from before the first paint. */
 	function reveal() {
@@ -79,6 +124,11 @@
 	// post-navigation scroll reset never reaches it; without this, the next
 	// page opens at the previous page's scroll offset.
 	afterNavigate(() => {
+		// Only a navigation the shell started counts. A link click, a shared
+		// link or a reload all leave this false, which is the default: read.
+		cameFromShell = shellNav;
+		shellNav = false;
+
 		document.getElementById('main')?.scrollTo(0, 0);
 
 		const el = shell?.element();
@@ -100,6 +150,7 @@
 	// keepFocus: navigating from the prompt (`cd`, `man`) must not kick you out
 	// of the terminal mid-session. Files never arrive here; `cat` opens those.
 	function navigate(to: string) {
+		shellNav = true;
 		goto(base + to, { keepFocus: true });
 	}
 
@@ -165,38 +216,69 @@
 
 <a class="skip no-print" href="#main">skip to content</a>
 
-<div
-	class="frame"
-	class:power-on={poweringOn}
-	data-home={atHome || undefined}
-	onanimationend={() => (poweringOn = false)}
->
-	<Rail />
-	<div class="pane pane-main">
-		<span class="pane-title" aria-hidden="true">{cwd === '/' ? '~' : `~${cwd}`}</span>
-		<main id="main" tabindex="-1">
-			{@render children()}
-		</main>
+{#if reading}
+	<Reader onterminal={() => setView('terminal')}>
+		{@render children()}
+	</Reader>
+{:else}
+	<div
+		class="frame"
+		class:power-on={poweringOn}
+		data-home={atHome || undefined}
+		onanimationend={() => (poweringOn = false)}
+	>
+		<Rail />
+		<div class="pane pane-main">
+			<span class="pane-title" aria-hidden="true">{cwd === '/' ? '~' : `~${cwd}`}</span>
+			<main id="main" tabindex="-1">
+				{#if isPost}
+					<!-- The way back into the document view, mirroring the one the
+					     reader has out of it. -->
+					<button class="to-reader" type="button" onclick={() => setView('reader')}>
+						<Icon name="reader" />read mode
+					</button>
+				{/if}
+				{@render children()}
+			</main>
+		</div>
+		<Shell
+			bind:this={shell}
+			{cwd}
+			{previous}
+			session={atHome}
+			onnav={navigate}
+			onopen={(url) => (location.href = base + url)}
+			ontheme={applyTheme}
+			oncrt={toggleCrt}
+			onfocuschange={(focused) => (shellFocused = focused)}
+		/>
+		<StatusBar {theme} {mode} onthemecycle={cycleTheme} />
 	</div>
-	<Shell
-		bind:this={shell}
-		{cwd}
-		{previous}
-		session={atHome}
-		onnav={navigate}
-		onopen={(url) => (location.href = base + url)}
-		ontheme={applyTheme}
-		oncrt={toggleCrt}
-		onfocuschange={(focused) => (shellFocused = focused)}
-	/>
-	<StatusBar {theme} {mode} onthemecycle={cycleTheme} />
-</div>
+{/if}
 
 {#if booting}
 	<Boot ondone={finishBoot} />
 {/if}
 
 <style>
+	.to-reader {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		float: right;
+		margin-left: 16px;
+		background: none;
+		border: 0;
+		padding: 0;
+		font: inherit;
+		color: var(--muted);
+		cursor: pointer;
+	}
+
+	.to-reader:hover {
+		color: var(--accent);
+	}
+
 	.skip {
 		position: absolute;
 		left: -9999px;

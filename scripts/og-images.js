@@ -2,12 +2,37 @@
 // window, into static/og/. Run with `bun run og` (bun resolves the TS imports).
 import satori from 'satori';
 import { Resvg } from '@resvg/resvg-js';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 
 import { profile } from '../src/lib/data/profile.ts';
 import { pages } from '../src/lib/data/site.ts';
 import { host } from '../src/lib/data/terminal.ts';
 import { allDocs } from '../src/lib/text/mandoc.ts';
+
+// Posts reach the app through import.meta.glob, which only exists inside Vite,
+// so their frontmatter is read straight off disk here. Drafts get a card too:
+// unlisted still means shareable, and a shared link should preview.
+const BLOG_DIR = 'src/lib/data/blog';
+
+function readPosts() {
+	let files;
+	try {
+		files = readdirSync(BLOG_DIR).filter((name) => name.endsWith('.md'));
+	} catch {
+		return []; // no posts yet
+	}
+	return files.map((name) => {
+		const source = readFileSync(`${BLOG_DIR}/${name}`, 'utf8');
+		const block = source.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+		if (!block) throw new Error(`${BLOG_DIR}/${name} has no frontmatter`);
+		const field = (key) => {
+			const line = block[1].match(new RegExp(`^${key}:\\s*(.+)$`, 'm'));
+			// Quotes are optional in YAML, so strip them if they are there.
+			return line ? line[1].trim().replace(/^["'](.*)["']$/, '$1') : '';
+		};
+		return { slug: name.replace(/\.md$/, ''), title: field('title'), summary: field('summary') };
+	});
+}
 
 const COLORS = {
 	bezel: '#16161e',
@@ -38,6 +63,12 @@ const cards = [
 		command: `man ${doc.slug}`,
 		title: doc.name,
 		detail: doc.oneLiner
+	})),
+	...readPosts().map((post) => ({
+		key: `blog-${post.slug}`,
+		command: `cat blog/${post.slug}`,
+		title: post.title,
+		detail: post.summary
 	}))
 ];
 
