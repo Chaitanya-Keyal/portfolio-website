@@ -2,7 +2,7 @@
 // window, into static/og/. Run with `bun run og` (bun resolves the TS imports).
 import satori from 'satori';
 import { Resvg } from '@resvg/resvg-js';
-import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readdirSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs';
 
 import { profile } from '../src/lib/data/profile.ts';
 import { pages } from '../src/lib/data/site.ts';
@@ -58,17 +58,22 @@ const cards = [
 			title: page.path === '/' ? profile.name : page.title,
 			detail: page.path === '/' ? profile.tagline : page.description
 		})),
-	...allDocs.map((doc) => ({
-		key: (doc.category === 'PROJECTS' ? 'projects-' : 'work-') + doc.slug,
-		command: `man ${doc.slug}`,
-		title: doc.name,
-		detail: doc.oneLiner
-	})),
+	...allDocs.map((doc) => {
+		const dir = doc.category === 'PROJECTS' ? 'projects' : 'work';
+		return {
+			key: `${dir}-${doc.slug}`,
+			command: `cat ${dir}/${doc.slug}`,
+			title: doc.name,
+			detail: doc.oneLiner
+		};
+	}),
+	// Title alone. A post title runs to three lines on its own, and a slug long
+	// enough to wrap the prompt line above it left nothing for the summary and
+	// pushed the footer off the card. The title is the only part worth reading
+	// at thumbnail size anyway.
 	...readPosts().map((post) => ({
 		key: `blog-${post.slug}`,
-		command: `cat blog/${post.slug}`,
-		title: post.title,
-		detail: post.summary
+		title: post.title
 	}))
 ];
 
@@ -130,15 +135,17 @@ function card({ command, title, detail }) {
 										flexGrow: 1
 									},
 									children: [
-										text(`${host}:~$ ${command}`, { fontSize: '30px', color: COLORS.green }),
+										command &&
+											text(`${host}:~$ ${command}`, { fontSize: '30px', color: COLORS.green }),
 										text(title, { fontSize: '64px', fontWeight: 700, color: COLORS.fg }),
-										text(detail, { fontSize: '32px', color: COLORS.muted, lineHeight: 1.4 }),
+										detail &&
+											text(detail, { fontSize: '32px', color: COLORS.muted, lineHeight: 1.4 }),
 										{ type: 'div', props: { style: { flexGrow: 1 } } },
 										text(profile.site.replace(/^https?:\/\//, ''), {
 											fontSize: '26px',
 											color: COLORS.accent
 										})
-									]
+									].filter(Boolean)
 								}
 							}
 						]
@@ -150,6 +157,18 @@ function card({ command, title, detail }) {
 }
 
 mkdirSync('static/og', { recursive: true });
+
+// Drop cards whose page is gone. Without this they pile up locally: a renamed
+// project leaves its old card behind, and the folder stops matching the site.
+// CI never saw it, since static/og is gitignored and every run starts empty.
+const wanted = new Set(cards.map((entry) => `${entry.key}.png`));
+for (const name of readdirSync('static/og')) {
+	if (name.endsWith('.png') && !wanted.has(name)) {
+		unlinkSync(`static/og/${name}`);
+		console.log(`removed static/og/${name}`);
+	}
+}
+
 for (const entry of cards) {
 	const svg = await satori(card(entry), {
 		width: 1200,

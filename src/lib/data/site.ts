@@ -63,7 +63,7 @@ export const pages: Page[] = [
 		short: 'edu',
 		title: 'education',
 		description: `${education.degree}, ${education.schoolShort}, class of ${education.classOf}.`,
-		command: 'cd education'
+		command: 'cat education'
 	},
 	{
 		name: 'resume',
@@ -72,7 +72,7 @@ export const pages: Page[] = [
 		short: 'cv',
 		title: 'resume',
 		description: 'Resume in plain text, PDF, or piped straight into your terminal.',
-		command: 'cat resume/resume.txt'
+		command: 'cd resume'
 	},
 	{ name: 'resume.txt', path: '/resume/resume.txt', url: '/resume.txt', file: true },
 	{ name: 'resume.pdf', path: '/resume/resume.pdf', url: '/resume.pdf', file: true, binary: true }
