@@ -1,7 +1,10 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { formatDate, posts } from './blog';
+import { formatDate, postBySlug, posts } from './blog';
+import { pageAt } from './content';
 import { pages } from './data/site';
+import { run } from './tui/commands';
+import { listed } from './visibility';
 
 /** Posts are files on disk rather than a data structure, so these cover the
  * machinery around them: the section they hang off, the punctuation they are
@@ -68,5 +71,62 @@ describe('formatDate', () => {
 		// Parsed as UTC on purpose: `new Date('2026-01-01')` in a negative
 		// offset would otherwise print 31 Dec.
 		expect(formatDate('2026-01-01')).toBe('1 Jan 2026');
+	});
+});
+
+/** With a post actually on disk, the machinery above should have turned it into
+ * a page, a shell path and a listing entry. */
+describe('posts', () => {
+	it('loads every .md file in data/blog with its frontmatter', () => {
+		expect(posts.length).toBeGreaterThan(0);
+		for (const post of posts) {
+			expect(post.slug).toMatch(/^[a-z0-9-]+$/);
+			expect(post.title).toBeTruthy();
+			expect(post.summary).toBeTruthy();
+			// Coerced to a plain ISO day, whether YAML gave a string or a Date.
+			expect(post.date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+			expect(typeof post.render).toBe('function');
+		}
+	});
+
+	it('sorts newest first', () => {
+		const dates = posts.map((p) => p.date);
+		expect([...dates].sort().reverse()).toEqual(dates);
+	});
+
+	it('finds a post by slug, and nothing by a slug that is not one', () => {
+		expect(postBySlug(posts[0].slug)?.title).toBe(posts[0].title);
+		expect(postBySlug('not-a-post')).toBeUndefined();
+	});
+});
+
+describe('a post on the site', () => {
+	const post = posts[0];
+
+	it('is a page, so the sitemap and the shell both know it', () => {
+		expect(pageAt(`/blog/${post.slug}`)).toBeDefined();
+	});
+
+	it('is reachable from the shell like anything else', () => {
+		const out = run(`ls blog`, '/');
+		expect(out.kind === 'print' && out.lines[0]).toContain(post.slug);
+		expect(run(`cd blog/${post.slug}`, '/')).toEqual({
+			kind: 'nav',
+			to: `/blog/${post.slug}`
+		});
+		// A post is a leaf, so `cat` opens it rather than erroring.
+		expect(run(`cat blog/${post.slug}`, '/')).toEqual({
+			kind: 'nav',
+			to: `/blog/${post.slug}`
+		});
+	});
+
+	it('is listed only while it is not a draft', () => {
+		const drafts = posts.filter((p) => p.hidden);
+		expect(listed(posts)).toHaveLength(posts.length - drafts.length);
+		for (const draft of drafts) {
+			// Unlisted, but still a page: the URL has to work.
+			expect(pageAt(`/blog/${draft.slug}`)?.hidden).toBe(true);
+		}
 	});
 });
