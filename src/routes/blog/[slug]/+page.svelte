@@ -14,7 +14,9 @@
 	<header>
 		<h1>{post.title}</h1>
 		<p class="meta">
-			{formatDate(post.date)}{#if post.hidden}<span class="draft"> · draft</span>{/if}
+			<time datetime={post.date}>{formatDate(post.date)}</time>{#if post.hidden}<span class="draft">
+					· draft</span
+				>{/if}
 		</p>
 	</header>
 

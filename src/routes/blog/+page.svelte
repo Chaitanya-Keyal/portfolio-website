@@ -20,9 +20,8 @@
 					<a href="{base}/blog/{post.slug}">{post.slug}</a>
 					<div>
 						<p class="title">{post.title}</p>
-						<p class="line">
-							{post.summary} · <span class="date">{formatDate(post.date)}</span>
-						</p>
+						<time class="date" datetime={post.date}>{formatDate(post.date)}</time>
+						<p class="line">{post.summary}</p>
 					</div>
 				</li>
 			{/each}
@@ -48,19 +47,25 @@
 		display: grid;
 		grid-template-columns: 170px 1fr;
 		gap: 16px;
-		margin-bottom: 14px;
+		margin-bottom: 26px;
 	}
 
 	.title {
 		color: var(--fg);
 	}
 
-	.line {
-		color: var(--muted);
+	/* Its own line rather than trailing the summary, where it landed at
+	   whatever column the text happened to wrap on. Every date now starts at
+	   the same place, so the list can be scanned down. */
+	.date {
+		display: block;
+		color: var(--faint);
+		font-size: 0.8125rem;
+		margin: 2px 0 4px;
 	}
 
-	.date {
-		white-space: nowrap;
+	.line {
+		color: var(--muted);
 	}
 
 	.empty {
