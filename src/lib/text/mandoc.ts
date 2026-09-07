@@ -101,7 +101,7 @@ export function manLines(doc: ManDoc): string[] {
 		...doc.synopsis.flatMap((s) => wrap(s.value, `  ${s.label.padEnd(9)}`, ' '.repeat(11))),
 		'',
 		'DESCRIPTION',
-		...wrap(doc.description, '  ', '  '),
+		...wrap(toPlain(doc.description), '  ', '  '),
 		'',
 		doc.didTitle.toUpperCase(),
 		...doc.did.flatMap((d) => wrap(toPlain(d), '  • ', '    ')),

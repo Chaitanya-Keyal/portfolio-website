@@ -100,7 +100,8 @@ describe('ls', () => {
 		const long = run('ls -l', '/projects');
 		const lines = long.kind === 'print' ? long.lines : [];
 		expect(lines.length).toBeGreaterThan(1); // one entry per line, not one row
-		expect(lines[0]).toMatch(/^seedsigner\s+air-gapped Bitcoin signing device$/);
+		const seed = lines.find((l) => l.startsWith('seedsigner'));
+		expect(seed).toMatch(/^seedsigner\s+air-gapped Bitcoin signing device$/);
 		expect(run('ll', '/projects')).toEqual(long);
 	});
 

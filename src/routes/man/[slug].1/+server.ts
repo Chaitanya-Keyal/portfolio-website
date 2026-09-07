@@ -22,7 +22,7 @@ function roff(slug: string): string {
 		'.SH SYNOPSIS',
 		doc.synopsis.map((s) => `${s.label}: ${s.value}`).join('; ') + '.',
 		'.SH DESCRIPTION',
-		doc.description,
+		toPlain(doc.description),
 		`.SH "${doc.didTitle.toUpperCase()}"`
 	];
 	for (const item of doc.did) {

@@ -34,7 +34,8 @@
 
 	<section>
 		<h2>description</h2>
-		<p>{doc.description}</p>
+		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+		<p>{@html toHtml(doc.description)}</p>
 	</section>
 
 	<section>
