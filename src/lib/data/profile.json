@@ -3,7 +3,7 @@
 	"version": 1,
 	"basics": {
 		"name": "Chaitanya Keyal",
-		"label": "backend systems · ai agents · open source",
+		"label": "Backend Systems | AI Engineering | Open Source",
 		"email": "chaitanyakeyal@gmail.com",
 		"url": "https://okaybro.dev",
 		"summary": "AI engineering intern and open-source developer working on backend systems, AI agents, and Bitcoin tooling.",
@@ -21,37 +21,38 @@
 		],
 		"x": {
 			"handle": "okaybro",
-			"role": "AI engineering intern · open-source developer",
-			"status": "Open to Summer 2027 internships: AI agents · backend · Bitcoin",
+			"role": "AI engineering intern \u00b7 open-source developer",
+			"status": "Open to Summer 2027 internships: AI agents \u00b7 backend \u00b7 Bitcoin",
 			"repo": "https://github.com/Chaitanya-Keyal/portfolio-website",
-			"tagline": "backend systems · ai agents · open source"
+			"tagline": "backend systems \u00b7 ai agents \u00b7 open source"
 		}
 	},
 	"work": [
 		{
 			"id": "onfinance",
 			"name": "OnFinance AI",
+			"location": "Hybrid",
 			"description": "OnFinance builds an AI compliance platform for financial institutions. I mainly work on the agent side of it: pipelines that read regulation so compliance teams do not have to, and the plumbing that keeps autonomous agents reliable enough for production use.",
 			"positions": [
 				{
-					"id": "role",
+					"id": "intern",
 					"position": "AI Engineering Intern",
 					"startDate": "2025-06",
 					"highlights": [
 						{
-							"id": "h_0001",
+							"id": "h_onf_agents",
 							"text": "Built LangChain/LangGraph agents from scratch that automate circular analysis for various regulators like SEBI, RBI, AMFI, etc., cutting interpretation time by ~90% and saving 100+ hours per regulatory update."
 						},
 						{
-							"id": "h_0002",
+							"id": "h_onf_search",
 							"text": "Designed a search agent over 2000+ circulars and 500,000+ clauses that answers with citations instead of raw matches."
 						},
 						{
-							"id": "h_0003",
+							"id": "h_onf_pipelines",
 							"text": "Orchestrated end-to-end pipelines spanning document parsing, action-item generation, evidence review, and risk analysis."
 						},
 						{
-							"id": "h_0004",
+							"id": "h_onf_postgres",
 							"text": "Migrated the backend service to PostgreSQL from MongoDB, improving query performance by 2 to 3x."
 						}
 					]
@@ -70,35 +71,59 @@
 					"MongoDB"
 				],
 				"links": [],
-				"related": [],
-				"periodLabel": "Jun 2025 to present"
+				"related": []
 			}
 		},
 		{
-			"id": "summer-of-bitcoin",
+			"id": "sob",
 			"name": "Summer of Bitcoin",
+			"url": "https://github.com/SeedSigner/seedsigner",
+			"location": "Remote",
 			"description": "Summer of Bitcoin places students into open-source Bitcoin projects through a competitive selection. About 50 to 60 students are selected globally each year, from roughly 5,000 applicants. I was selected twice, both times to work on SeedSigner, an air-gapped Bitcoin signing device.",
 			"positions": [
 				{
-					"id": "role",
+					"id": "2026",
 					"position": "Open Source Developer",
-					"dateLabel": "Summer 2025 and Summer 2026",
+					"startDate": "2026-05",
 					"highlights": [
 						{
-							"id": "h_0005",
+							"id": "h_sob_top",
 							"text": "Now one of the top contributors to SeedSigner, involved in 80+ PRs and issues."
 						},
 						{
-							"id": "h_0006",
+							"id": "h_sob_stayed",
 							"text": "Stayed on between and after both terms: features, bugfixes, release chores, PR review and translations."
 						},
 						{
-							"id": "h_0007",
+							"id": "h_sob26_l10n",
 							"text": "2026 term: translation automation and the review workflow around it."
 						},
 						{
-							"id": "h_0008",
+							"id": "h_sob26_ci",
+							"text": "Built CI tooling to detect missing and stale translations across supported languages, catching errors pre-review and cutting manual maintainer effort.",
+							"hidden": true
+						}
+					]
+				},
+				{
+					"id": "2025",
+					"position": "Open Source Developer",
+					"startDate": "2025-05",
+					"endDate": "2025-08",
+					"highlights": [
+						{
+							"id": "h_sob25_bip85",
 							"text": "2025 term: extended BIP-85 support, so child seeds load directly on-device."
+						},
+						{
+							"id": "h_sob25_refactor",
+							"text": "Refactored the Python codebase for maintainability and shipped UI alerts warning users of high transaction fees.",
+							"hidden": true
+						},
+						{
+							"id": "h_sob25_ci",
+							"text": "Hardened CI/CD pipelines and resolved targeted bugs, improving build reliability and code quality across releases.",
+							"hidden": true
 						}
 					]
 				}
@@ -106,6 +131,7 @@
 			"x": {
 				"slug": "summer-of-bitcoin",
 				"oneLiner": "open-source Bitcoin development on SeedSigner",
+				"periodLabel": "Summer 2025 and Summer 2026",
 				"stack": ["Python", "Bitcoin", "GitHub Actions", "Raspberry Pi"],
 				"links": [
 					{
@@ -118,31 +144,31 @@
 						"label": "seedsigner",
 						"href": "/projects/seedsigner"
 					}
-				],
-				"periodLabel": "Summer 2025 and Summer 2026"
+				]
 			}
 		},
 		{
 			"id": "sellersetu",
 			"name": "SellerSetu",
+			"location": "Remote",
 			"description": "SellerSetu ran commerce infrastructure on ONDC, India's open network for digital commerce. I worked on the backend and their agentic booking system.",
 			"positions": [
 				{
-					"id": "role",
+					"id": "intern",
 					"position": "Software Engineering Intern",
 					"startDate": "2024-03",
 					"endDate": "2025-03",
 					"highlights": [
 						{
-							"id": "h_0009",
+							"id": "h_ss_micro",
 							"text": "Refactored the ONDC monolith into Go/Django microservices handling 10k+ daily transactions at 2x the previous throughput."
 						},
 						{
-							"id": "h_000a",
+							"id": "h_ss_latency",
 							"text": "Cut API latency from ~5s to ~1s through architectural changes and resource management."
 						},
 						{
-							"id": "h_000b",
+							"id": "h_ss_agent",
 							"text": "Built an agentic booking system integrating ONDC, Uber, and Rapido through browser automation."
 						}
 					]
@@ -153,30 +179,33 @@
 				"oneLiner": "ONDC platform at 10k+ daily transactions",
 				"stack": ["Go", "Django", "PostgreSQL", "LangChain", "LangGraph"],
 				"links": [],
-				"related": [],
-				"periodLabel": "Mar 2024 to Mar 2025"
+				"related": []
 			}
-		},
+		}
+	],
+	"volunteer": [
 		{
 			"id": "crux",
 			"name": "cruX",
+			"url": "https://github.com/crux-bphc",
+			"location": "Hyderabad, India",
 			"description": "cruX is the developer society at BITS Hyderabad. We build projects that interest us or help students on campus, and try to improve the programming culture.",
 			"positions": [
 				{
-					"id": "role",
+					"id": "member",
 					"position": "Member",
 					"startDate": "2024-01",
 					"highlights": [
 						{
-							"id": "h_000c",
+							"id": "h_crux_bitsgpt",
 							"text": "Built BitsGPT, a multi-agent RAG chatbot (LangGraph + vector DB) for academic queries."
 						},
 						{
-							"id": "h_000d",
+							"id": "h_crux_chrono",
 							"text": "Contributed to Chronofactorem, with an Elasticsearch-powered search service."
 						},
 						{
-							"id": "h_000e",
+							"id": "h_crux_gcal",
 							"text": "Built Chrono2GCal, a Python tool auto-syncing semester timetables to Google Calendar."
 						}
 					]
@@ -205,18 +234,41 @@
 						"label": "chrono2gcal",
 						"href": "/projects/chrono2gcal"
 					}
-				],
-				"periodLabel": "Jan 2024 to present"
+				]
+			}
+		},
+		{
+			"id": "cal",
+			"name": "Central Analytical Laboratory",
+			"url": "https://github.com/CAL-BPHC/onlineCAL",
+			"location": "Hyderabad, India",
+			"positions": [
+				{
+					"id": "ta",
+					"position": "Undergraduate Teaching Assistant",
+					"startDate": "2024-08",
+					"highlights": [
+						{
+							"id": "h_cal_portal",
+							"text": "Maintained the [online instrument booking portal](https://github.com/CAL-BPHC/onlineCAL), improving reliability for university researchers."
+						}
+					]
+				}
+			],
+			"x": {
+				"slug": "cal",
+				"oneLiner": "instrument booking portal for campus researchers",
+				"portfolio": false
 			}
 		}
 	],
-	"volunteer": [],
 	"education": [
 		{
-			"id": "bits-pilani-hyderabad-campus",
-			"institution": "Birla Institute of Technology and Science Pilani, Hyderabad Campus",
+			"id": "bits",
+			"institution": "Birla Institute of Technology and Science, Pilani",
+			"location": "Hyderabad, India",
 			"studyType": "B.E.",
-			"area": "B.E. Computer Science + M.Sc. Mathematics",
+			"area": "Computer Science",
 			"endDate": "2028",
 			"courses": [
 				"Data Structures & Algorithms",
@@ -228,9 +280,10 @@
 			],
 			"highlights": [],
 			"x": {
+				"school": "Birla Institute of Technology and Science Pilani, Hyderabad Campus",
 				"institutionShort": "BITS Pilani, Hyderabad Campus",
+				"degreeLine": "B.E. Computer Science, M.Sc. Mathematics, Minor in Data Science",
 				"degree": "B.E. Computer Science + M.Sc. Mathematics",
-				"degreeLine": "B.E. Computer Science + M.Sc. Mathematics",
 				"short": "CS + Math",
 				"minor": "Data Science",
 				"summary": "dual degree",
@@ -266,27 +319,27 @@
 			"startDate": "2025-04",
 			"highlights": [
 				{
-					"id": "h_000f",
+					"id": "h_ss_l10n",
 					"text": "Automating the localization workflow across the code and translation repos, so a change to the source strings no longer means routine work for translators, contributors and maintainers."
 				},
 				{
-					"id": "h_000g",
+					"id": "h_ss_ci",
 					"text": "Built CI tooling that detects missing and stale translations across the 21 supported languages, catching errors before review rather than after it."
 				},
 				{
-					"id": "h_000h",
+					"id": "h_ss_screens",
 					"text": "Added a per-PR screenshot review page, so a translation can be judged in the screen it actually lands in."
 				},
 				{
-					"id": "h_000i",
+					"id": "h_ss_bip85",
 					"text": "Extended BIP-85 support to enable direct child seed loading on-device."
 				},
 				{
-					"id": "h_000j",
+					"id": "h_ss_refactor",
 					"text": "Refactored the Python codebase for maintainability and shipped UI alerts warning users of abnormally high transaction fees."
 				},
 				{
-					"id": "h_000k",
+					"id": "h_ss_cicd",
 					"text": "Hardened the CI/CD pipelines and fixed targeted bugs, improving build reliability across releases."
 				}
 			],
@@ -321,15 +374,15 @@
 			"endDate": "2026-08",
 			"highlights": [
 				{
-					"id": "h_000l",
+					"id": "h_sb_tax",
 					"text": "Computes tax the conservative way under s.115BBH: flat 30% plus cess, cost of acquisition only, losses ring-fenced, network fees neither taxed nor deducted."
 				},
 				{
-					"id": "h_000m",
+					"id": "h_sb_derive",
 					"text": "Derives the third value from any two of amount, rate and fiat value, and autofills the timestamp, amounts and fee from a pasted on-chain txid."
 				},
 				{
-					"id": "h_000n",
+					"id": "h_sb_rates",
 					"text": "Fetches the historical rate for backdated entries itself, converting through USD or EUR when that is the only quote available."
 				}
 			],
@@ -355,11 +408,11 @@
 			"startDate": "2024-08",
 			"highlights": [
 				{
-					"id": "h_000o",
+					"id": "h_oc_maintain",
 					"text": "Maintain a real system with real users: approval workflows, pricing rules, email notifications."
 				},
 				{
-					"id": "h_000p",
+					"id": "h_oc_cicd",
 					"text": "Set up automated CI/CD so deploys stopped being manual events."
 				}
 			],
@@ -382,16 +435,24 @@
 			"url": "https://github.com/Chaitanya-Keyal/asynchrony",
 			"entity": "Hackathon winner, INR 2,00,000",
 			"keywords": ["Python", "LangChain", "SQL"],
-			"startDate": "2024-09",
-			"endDate": "2024-09",
 			"highlights": [
 				{
-					"id": "h_000q",
+					"id": "h_as_winner",
+					"text": "**Winner - 1st Place (INR 2,00,000):** Built an autonomous agent translating natural language to complex SQL.",
+					"hidden": true
+				},
+				{
+					"id": "h_as_schema",
 					"text": "Engineered dynamic schema parsing so the agent adapts to changing database structures."
 				},
 				{
-					"id": "h_000r",
+					"id": "h_as_classify",
 					"text": "Accurately classifies user requests and generates syntax-valid SQL queries for precise personal financial data retrieval."
+				},
+				{
+					"id": "h_as_github",
+					"text": "GitHub: [github.com/Chaitanya-Keyal/asynchrony](https://github.com/Chaitanya-Keyal/asynchrony)",
+					"hidden": true
 				}
 			],
 			"x": {
@@ -413,15 +474,13 @@
 			"url": "https://github.com/crux-bphc/bitsgpt-rewrite",
 			"entity": "cruX, BITS Hyderabad programming club",
 			"keywords": ["Python", "LangGraph", "Vector DBs"],
-			"startDate": "2024",
-			"endDate": "2024",
 			"highlights": [
 				{
-					"id": "h_000s",
+					"id": "h_bg_graph",
 					"text": "Architected the LangGraph graph: classifier -> specialized agents -> shared tools -> conversation memory."
 				},
 				{
-					"id": "h_000t",
+					"id": "h_bg_rag",
 					"text": "Grounded answers in campus documents through retrieval, with context-aware follow-ups."
 				}
 			],
@@ -445,15 +504,13 @@
 			"url": "https://github.com/crux-bphc/search-service",
 			"entity": "cruX, BITS Hyderabad programming club",
 			"keywords": ["Python", "Elasticsearch", "Docker"],
-			"startDate": "2024",
-			"endDate": "2024",
 			"highlights": [
 				{
-					"id": "h_000u",
+					"id": "h_cs_index",
 					"text": "Indexes the entire university course catalog and student timetables for sub-second retrieval."
 				},
 				{
-					"id": "h_000v",
+					"id": "h_cs_query",
 					"text": "Designed the Elasticsearch indexing and query layer enabling relevant search results for complex queries."
 				}
 			],
@@ -485,19 +542,19 @@
 			"endDate": "2026",
 			"highlights": [
 				{
-					"id": "h_000w",
+					"id": "h_bh_roi",
 					"text": "Isolates the region of interest by thresholding saturation in HSV, refining the mask with morphological opening and closing, then taking the largest contour."
 				},
 				{
-					"id": "h_000x",
+					"id": "h_bh_glare",
 					"text": "Detects glare by brightness and repaints it from the average of the surrounding unaffected pixels, so a reflection cannot skew the reading."
 				},
 				{
-					"id": "h_000y",
+					"id": "h_bh_crop",
 					"text": "Crops that region to a circle, so every sample is measured over the same shape however the photo was framed."
 				},
 				{
-					"id": "h_000z",
+					"id": "h_bh_classify",
 					"text": "Applies a per-substrate formula to the separated RGB channels and classifies the result against calibrated thresholds."
 				}
 			],
@@ -527,19 +584,19 @@
 			"startDate": "2023",
 			"highlights": [
 				{
-					"id": "h_0010",
+					"id": "h_cg_pull",
 					"text": "Pulls the timetable from Chronofactorem directly, so a student supplies only the four-character ID."
 				},
 				{
-					"id": "h_0011",
+					"id": "h_cg_seats",
 					"text": "Parses the seating-arrangement PDFs the timetable division publishes to find each student allotted exam room."
 				},
 				{
-					"id": "h_0012",
+					"id": "h_cg_holidays",
 					"text": "Clears classes on holidays and exam days, rather than leaving a calendar that quietly disagrees with the semester."
 				},
 				{
-					"id": "h_0013",
+					"id": "h_cg_config",
 					"text": "Reads colours, reminders, titles and descriptions from a JSON file, and bulk-deletes by filter when a semester changes."
 				}
 			],
@@ -567,19 +624,19 @@
 			"endDate": "2023",
 			"highlights": [
 				{
-					"id": "h_0014",
+					"id": "h_ar_protocol",
 					"text": "Designed the wire protocol carrying room and game events between the server and every connected player."
 				},
 				{
-					"id": "h_0015",
+					"id": "h_ar_rules",
 					"text": "Implemented full Monopoly and Chess rules, and the shared state each client has to be kept in step with."
 				},
 				{
-					"id": "h_0016",
+					"id": "h_ar_accounts",
 					"text": "Built accounts, profile pictures and lifetime statistics behind a Flask API backed by MySQL."
 				},
 				{
-					"id": "h_0017",
+					"id": "h_ar_theme",
 					"text": "Implemented a custom dark theme for Tkinter, and designed the entire UI with custom widgets."
 				}
 			],
@@ -603,8 +660,40 @@
 			"keywords": ["Python", "TypeScript", "Go", "C/C++", "Java"]
 		},
 		{
+			"id": "frameworks",
+			"name": "Frameworks",
+			"keywords": ["Django", "FastAPI", "LangChain", "LangGraph", "Flask", "Next.js", "React"],
+			"x": {
+				"hidden": true
+			}
+		},
+		{
+			"id": "databases",
+			"name": "Databases",
+			"keywords": ["PostgreSQL", "MySQL", "MongoDB", "Redis", "SQLite", "Elasticsearch"],
+			"x": {
+				"hidden": true
+			}
+		},
+		{
+			"id": "devops",
+			"name": "DevOps & Cloud",
+			"keywords": ["Docker", "AWS", "GCP", "Azure", "Git", "Linux", "Nginx"],
+			"x": {
+				"hidden": true
+			}
+		},
+		{
+			"id": "specializations",
+			"name": "Specializations",
+			"keywords": ["AI Agents", "RAG Pipelines", "Microservices", "API Design"],
+			"x": {
+				"hidden": true
+			}
+		},
+		{
 			"id": "ai",
-			"name": "Ai",
+			"name": "AI",
 			"keywords": ["LangChain", "LangGraph", "Vector DBs", "Agentic systems", "LLMs"]
 		},
 		{
@@ -618,7 +707,15 @@
 			"keywords": ["Docker", "AWS", "Kubernetes", "GitHub Actions", "Linux"]
 		}
 	],
-	"awards": [],
+	"awards": [
+		{
+			"id": "synchrony-hackathon",
+			"title": "Synchrony Hackathon, 1st place",
+			"date": "2024-09",
+			"awarder": "Synchrony",
+			"summary": "INR 2,00,000 prize for FinQuery AI, an autonomous NL-to-SQL agent."
+		}
+	],
 	"certificates": [],
 	"publications": [],
 	"languages": [],

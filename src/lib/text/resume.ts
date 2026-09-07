@@ -14,7 +14,7 @@ const WIDTH = 80;
 const resume = composition as unknown as Resume;
 
 /** Section titles when the composition does not name one. */
-const TITLES: Record<SectionType, string> = {
+export const TITLES: Record<SectionType, string> = {
 	work: 'EXPERIENCE',
 	volunteer: 'VOLUNTEERING',
 	education: 'EDUCATION',

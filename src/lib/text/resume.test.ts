@@ -4,7 +4,8 @@ import type { Resume } from '$lib/data/core/schema/types';
 import { data } from '$lib/data/profile-json';
 import { profile } from '$lib/data/profile';
 import composition from '$lib/data/resume.json';
-import { resumeText } from './resume';
+import { resumeText, TITLES } from './resume';
+import { toPlain } from '$lib/data/core/markup';
 
 const resume = composition as unknown as Resume;
 const { resolved, problems } = resolve(data, undefined, resume);
@@ -32,8 +33,7 @@ describe('resume.txt', () => {
 			const title = titles[i];
 			expect(title).toBe(title.toUpperCase());
 			if (section.title) expect(title).toBe(section.title.toUpperCase());
-			else if (section.type !== 'work') expect(title).toBe(section.type.toUpperCase());
-			else expect(title).toBe('EXPERIENCE');
+			else expect(title).toBe(TITLES[section.type]);
 		});
 	});
 
@@ -42,7 +42,8 @@ describe('resume.txt', () => {
 			for (const item of section.items) {
 				const name = item.kind === 'skills' || item.kind === 'simple' ? item.name : item.title;
 				expect(text).toContain(name);
-				for (const bullet of item.bullets) expect(text).toContain(bullet.text.slice(0, 30));
+				for (const bullet of item.bullets)
+					expect(text).toContain(toPlain(bullet.text).slice(0, 30));
 			}
 	});
 
