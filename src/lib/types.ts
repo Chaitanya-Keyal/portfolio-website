@@ -18,6 +18,7 @@ export interface Project {
 	period: string;
 	stack: string[];
 	description: string;
+	/** Inline markup (bold, links); see data/core/markup. */
 	highlights: string[];
 	links: Link[];
 }
@@ -33,6 +34,7 @@ export interface Experience {
 	oneLiner: string;
 	description: string;
 	stack: string[];
+	/** Inline markup (bold, links); see data/core/markup. */
 	points: string[];
 	links: Link[];
 	/** related pages on this site */

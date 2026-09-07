@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import { domain } from '$lib/content';
+	import { toHtml } from '$lib/data/core/markup';
 	import Icon from './Icon.svelte';
 	import type { ManDoc } from '$lib/text/mandoc';
 
@@ -40,7 +41,9 @@
 		<h2>{doc.didTitle}</h2>
 		<ul>
 			{#each doc.did as item (item)}
-				<li>{item}</li>
+				<!-- toHtml escapes; the markup grammar only admits bold, italic and links. -->
+				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+				<li>{@html toHtml(item)}</li>
 			{/each}
 		</ul>
 	</section>
@@ -110,7 +113,9 @@
 	dd {
 		color: var(--muted);
 	}
-	p strong {
+	p strong,
+	li :global(strong) {
+		color: var(--fg);
 		font-weight: 700;
 	}
 

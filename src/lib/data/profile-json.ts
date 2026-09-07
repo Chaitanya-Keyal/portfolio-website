@@ -2,8 +2,8 @@
  * builder and committed here. The four data modules beside this file map it
  * onto the shapes the site has always used, so no page had to change. */
 import raw from './profile.json';
-import type { Profile } from './profile.types';
-import { toPlain } from './markup';
+import type { Profile } from './core/schema/types';
+import { toPlain } from './core/markup';
 
 export const data = raw as unknown as Profile;
 

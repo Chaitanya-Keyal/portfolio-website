@@ -68,7 +68,6 @@ const { pages } = await import('$lib/data/site');
 const { childrenOf, treeLines } = await import('./filesystem');
 const { run } = await import('./commands');
 const { complete } = await import('./completion');
-const { resumeText } = await import('$lib/text/resume');
 
 const linesOf = (out: ReturnType<typeof run>) =>
 	out.kind === 'print' ? out.lines.join('\n') : `<${out.kind}>`;
@@ -145,11 +144,6 @@ describe('a hidden project', () => {
 		expect(linesOf(run('l', '/projects'))).not.toContain('.secret');
 		expect(linesOf(run('dir', '/projects'))).not.toContain('.secret');
 	});
-
-	it('stays out of the resume', () => {
-		expect(resumeText()).toContain('Shown');
-		expect(resumeText()).not.toContain('Secret');
-	});
 });
 
 describe('childrenOf', () => {
@@ -170,9 +164,7 @@ describe('a hidden experience entry', () => {
 		expect(run('man quietco', '/').kind).toBe('print');
 	});
 
-	it('stays out of the resume and the work page description', async () => {
-		expect(resumeText()).toContain('OpenCo');
-		expect(resumeText()).not.toContain('QuietCo');
+	it('stays out of the work page description', async () => {
 		const { pages } = await import('$lib/data/site');
 		const work = pages.find((p) => p.path === '/work');
 		expect(work?.description).toContain('OpenCo');

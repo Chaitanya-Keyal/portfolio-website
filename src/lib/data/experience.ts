@@ -1,6 +1,6 @@
 import type { Experience } from '$lib/types';
 import { data, period, plain } from './profile-json';
-import type { Engagement } from './profile.types';
+import type { Engagement } from './core/schema/types';
 
 /** Work and leadership entries alike: the site has one "work" lane. Each
  * organisation is one entry; its stints fold into one point list, newest
@@ -23,9 +23,8 @@ function toExperience(e: Engagement): Experience {
 		oneLiner: e.x?.oneLiner ?? '',
 		description: e.description ?? '',
 		stack: e.x?.stack ?? [],
-		points: e.positions.flatMap((p) =>
-			p.highlights.filter((h) => !h.hidden).map((h) => plain(h.text))
-		),
+		// Markup kept: the page renders it, the text outputs strip it.
+		points: e.positions.flatMap((p) => p.highlights.filter((h) => !h.hidden).map((h) => h.text)),
 		links: e.x?.links ?? [],
 		related: e.x?.related ?? []
 	};

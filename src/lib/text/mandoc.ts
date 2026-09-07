@@ -1,3 +1,4 @@
+import { toPlain } from '$lib/data/core/markup';
 import { experience } from '$lib/data/experience';
 import { projects } from '$lib/data/projects';
 import type { Experience, Link, Project } from '$lib/types';
@@ -11,6 +12,7 @@ export interface ManDoc {
 	synopsis: { label: string; value: string }[];
 	description: string;
 	didTitle: string;
+	/** Inline markup: the page renders it, the text forms strip it. */
 	did: string[];
 	links: Link[];
 	seeAlso: { label: string; href: string }[];
@@ -102,7 +104,7 @@ export function manLines(doc: ManDoc): string[] {
 		...wrap(doc.description, '  ', '  '),
 		'',
 		doc.didTitle.toUpperCase(),
-		...doc.did.flatMap((d) => wrap(d, '  • ', '    ')),
+		...doc.did.flatMap((d) => wrap(toPlain(d), '  • ', '    ')),
 		// Wrapped like everything else: a long URL is one unbreakable word, so
 		// it drops to its own indented line rather than running past 80.
 		...(doc.links.length > 0

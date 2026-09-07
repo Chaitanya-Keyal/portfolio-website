@@ -1,4 +1,5 @@
 import { error } from '@sveltejs/kit';
+import { toPlain } from '$lib/data/core/markup';
 import { profile } from '$lib/data/profile';
 import { domain } from '$lib/content';
 import { allDocs, docBySlug } from '$lib/text/mandoc';
@@ -25,7 +26,7 @@ function roff(slug: string): string {
 		`.SH "${doc.didTitle.toUpperCase()}"`
 	];
 	for (const item of doc.did) {
-		lines.push('.IP \\(bu 2', item);
+		lines.push('.IP \\(bu 2', toPlain(item));
 	}
 	if (doc.links.length > 0) {
 		lines.push('.SH LINKS');
