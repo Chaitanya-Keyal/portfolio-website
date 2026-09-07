@@ -1,186 +1,119 @@
 {
-	"id": "res_okaybro_2026",
-	"name": "General 2026",
-	"labels": ["general"],
-	"createdAt": "2026-09-07T00:00:00.000Z",
-	"updatedAt": "2026-09-07T00:00:00.000Z",
+	"id": "res_general",
+	"name": "General",
+	"labels": [],
+	"createdAt": "2026-09-07T20:18:36.033Z",
+	"updatedAt": "2026-09-07T20:18:36.033Z",
 	"template": "jake",
-	"options": {},
+	"options": {
+		"paper": "letterpaper",
+		"fontSize": 11,
+		"margins": "tight",
+		"spacing": "tight",
+		"dateStyle": "MMM yyyy",
+		"underlineLinks": true
+	},
 	"header": {
 		"showPhone": true,
 		"showEmail": true,
 		"showUrl": false,
 		"showLocation": false,
 		"showTagline": true,
-		"profiles": ["LinkedIn", "GitHub"]
+		"profiles": ["GitHub", "LinkedIn"]
 	},
 	"sections": [
 		{
-			"id": "sec_education",
+			"id": "sec_qhzzpssc34",
 			"type": "education",
 			"items": [
 				{
-					"ref": "education:bits",
+					"ref": "education:bits-pilani-hyderabad-campus",
 					"bullets": []
 				}
 			]
 		},
 		{
-			"id": "sec_experience",
+			"id": "sec_jdm26qzngq",
 			"type": "work",
 			"items": [
 				{
-					"ref": "work:sob/2026",
-					"bullets": ["h_sob26_l10n", "h_sob26_ci"],
-					"overrides": {
-						"title": "Summer of Bitcoin ([SeedSigner](https://github.com/SeedSigner/seedsigner))",
-						"bullets": {
-							"h_sob26_l10n": {
-								"text": "Automating SeedSigner's localization (i18n) workflows to remove routine burden from translators, contributors, and maintainers while improving review quality and safety.",
-								"baseText": "2026 term: translation automation and the review workflow around it.",
-								"origin": "user"
-							}
-						}
-					}
+					"ref": "work:onfinance/role",
+					"bullets": ["h_0001", "h_0002", "h_0003", "h_0004"]
 				},
 				{
-					"ref": "work:onfinance/intern",
-					"bullets": ["h_onf_agents", "h_onf_search", "h_onf_pipelines"],
-					"overrides": {
-						"bullets": {
-							"h_onf_agents": {
-								"text": "Developed LangChain/LangGraph agents to automate circular analysis for SEBI, RBI, IRDAI, and AMFI, reducing interpretation time by 90% and saving 100+ hours/update.",
-								"baseText": "Built LangChain/LangGraph agents from scratch that automate circular analysis for various regulators like SEBI, RBI, AMFI, etc., cutting interpretation time by ~90% and saving 100+ hours per regulatory update.",
-								"origin": "user"
-							},
-							"h_onf_search": {
-								"text": "Designed a search agent for 200+ circulars and 20k+ clauses, providing cited, context-aware answers.",
-								"baseText": "Designed a search agent over 2000+ circulars and 500,000+ clauses that answers with citations instead of raw matches.",
-								"origin": "user"
-							}
-						}
-					}
+					"ref": "work:summer-of-bitcoin/role",
+					"bullets": ["h_0005", "h_0006", "h_0007", "h_0008"]
 				},
 				{
-					"ref": "work:sob/2025",
-					"bullets": ["h_sob25_bip85", "h_sob25_refactor", "h_sob25_ci"],
-					"overrides": {
-						"title": "Summer of Bitcoin ([SeedSigner](https://github.com/SeedSigner/seedsigner))",
-						"bullets": {
-							"h_sob25_bip85": {
-								"text": "Extended BIP-85 support on SeedSigner (air-gapped Bitcoin hardware wallet) to enable direct child seed loading.",
-								"baseText": "2025 term: extended BIP-85 support, so child seeds load directly on-device.",
-								"origin": "user"
-							}
-						}
-					}
+					"ref": "work:sellersetu/role",
+					"bullets": ["h_0009", "h_000a", "h_000b"]
 				},
 				{
-					"ref": "work:sellersetu/intern",
-					"bullets": ["h_ss_micro", "h_ss_latency", "h_ss_agent"],
-					"overrides": {
-						"bullets": {
-							"h_ss_micro": {
-								"text": "Refactored ONDC monolith into microservices (Go/Django), handling 10k+ daily txns with 2x throughput.",
-								"baseText": "Refactored the ONDC monolith into Go/Django microservices handling 10k+ daily transactions at 2x the previous throughput.",
-								"origin": "user"
-							},
-							"h_ss_latency": {
-								"text": "Reduced API latency from ~5s to ~1s through architectural optimizations and resource management.",
-								"baseText": "Cut API latency from ~5s to ~1s through architectural changes and resource management.",
-								"origin": "user"
-							},
-							"h_ss_agent": {
-								"text": "Built an agentic AI system integrated with ONDC, Uber, and Rapido using browser automation for end-to-end booking workflows.",
-								"baseText": "Built an agentic booking system integrating ONDC, Uber, and Rapido through browser automation.",
-								"origin": "user"
-							}
-						}
-					}
+					"ref": "work:crux/role",
+					"bullets": ["h_000c", "h_000d", "h_000e"]
 				}
 			]
 		},
 		{
-			"id": "sec_projects",
+			"id": "sec_gcdzk9am9w",
 			"type": "projects",
 			"items": [
 				{
-					"ref": "projects:asynchrony",
-					"bullets": ["h_as_winner", "h_as_schema", "h_as_github"],
-					"overrides": {
-						"title": "FinQuery AI (Synchrony Hackathon)",
-						"bullets": {
-							"h_as_schema": {
-								"text": "Engineered dynamic schema parsing, enabling the agent to adapt to changing DB structures with 100% syntax accuracy.",
-								"baseText": "Engineered dynamic schema parsing so the agent adapts to changing database structures.",
-								"origin": "user"
-							}
-						},
-						"keywords": ["Python", "LangChain", "LLMs", "SQL"]
-					}
-				}
-			]
-		},
-		{
-			"id": "sec_leadership",
-			"type": "volunteer",
-			"items": [
-				{
-					"ref": "volunteer:crux/member",
-					"bullets": ["h_crux_bitsgpt", "h_crux_chrono", "h_crux_gcal"],
-					"overrides": {
-						"title": "CRUx (Programming Club) - BITS Pilani",
-						"subtitle": "Software Developer",
-						"bullets": {
-							"h_crux_bitsgpt": {
-								"text": "[**BitsGPT:**](https://github.com/crux-bphc/bitsgpt-rewrite) Architected a multi-agent RAG chatbot using LangGraph and vector DBs to handle academic queries with context-aware responses.",
-								"baseText": "Built BitsGPT, a multi-agent RAG chatbot (LangGraph + vector DB) for academic queries.",
-								"origin": "user"
-							},
-							"h_crux_chrono": {
-								"text": "[**Chronofactorem:**](https://github.com/crux-bphc/chronofactorem-rewrite) Engineered an Elasticsearch-powered [search service](https://github.com/crux-bphc/search-service) indexing the entire university course catalog and student timetables for sub-second retrieval.",
-								"baseText": "Contributed to Chronofactorem, with an Elasticsearch-powered search service.",
-								"origin": "user"
-							},
-							"h_crux_gcal": {
-								"text": "[**Chrono2GCal:**](https://github.com/Chaitanya-Keyal/Chrono2GCal) Developed a Python automation tool to auto-sync semester timetables to Google Calendar.",
-								"baseText": "Built Chrono2GCal, a Python tool auto-syncing semester timetables to Google Calendar.",
-								"origin": "user"
-							}
-						}
-					}
+					"ref": "projects:seedsigner",
+					"bullets": ["h_000f", "h_000g", "h_000h", "h_000i", "h_000j", "h_000k"]
 				},
 				{
-					"ref": "volunteer:cal/ta",
-					"bullets": ["h_cal_portal"]
+					"ref": "projects:satbook",
+					"bullets": ["h_000l", "h_000m", "h_000n"]
+				},
+				{
+					"ref": "projects:onlinecal",
+					"bullets": ["h_000o", "h_000p"]
+				},
+				{
+					"ref": "projects:asynchrony",
+					"bullets": ["h_000q", "h_000r"]
+				},
+				{
+					"ref": "projects:bitsgpt",
+					"bullets": ["h_000s", "h_000t"]
+				},
+				{
+					"ref": "projects:chrono-search",
+					"bullets": ["h_000u", "h_000v"]
+				},
+				{
+					"ref": "projects:biohue",
+					"bullets": ["h_000w", "h_000x", "h_000y", "h_000z"]
+				},
+				{
+					"ref": "projects:chrono2gcal",
+					"bullets": ["h_0010", "h_0011", "h_0012", "h_0013"]
+				},
+				{
+					"ref": "projects:arcade",
+					"bullets": ["h_0014", "h_0015", "h_0016", "h_0017"]
 				}
 			]
 		},
 		{
-			"id": "sec_skills",
+			"id": "sec_ad2jkp8ezj",
 			"type": "skills",
 			"items": [
 				{
 					"ref": "skills:languages",
-					"bullets": [],
-					"overrides": {
-						"keywords": ["Python", "Go", "C/C++", "TypeScript", "Java"]
-					}
-				},
-				{
-					"ref": "skills:frameworks",
 					"bullets": []
 				},
 				{
-					"ref": "skills:databases",
+					"ref": "skills:ai",
 					"bullets": []
 				},
 				{
-					"ref": "skills:devops",
+					"ref": "skills:backend",
 					"bullets": []
 				},
 				{
-					"ref": "skills:specializations",
+					"ref": "skills:infra",
 					"bullets": []
 				}
 			]
