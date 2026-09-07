@@ -1,5 +1,5 @@
 import type { Experience } from '$lib/types';
-import { data, period, plain } from './profile-json';
+import { data, period, plain, reachable } from './profile-json';
 import type { Engagement } from './core/schema/types';
 
 /** Work and leadership entries alike: the site has one "work" lane. Each
@@ -30,8 +30,7 @@ function toExperience(e: Engagement): Experience {
 	};
 }
 
-// `x.portfolio: false` keeps a library entry off this site entirely (it may
-// still print on resumes), unlike `hidden`, which only unlists its page.
+// A hidden entry is unlisted, and exists at all only when another page links to it.
 export const experience: Experience[] = [...data.work, ...data.volunteer]
-	.filter((e) => e.x?.portfolio !== false)
-	.map(toExperience);
+	.map(toExperience)
+	.filter((e) => reachable('work', e.slug, e.hidden));

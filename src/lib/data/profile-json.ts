@@ -37,6 +37,19 @@ export function period(start?: string, end?: string, label?: string): string {
 	return month(end);
 }
 
+/** Every site path that some entry's "related" links point at. A hidden entry
+ * is unlisted; it only gets a page at all when one of these links reaches it,
+ * so hiding something nobody links to leaves it off the site entirely. */
+export const linkedPaths: ReadonlySet<string> = new Set(
+	[...data.work, ...data.volunteer, ...data.projects].flatMap((e) =>
+		(e.x?.related ?? []).map((l) => l.href.replace(/\/+$/, ''))
+	)
+);
+
+export function reachable(kind: 'work' | 'projects', slug: string, hidden: boolean | undefined) {
+	return !hidden || linkedPaths.has(`/${kind}/${slug}`);
+}
+
 /** Bullet text as the site prints it: markup stripped. */
 export function plain(text: string): string {
 	return toPlain(text);
