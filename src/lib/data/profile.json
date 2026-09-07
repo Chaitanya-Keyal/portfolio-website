@@ -77,7 +77,7 @@
 		{
 			"id": "summer-of-bitcoin",
 			"name": "Summer of Bitcoin",
-			"description": "Summer of Bitcoin places students into open-source Bitcoin projects through a competitive selection. About 50 to 60 students are selected globally each year, from roughly 5,000 applicants. I was selected twice, both times to work on SeedSigner, an air-gapped Bitcoin signing device.",
+			"description": "Summer of Bitcoin places students into open-source Bitcoin projects through a competitive selection: about 50 to 60 are chosen globally each year from roughly 5,000 applicants. Selected twice, both times to work on SeedSigner, an air-gapped Bitcoin signing device.",
 			"positions": [
 				{
 					"id": "2026",
@@ -386,7 +386,7 @@
 		{
 			"id": "asynchrony",
 			"name": "asynchrony",
-			"description": "An autonomous agent that translates natural-language questions into complex SQL.",
+			"description": "Winner of the Synchrony Hackathon (1st place, INR 2,00,000): an autonomous agent that turns natural-language questions into complex SQL and keeps working as the database schema changes.",
 			"url": "https://github.com/Chaitanya-Keyal/asynchrony",
 			"entity": "Hackathon winner, INR 2,00,000",
 			"keywords": ["Python", "LangChain", "SQL"],
