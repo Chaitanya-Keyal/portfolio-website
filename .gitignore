@@ -7,3 +7,7 @@ __pycache__/
 # generated
 static/fonts/
 static/og/
+
+# built in CI from src/lib/data/{profile,resume}.json by the resume builder
+static/resume.pdf
+.resume-builder/

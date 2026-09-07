@@ -14,7 +14,8 @@
 		"fonts": "node scripts/copy-fonts.js",
 		"portrait": "python3 scripts/pixel-portrait.py",
 		"prepare": "svelte-kit sync && husky",
-		"og": "bun scripts/og-images.js"
+		"og": "bun scripts/og-images.js",
+		"resume": "bash scripts/resume-pdf.sh"
 	},
 	"lint-staged": {
 		"*.{js,ts,svelte}": [

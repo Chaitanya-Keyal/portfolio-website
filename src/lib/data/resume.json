@@ -1,0 +1,122 @@
+{
+	"id": "res_website",
+	"name": "Website",
+	"labels": ["website"],
+	"createdAt": "2026-09-07T18:52:35.134Z",
+	"updatedAt": "2026-09-07T18:52:35.134Z",
+	"template": "jake",
+	"options": {
+		"paper": "letterpaper",
+		"fontSize": 11,
+		"margins": "tight",
+		"spacing": "tight",
+		"dateStyle": "MMM yyyy",
+		"underlineLinks": true
+	},
+	"header": {
+		"showPhone": true,
+		"showEmail": true,
+		"showUrl": false,
+		"showLocation": false,
+		"showTagline": true,
+		"profiles": ["GitHub", "LinkedIn"]
+	},
+	"sections": [
+		{
+			"id": "sec_fpx8ykkb2e",
+			"type": "education",
+			"items": [
+				{
+					"ref": "education:bits-pilani-hyderabad-campus",
+					"bullets": []
+				}
+			]
+		},
+		{
+			"id": "sec_xkqu78rx52",
+			"type": "work",
+			"items": [
+				{
+					"ref": "work:onfinance/role",
+					"bullets": ["h_0001", "h_0002", "h_0003", "h_0004"]
+				},
+				{
+					"ref": "work:summer-of-bitcoin/role",
+					"bullets": ["h_0005", "h_0006", "h_0007", "h_0008"]
+				},
+				{
+					"ref": "work:sellersetu/role",
+					"bullets": ["h_0009", "h_000a", "h_000b"]
+				},
+				{
+					"ref": "work:crux/role",
+					"bullets": ["h_000c", "h_000d", "h_000e"]
+				}
+			]
+		},
+		{
+			"id": "sec_93njq9dvqy",
+			"type": "projects",
+			"items": [
+				{
+					"ref": "projects:seedsigner",
+					"bullets": ["h_000f", "h_000g", "h_000h", "h_000i", "h_000j", "h_000k"]
+				},
+				{
+					"ref": "projects:satbook",
+					"bullets": ["h_000l", "h_000m", "h_000n"]
+				},
+				{
+					"ref": "projects:onlinecal",
+					"bullets": ["h_000o", "h_000p"]
+				},
+				{
+					"ref": "projects:asynchrony",
+					"bullets": ["h_000q", "h_000r"]
+				},
+				{
+					"ref": "projects:bitsgpt",
+					"bullets": ["h_000s", "h_000t"]
+				},
+				{
+					"ref": "projects:chrono-search",
+					"bullets": ["h_000u", "h_000v"]
+				},
+				{
+					"ref": "projects:biohue",
+					"bullets": ["h_000w", "h_000x", "h_000y", "h_000z"]
+				},
+				{
+					"ref": "projects:chrono2gcal",
+					"bullets": ["h_0010", "h_0011", "h_0012", "h_0013"]
+				},
+				{
+					"ref": "projects:arcade",
+					"bullets": ["h_0014", "h_0015", "h_0016", "h_0017"]
+				}
+			]
+		},
+		{
+			"id": "sec_6jsb59xdss",
+			"type": "skills",
+			"items": [
+				{
+					"ref": "skills:languages",
+					"bullets": []
+				},
+				{
+					"ref": "skills:ai",
+					"bullets": []
+				},
+				{
+					"ref": "skills:backend",
+					"bullets": []
+				},
+				{
+					"ref": "skills:infra",
+					"bullets": []
+				}
+			]
+		}
+	]
+}
