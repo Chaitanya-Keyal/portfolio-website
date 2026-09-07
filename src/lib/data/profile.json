@@ -3,7 +3,7 @@
 	"version": 1,
 	"basics": {
 		"name": "Chaitanya Keyal",
-		"label": "backend systems · ai agents · open source",
+		"label": "backend systems \u00b7 ai agents \u00b7 open source",
 		"email": "chaitanyakeyal@gmail.com",
 		"url": "https://okaybro.dev",
 		"summary": "AI engineering intern and open-source developer working on backend systems, AI agents, and Bitcoin tooling.",
@@ -21,10 +21,10 @@
 		],
 		"x": {
 			"handle": "okaybro",
-			"role": "AI engineering intern · open-source developer",
-			"status": "Open to Summer 2027 internships: AI agents · backend · Bitcoin",
+			"role": "AI engineering intern \u00b7 open-source developer",
+			"status": "Open to Summer 2027 internships: AI agents \u00b7 backend \u00b7 Bitcoin",
 			"repo": "https://github.com/Chaitanya-Keyal/portfolio-website",
-			"tagline": "backend systems · ai agents · open source"
+			"tagline": "backend systems \u00b7 ai agents \u00b7 open source"
 		}
 	},
 	"work": [
@@ -80,9 +80,9 @@
 			"description": "Summer of Bitcoin places students into open-source Bitcoin projects through a competitive selection. About 50 to 60 students are selected globally each year, from roughly 5,000 applicants. I was selected twice, both times to work on SeedSigner, an air-gapped Bitcoin signing device.",
 			"positions": [
 				{
-					"id": "role",
+					"id": "2026",
 					"position": "Open Source Developer",
-					"dateLabel": "Summer 2025 and Summer 2026",
+					"startDate": "2026-05",
 					"highlights": [
 						{
 							"id": "h_0005",
@@ -95,7 +95,15 @@
 						{
 							"id": "h_0007",
 							"text": "2026 term: translation automation and the review workflow around it."
-						},
+						}
+					]
+				},
+				{
+					"id": "2025",
+					"position": "Open Source Developer",
+					"startDate": "2025-05",
+					"endDate": "2025-08",
+					"highlights": [
 						{
 							"id": "h_0008",
 							"text": "2025 term: extended BIP-85 support, so child seeds load directly on-device."

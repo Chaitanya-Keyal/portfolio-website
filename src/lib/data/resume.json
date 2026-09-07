@@ -2,8 +2,8 @@
 	"id": "res_general",
 	"name": "General",
 	"labels": [],
-	"createdAt": "2026-09-07T20:18:36.033Z",
-	"updatedAt": "2026-09-07T20:18:36.033Z",
+	"createdAt": "2026-09-07T20:44:32.212Z",
+	"updatedAt": "2026-09-07T20:44:32.212Z",
 	"template": "jake",
 	"options": {
 		"paper": "letterpaper",
@@ -19,11 +19,12 @@
 		"showUrl": false,
 		"showLocation": false,
 		"showTagline": true,
+		"showSummary": false,
 		"profiles": ["GitHub", "LinkedIn"]
 	},
 	"sections": [
 		{
-			"id": "sec_qhzzpssc34",
+			"id": "sec_7expfv5zmj",
 			"type": "education",
 			"items": [
 				{
@@ -33,7 +34,7 @@
 			]
 		},
 		{
-			"id": "sec_jdm26qzngq",
+			"id": "sec_ydn64a7dwa",
 			"type": "work",
 			"items": [
 				{
@@ -41,8 +42,12 @@
 					"bullets": ["h_0001", "h_0002", "h_0003", "h_0004"]
 				},
 				{
-					"ref": "work:summer-of-bitcoin/role",
-					"bullets": ["h_0005", "h_0006", "h_0007", "h_0008"]
+					"ref": "work:summer-of-bitcoin/2026",
+					"bullets": ["h_0005", "h_0006", "h_0007"]
+				},
+				{
+					"ref": "work:summer-of-bitcoin/2025",
+					"bullets": ["h_0008"]
 				},
 				{
 					"ref": "work:sellersetu/role",
@@ -55,7 +60,7 @@
 			]
 		},
 		{
-			"id": "sec_gcdzk9am9w",
+			"id": "sec_i7wqhsybd3",
 			"type": "projects",
 			"items": [
 				{
@@ -97,7 +102,7 @@
 			]
 		},
 		{
-			"id": "sec_ad2jkp8ezj",
+			"id": "sec_t523y7cqpc",
 			"type": "skills",
 			"items": [
 				{
