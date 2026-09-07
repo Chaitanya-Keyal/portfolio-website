@@ -1,23 +1,31 @@
+import { data } from './profile-json';
+
+const b = data.basics;
+const find = (network: string) =>
+	b.profiles.find((p) => p.network.toLowerCase() === network.toLowerCase())?.url ?? '';
+
+/** Skill groups the site lists, keyed for the home page rows. Groups marked
+ * hidden in the library are resume-only. */
+const skills: Record<string, string[]> = {};
+for (const g of data.skills) {
+	if (g.x?.hidden) continue;
+	skills[(g.x?.key as string | undefined) ?? g.id] = [...g.keywords];
+}
+
 export const profile = {
-	name: 'Chaitanya Keyal',
-	handle: 'okaybro',
-	site: 'https://okaybro.dev',
-	tagline: 'backend systems · ai agents · open source',
-	summary:
-		'AI engineering intern and open-source developer working on backend systems, AI agents, and Bitcoin tooling.',
-	role: 'AI engineering intern · open-source developer',
+	name: b.name,
+	handle: b.x?.handle ?? '',
+	site: b.url ?? '',
+	tagline: b.x?.tagline ?? b.label ?? '',
+	summary: b.summary ?? '',
+	role: b.x?.role ?? b.label ?? '',
 	// Shown on home and every lane page; keep in sync with the resume.
-	status: 'Open to Summer 2027 internships: AI agents · backend · Bitcoin',
+	status: b.x?.status ?? '',
 	contact: {
-		email: 'chaitanyakeyal@gmail.com',
-		github: 'https://github.com/Chaitanya-Keyal',
-		linkedin: 'https://linkedin.com/in/chaitanya-keyal'
+		email: b.email ?? '',
+		github: find('GitHub'),
+		linkedin: find('LinkedIn')
 	},
-	repo: 'https://github.com/Chaitanya-Keyal/portfolio-website',
-	skills: {
-		languages: ['Python', 'TypeScript', 'Go', 'C/C++', 'Java'],
-		ai: ['LangChain', 'LangGraph', 'Vector DBs', 'Agentic systems', 'LLMs'],
-		backend: ['FastAPI', 'Django', 'PostgreSQL', 'MongoDB', 'Elasticsearch', 'Redis'],
-		infra: ['Docker', 'AWS', 'Kubernetes', 'GitHub Actions', 'Linux']
-	}
-} as const;
+	repo: b.x?.repo ?? '',
+	skills
+};

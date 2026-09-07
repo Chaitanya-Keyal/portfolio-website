@@ -75,5 +75,7 @@ export const pages: Page[] = [
 		command: 'cd resume'
 	},
 	{ name: 'resume.txt', path: '/resume/resume.txt', url: '/resume.txt', file: true },
-	{ name: 'resume.pdf', path: '/resume/resume.pdf', url: '/resume.pdf', file: true, binary: true }
+	{ name: 'resume.pdf', path: '/resume/resume.pdf', url: '/resume.pdf', file: true, binary: true },
+	// The library every page is built from, for the resume builder's "import from URL".
+	{ name: 'profile.json', path: '/resume/profile.json', url: '/profile.json', file: true }
 ];

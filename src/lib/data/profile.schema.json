@@ -1,0 +1,896 @@
+{
+	"$id": "https://resume-builder.okaybro.dev/schema/profile-1.json",
+	"title": "Resume Builder profile",
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"type": "object",
+	"properties": {
+		"$schema": {
+			"type": "string"
+		},
+		"version": {
+			"type": "number",
+			"const": 1
+		},
+		"basics": {
+			"type": "object",
+			"properties": {
+				"name": {
+					"type": "string",
+					"minLength": 1
+				},
+				"label": {
+					"type": "string"
+				},
+				"image": {
+					"type": "string"
+				},
+				"email": {
+					"type": "string"
+				},
+				"phone": {
+					"type": "string"
+				},
+				"url": {
+					"type": "string"
+				},
+				"summary": {
+					"type": "string"
+				},
+				"location": {
+					"type": "object",
+					"properties": {
+						"address": {
+							"type": "string"
+						},
+						"postalCode": {
+							"type": "string"
+						},
+						"city": {
+							"type": "string"
+						},
+						"countryCode": {
+							"type": "string"
+						},
+						"region": {
+							"type": "string"
+						}
+					}
+				},
+				"profiles": {
+					"default": [],
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"network": {
+								"type": "string",
+								"minLength": 1
+							},
+							"username": {
+								"type": "string"
+							},
+							"url": {
+								"type": "string"
+							}
+						},
+						"required": ["network", "url"]
+					}
+				},
+				"x": {
+					"type": "object",
+					"properties": {
+						"handle": {
+							"type": "string"
+						},
+						"role": {
+							"type": "string"
+						},
+						"status": {
+							"type": "string"
+						},
+						"repo": {
+							"type": "string"
+						},
+						"tagline": {
+							"type": "string"
+						}
+					},
+					"additionalProperties": {}
+				}
+			},
+			"required": ["name"]
+		},
+		"work": {
+			"default": [],
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"minLength": 1,
+						"maxLength": 200
+					},
+					"name": {
+						"type": "string",
+						"minLength": 1
+					},
+					"url": {
+						"type": "string"
+					},
+					"location": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"positions": {
+						"default": [],
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"id": {
+									"type": "string",
+									"minLength": 1,
+									"maxLength": 200
+								},
+								"position": {
+									"type": "string"
+								},
+								"startDate": {
+									"type": "string",
+									"pattern": "^\\d{4}(-\\d{2}(-\\d{2})?)?$"
+								},
+								"endDate": {
+									"type": "string",
+									"pattern": "^\\d{4}(-\\d{2}(-\\d{2})?)?$"
+								},
+								"dateLabel": {
+									"type": "string"
+								},
+								"location": {
+									"type": "string"
+								},
+								"summary": {
+									"type": "string"
+								},
+								"highlights": {
+									"default": [],
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "string",
+												"minLength": 1,
+												"maxLength": 200
+											},
+											"text": {
+												"type": "string"
+											},
+											"hidden": {
+												"type": "boolean"
+											}
+										},
+										"required": ["id", "text"]
+									}
+								}
+							},
+							"required": ["id", "position"]
+						}
+					},
+					"x": {
+						"type": "object",
+						"properties": {
+							"slug": {
+								"type": "string"
+							},
+							"hidden": {
+								"type": "boolean"
+							},
+							"oneLiner": {
+								"type": "string"
+							},
+							"stack": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								}
+							},
+							"links": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"label": {
+											"type": "string"
+										},
+										"href": {
+											"type": "string"
+										}
+									},
+									"required": ["label", "href"]
+								}
+							},
+							"related": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"label": {
+											"type": "string"
+										},
+										"href": {
+											"type": "string"
+										}
+									},
+									"required": ["label", "href"]
+								}
+							},
+							"periodLabel": {
+								"type": "string"
+							}
+						},
+						"additionalProperties": {}
+					}
+				},
+				"required": ["id", "name"]
+			}
+		},
+		"volunteer": {
+			"default": [],
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"minLength": 1,
+						"maxLength": 200
+					},
+					"name": {
+						"type": "string",
+						"minLength": 1
+					},
+					"url": {
+						"type": "string"
+					},
+					"location": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"positions": {
+						"default": [],
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"id": {
+									"type": "string",
+									"minLength": 1,
+									"maxLength": 200
+								},
+								"position": {
+									"type": "string"
+								},
+								"startDate": {
+									"type": "string",
+									"pattern": "^\\d{4}(-\\d{2}(-\\d{2})?)?$"
+								},
+								"endDate": {
+									"type": "string",
+									"pattern": "^\\d{4}(-\\d{2}(-\\d{2})?)?$"
+								},
+								"dateLabel": {
+									"type": "string"
+								},
+								"location": {
+									"type": "string"
+								},
+								"summary": {
+									"type": "string"
+								},
+								"highlights": {
+									"default": [],
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "string",
+												"minLength": 1,
+												"maxLength": 200
+											},
+											"text": {
+												"type": "string"
+											},
+											"hidden": {
+												"type": "boolean"
+											}
+										},
+										"required": ["id", "text"]
+									}
+								}
+							},
+							"required": ["id", "position"]
+						}
+					},
+					"x": {
+						"type": "object",
+						"properties": {
+							"slug": {
+								"type": "string"
+							},
+							"hidden": {
+								"type": "boolean"
+							},
+							"oneLiner": {
+								"type": "string"
+							},
+							"stack": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								}
+							},
+							"links": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"label": {
+											"type": "string"
+										},
+										"href": {
+											"type": "string"
+										}
+									},
+									"required": ["label", "href"]
+								}
+							},
+							"related": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"label": {
+											"type": "string"
+										},
+										"href": {
+											"type": "string"
+										}
+									},
+									"required": ["label", "href"]
+								}
+							},
+							"periodLabel": {
+								"type": "string"
+							}
+						},
+						"additionalProperties": {}
+					}
+				},
+				"required": ["id", "name"]
+			}
+		},
+		"education": {
+			"default": [],
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"minLength": 1,
+						"maxLength": 200
+					},
+					"institution": {
+						"type": "string",
+						"minLength": 1
+					},
+					"url": {
+						"type": "string"
+					},
+					"area": {
+						"type": "string"
+					},
+					"studyType": {
+						"type": "string"
+					},
+					"startDate": {
+						"type": "string",
+						"pattern": "^\\d{4}(-\\d{2}(-\\d{2})?)?$"
+					},
+					"endDate": {
+						"type": "string",
+						"pattern": "^\\d{4}(-\\d{2}(-\\d{2})?)?$"
+					},
+					"dateLabel": {
+						"type": "string"
+					},
+					"score": {
+						"type": "string"
+					},
+					"courses": {
+						"default": [],
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"location": {
+						"type": "string"
+					},
+					"highlights": {
+						"default": [],
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"id": {
+									"type": "string",
+									"minLength": 1,
+									"maxLength": 200
+								},
+								"text": {
+									"type": "string"
+								},
+								"hidden": {
+									"type": "boolean"
+								}
+							},
+							"required": ["id", "text"]
+						}
+					},
+					"x": {
+						"type": "object",
+						"properties": {
+							"slug": {
+								"type": "string"
+							},
+							"hidden": {
+								"type": "boolean"
+							},
+							"oneLiner": {
+								"type": "string"
+							},
+							"stack": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								}
+							},
+							"links": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"label": {
+											"type": "string"
+										},
+										"href": {
+											"type": "string"
+										}
+									},
+									"required": ["label", "href"]
+								}
+							},
+							"related": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"label": {
+											"type": "string"
+										},
+										"href": {
+											"type": "string"
+										}
+									},
+									"required": ["label", "href"]
+								}
+							},
+							"periodLabel": {
+								"type": "string"
+							},
+							"institutionShort": {
+								"type": "string"
+							},
+							"degreeLine": {
+								"type": "string"
+							},
+							"short": {
+								"type": "string"
+							},
+							"minor": {
+								"type": "string"
+							},
+							"summary": {
+								"type": "string"
+							},
+							"campus": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"text": {
+											"type": "string"
+										},
+										"link": {
+											"type": "string"
+										},
+										"linkText": {
+											"type": "string"
+										}
+									},
+									"required": ["text"]
+								}
+							}
+						},
+						"additionalProperties": {}
+					}
+				},
+				"required": ["id", "institution"]
+			}
+		},
+		"projects": {
+			"default": [],
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"minLength": 1,
+						"maxLength": 200
+					},
+					"name": {
+						"type": "string",
+						"minLength": 1
+					},
+					"description": {
+						"type": "string"
+					},
+					"url": {
+						"type": "string"
+					},
+					"entity": {
+						"type": "string"
+					},
+					"type": {
+						"type": "string"
+					},
+					"roles": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"keywords": {
+						"default": [],
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"startDate": {
+						"type": "string",
+						"pattern": "^\\d{4}(-\\d{2}(-\\d{2})?)?$"
+					},
+					"endDate": {
+						"type": "string",
+						"pattern": "^\\d{4}(-\\d{2}(-\\d{2})?)?$"
+					},
+					"dateLabel": {
+						"type": "string"
+					},
+					"highlights": {
+						"default": [],
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"id": {
+									"type": "string",
+									"minLength": 1,
+									"maxLength": 200
+								},
+								"text": {
+									"type": "string"
+								},
+								"hidden": {
+									"type": "boolean"
+								}
+							},
+							"required": ["id", "text"]
+						}
+					},
+					"x": {
+						"type": "object",
+						"properties": {
+							"slug": {
+								"type": "string"
+							},
+							"hidden": {
+								"type": "boolean"
+							},
+							"oneLiner": {
+								"type": "string"
+							},
+							"stack": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								}
+							},
+							"links": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"label": {
+											"type": "string"
+										},
+										"href": {
+											"type": "string"
+										}
+									},
+									"required": ["label", "href"]
+								}
+							},
+							"related": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"label": {
+											"type": "string"
+										},
+										"href": {
+											"type": "string"
+										}
+									},
+									"required": ["label", "href"]
+								}
+							},
+							"periodLabel": {
+								"type": "string"
+							}
+						},
+						"additionalProperties": {}
+					}
+				},
+				"required": ["id", "name"]
+			}
+		},
+		"skills": {
+			"default": [],
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"minLength": 1,
+						"maxLength": 200
+					},
+					"name": {
+						"type": "string",
+						"minLength": 1
+					},
+					"level": {
+						"type": "string"
+					},
+					"keywords": {
+						"default": [],
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"x": {
+						"type": "object",
+						"properties": {
+							"key": {
+								"type": "string"
+							}
+						},
+						"additionalProperties": {}
+					}
+				},
+				"required": ["id", "name"]
+			}
+		},
+		"awards": {
+			"default": [],
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"minLength": 1,
+						"maxLength": 200
+					},
+					"title": {
+						"type": "string",
+						"minLength": 1
+					},
+					"date": {
+						"type": "string",
+						"pattern": "^\\d{4}(-\\d{2}(-\\d{2})?)?$"
+					},
+					"dateLabel": {
+						"type": "string"
+					},
+					"awarder": {
+						"type": "string"
+					},
+					"summary": {
+						"type": "string"
+					},
+					"url": {
+						"type": "string"
+					}
+				},
+				"required": ["id", "title"]
+			}
+		},
+		"certificates": {
+			"default": [],
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"minLength": 1,
+						"maxLength": 200
+					},
+					"name": {
+						"type": "string",
+						"minLength": 1
+					},
+					"date": {
+						"type": "string",
+						"pattern": "^\\d{4}(-\\d{2}(-\\d{2})?)?$"
+					},
+					"dateLabel": {
+						"type": "string"
+					},
+					"issuer": {
+						"type": "string"
+					},
+					"url": {
+						"type": "string"
+					}
+				},
+				"required": ["id", "name"]
+			}
+		},
+		"publications": {
+			"default": [],
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"minLength": 1,
+						"maxLength": 200
+					},
+					"name": {
+						"type": "string",
+						"minLength": 1
+					},
+					"publisher": {
+						"type": "string"
+					},
+					"releaseDate": {
+						"type": "string",
+						"pattern": "^\\d{4}(-\\d{2}(-\\d{2})?)?$"
+					},
+					"dateLabel": {
+						"type": "string"
+					},
+					"url": {
+						"type": "string"
+					},
+					"summary": {
+						"type": "string"
+					}
+				},
+				"required": ["id", "name"]
+			}
+		},
+		"languages": {
+			"default": [],
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"minLength": 1,
+						"maxLength": 200
+					},
+					"language": {
+						"type": "string",
+						"minLength": 1
+					},
+					"fluency": {
+						"type": "string"
+					}
+				},
+				"required": ["id", "language"]
+			}
+		},
+		"interests": {
+			"default": [],
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"minLength": 1,
+						"maxLength": 200
+					},
+					"name": {
+						"type": "string",
+						"minLength": 1
+					},
+					"keywords": {
+						"default": [],
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					}
+				},
+				"required": ["id", "name"]
+			}
+		},
+		"references": {
+			"default": [],
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"minLength": 1,
+						"maxLength": 200
+					},
+					"name": {
+						"type": "string",
+						"minLength": 1
+					},
+					"reference": {
+						"type": "string"
+					}
+				},
+				"required": ["id", "name"]
+			}
+		},
+		"meta": {
+			"type": "object",
+			"properties": {
+				"canonical": {
+					"type": "string"
+				},
+				"version": {
+					"type": "string"
+				},
+				"lastModified": {
+					"type": "string"
+				}
+			},
+			"additionalProperties": {}
+		}
+	},
+	"required": ["version", "basics"]
+}

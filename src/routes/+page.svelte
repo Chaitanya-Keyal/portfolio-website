@@ -13,12 +13,7 @@
 	/** Link text: the URL without its protocol, the way a terminal would show it. */
 	const bare = (url: string) => url.replace(/^https?:\/\//, '');
 
-	const skills = [
-		['languages', profile.skills.languages],
-		['ai', profile.skills.ai],
-		['backend', profile.skills.backend],
-		['infra', profile.skills.infra]
-	] as const;
+	const skills = Object.entries(profile.skills);
 
 	// Reads the live theme, so the strip is the palette you are looking at.
 	const swatches = [
