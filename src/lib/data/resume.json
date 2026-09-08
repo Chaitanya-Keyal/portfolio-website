@@ -3,11 +3,11 @@
 	"name": "General",
 	"labels": [],
 	"createdAt": "2026-09-07T20:44:32.212Z",
-	"updatedAt": "2026-09-07T20:44:32.212Z",
+	"updatedAt": "2026-09-07T23:17:59.352Z",
 	"template": "jake",
 	"options": {
-		"paper": "letterpaper",
-		"fontSize": 11,
+		"paper": "a4paper",
+		"fontSize": 10,
 		"margins": "tight",
 		"spacing": "tight",
 		"dateStyle": "MMM yyyy",
@@ -16,7 +16,7 @@
 	"header": {
 		"showPhone": true,
 		"showEmail": true,
-		"showUrl": false,
+		"showUrl": true,
 		"showLocation": false,
 		"showTagline": true,
 		"showSummary": false,
@@ -38,24 +38,46 @@
 			"type": "work",
 			"items": [
 				{
+					"ref": "work:summer-of-bitcoin/2026",
+					"bullets": ["h_0005", "h_hsecp8a7"],
+					"overrides": {
+						"showDescription": true
+					}
+				},
+				{
 					"ref": "work:onfinance/role",
 					"bullets": ["h_0001", "h_0002", "h_0003", "h_0004"]
 				},
 				{
-					"ref": "work:summer-of-bitcoin/2026",
-					"bullets": ["h_0005", "h_0006", "h_0007"]
-				},
-				{
 					"ref": "work:summer-of-bitcoin/2025",
-					"bullets": ["h_0008"]
+					"bullets": ["h_0008", "h_pvjtdcik"],
+					"overrides": {
+						"bullets": {
+							"h_0008": {
+								"text": "Extended BIP-85 support on SeedSigner to enable direct child seed loading.",
+								"baseText": "Extended BIP-85 support on SeedSigner (air-gapped Bitcoin hardware wallet) to enable direct child seed loading.",
+								"origin": "user"
+							}
+						}
+					}
 				},
 				{
 					"ref": "work:sellersetu/role",
 					"bullets": ["h_0009", "h_000a", "h_000b"]
+				}
+			]
+		},
+		{
+			"id": "sec_q6xbm74vvw",
+			"type": "volunteer",
+			"items": [
+				{
+					"ref": "volunteer:crux/role",
+					"bullets": ["h_000c", "h_000d", "h_000e"]
 				},
 				{
-					"ref": "work:crux/role",
-					"bullets": ["h_000c", "h_000d", "h_000e"]
+					"ref": "volunteer:new/role",
+					"bullets": ["h_hntud69f"]
 				}
 			]
 		},
@@ -64,40 +86,27 @@
 			"type": "projects",
 			"items": [
 				{
-					"ref": "projects:seedsigner",
-					"bullets": ["h_000f", "h_000g", "h_000h", "h_000i", "h_000j", "h_000k"]
+					"ref": "projects:asynchrony",
+					"bullets": ["h_000q", "h_000r"],
+					"overrides": {
+						"showDescription": true,
+						"showUrl": true
+					}
 				},
 				{
 					"ref": "projects:satbook",
-					"bullets": ["h_000l", "h_000m", "h_000n"]
-				},
-				{
-					"ref": "projects:onlinecal",
-					"bullets": ["h_000o", "h_000p"]
-				},
-				{
-					"ref": "projects:asynchrony",
-					"bullets": ["h_000q", "h_000r"]
-				},
-				{
-					"ref": "projects:bitsgpt",
-					"bullets": ["h_000s", "h_000t"]
-				},
-				{
-					"ref": "projects:chrono-search",
-					"bullets": ["h_000u", "h_000v"]
-				},
-				{
-					"ref": "projects:biohue",
-					"bullets": ["h_000w", "h_000x", "h_000y", "h_000z"]
-				},
-				{
-					"ref": "projects:chrono2gcal",
-					"bullets": ["h_0010", "h_0011", "h_0012", "h_0013"]
-				},
-				{
-					"ref": "projects:arcade",
-					"bullets": ["h_0014", "h_0015", "h_0016", "h_0017"]
+					"bullets": ["h_000l", "h_000m"],
+					"overrides": {
+						"showDescription": true,
+						"showUrl": true,
+						"bullets": {
+							"h_000m": {
+								"text": "Autofills transaction information from a pasted on-chain txid.",
+								"baseText": "Derives the third value from any two of amount, rate and fiat value, and autofills the timestamp, amounts and fee from a pasted on-chain txid.",
+								"origin": "user"
+							}
+						}
+					}
 				}
 			]
 		},
