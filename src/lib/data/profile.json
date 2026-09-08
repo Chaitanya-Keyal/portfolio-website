@@ -143,7 +143,12 @@
 			"x": {
 				"slug": "summer-of-bitcoin",
 				"oneLiner": "open-source Bitcoin development on SeedSigner",
-				"stack": ["Python", "Bitcoin", "GitHub Actions", "Raspberry Pi"],
+				"stack": [
+					"Python",
+					"Bitcoin",
+					"GitHub Actions",
+					"Raspberry Pi"
+				],
 				"links": [
 					{
 						"label": "my contributions",
@@ -189,7 +194,13 @@
 			"x": {
 				"slug": "sellersetu",
 				"oneLiner": "ONDC platform at 10k+ daily transactions",
-				"stack": ["Go", "Django", "PostgreSQL", "LangChain", "LangGraph"],
+				"stack": [
+					"Go",
+					"Django",
+					"PostgreSQL",
+					"LangChain",
+					"LangGraph"
+				],
 				"links": [],
 				"related": [],
 				"periodLabel": "Mar 2024 to Mar 2025"
@@ -247,7 +258,11 @@
 			"x": {
 				"slug": "crux",
 				"oneLiner": "the programming and computing club at BITS Hyderabad",
-				"stack": ["Python", "LangGraph", "Elasticsearch"],
+				"stack": [
+					"Python",
+					"LangGraph",
+					"Elasticsearch"
+				],
 				"links": [
 					{
 						"label": "club github",
@@ -320,50 +335,17 @@
 	],
 	"projects": [
 		{
-			"id": "project",
-			"name": "Resume Builder",
-			"description": "A local-first resume builder that keeps one library of everything you have done and composes any number of resumes from it.",
-			"url": "https://github.com/Chaitanya-Keyal/resume-builder",
-			"keywords": ["SvelteKit", "TypeScript", "LaTeX", "WebAssembly"],
-			"startDate": "2026-09",
-			"endDate": "2026-09",
-			"highlights": [
-				{
-					"id": "h_k6qg9c78",
-					"text": "Runs pdfTeX as WebAssembly in a Web Worker with a 13 MB trimmed TeX tree, giving sub-second previews with no server."
-				},
-				{
-					"id": "h_nw6wtbap",
-					"text": "No data leaves the user's device: Uses IndexedDB, no accounts, no tokens; publishing to a site hands the file to GitHub's own editor."
-				},
-				{
-					"id": "h_x4gm5anw",
-					"text": "Shipped editing features like fit-to-one-page that probes denser layouts, reviewer hints for weak or number-free bullets, undo, and drag-and-drop ordering."
-				}
-			],
-			"x": {
-				"slug": "resume-builder",
-				"oneLiner": "local LaTeX resume builder",
-				"links": [
-					{
-						"label": "source",
-						"href": "https://github.com/Chaitanya-Keyal/resume-builder"
-					},
-					{
-						"label": "deployed",
-						"href": "https://resume-builder.okaybro.dev/"
-					}
-				],
-				"periodLabel": "Sep 2026"
-			}
-		},
-		{
 			"id": "seedsigner",
 			"name": "SeedSigner",
 			"description": "SeedSigner is a DIY, air-gapped, stateless Bitcoin signing device built with off-the-shelf parts. I have contributed across two Summer of Bitcoin terms, and stayed on after both, working on features, bugfixes, release chores, PR review and translations.",
 			"url": "https://github.com/SeedSigner/seedsigner",
 			"entity": "Summer of Bitcoin 2025 & 2026",
-			"keywords": ["Python", "Bitcoin", "GitHub Actions", "Raspberry Pi"],
+			"keywords": [
+				"Python",
+				"Bitcoin",
+				"GitHub Actions",
+				"Raspberry Pi"
+			],
 			"startDate": "2025-04",
 			"highlights": [
 				{
@@ -417,7 +399,13 @@
 			"description": "A single-user Bitcoin portfolio tracker that doubles as an India VDA tax engine. Every income, buy, sell, spend and self-transfer goes into one ledger, and holdings, break-even, unrealized P/L and Schedule VDA figures are recomputed from it on every read.",
 			"url": "https://github.com/Chaitanya-Keyal/satbook",
 			"entity": "Personal project",
-			"keywords": ["TypeScript", "SvelteKit", "Bun", "SQLite", "Drizzle"],
+			"keywords": [
+				"TypeScript",
+				"SvelteKit",
+				"Bun",
+				"SQLite",
+				"Drizzle"
+			],
 			"startDate": "2026-08",
 			"endDate": "2026-08",
 			"highlights": [
@@ -447,34 +435,48 @@
 			}
 		},
 		{
-			"id": "onlinecal",
-			"name": "onlineCAL",
-			"description": "The production portal researchers use to book time on lab instruments. Requests flow through faculty and lab-assistant approval chains with per-instrument pricing. I maintain it as the undergraduate TA.",
-			"url": "https://github.com/CAL-BPHC/onlineCAL",
-			"entity": "Central Analytical Laboratory, BITS Hyderabad",
-			"keywords": ["Python", "Django", "MySQL", "DevOps"],
-			"startDate": "2024-08",
+			"id": "project",
+			"name": "Resume Builder",
+			"description": "A local-first resume builder that keeps one library of everything you have done and composes any number of resumes from it.",
+			"url": "https://github.com/Chaitanya-Keyal/resume-builder",
+			"keywords": [
+				"SvelteKit",
+				"TypeScript",
+				"LaTeX",
+				"WebAssembly"
+			],
+			"startDate": "2026-09",
+			"endDate": "2026-09",
 			"highlights": [
 				{
-					"id": "h_000o",
-					"text": "Maintain a real system with real users: approval workflows, pricing rules, email notifications."
+					"id": "h_k6qg9c78",
+					"text": "Runs pdfTeX as WebAssembly in a Web Worker with a 13 MB trimmed TeX tree, giving sub-second previews with no server."
 				},
 				{
-					"id": "h_000p",
-					"text": "Set up automated CI/CD so deploys stopped being manual events."
+					"id": "h_nw6wtbap",
+					"text": "No data leaves the user's device: Uses IndexedDB, no accounts, no tokens; publishing to a site hands the file to GitHub's own editor."
+				},
+				{
+					"id": "h_x4gm5anw",
+					"text": "Shipped editing features like fit-to-one-page that probes denser layouts, reviewer hints for weak or number-free bullets, undo, and drag-and-drop ordering."
 				}
 			],
 			"x": {
-				"slug": "onlinecal",
-				"oneLiner": "live instrument-booking portal for campus researchers",
+				"slug": "resume-builder",
+				"oneLiner": "local LaTeX resume builder",
 				"links": [
 					{
 						"label": "source",
-						"href": "https://github.com/CAL-BPHC/onlineCAL"
+						"href": "https://github.com/Chaitanya-Keyal/resume-builder"
+					},
+					{
+						"label": "deployed",
+						"href": "https://resume-builder.okaybro.dev/"
 					}
 				],
-				"periodLabel": "Aug 2024 to present"
-			}
+				"periodLabel": "Sep 2026"
+			},
+			"entity": "Personal Project"
 		},
 		{
 			"id": "asynchrony",
@@ -482,7 +484,11 @@
 			"description": "Winner of the **Synchrony Hackathon (1st place, INR 2,00,000)**: an autonomous agent that turns natural-language questions into complex SQL.",
 			"url": "https://github.com/Chaitanya-Keyal/asynchrony",
 			"entity": "Synchrony Hackathon",
-			"keywords": ["Python", "LangChain", "SQL"],
+			"keywords": [
+				"Python",
+				"LangChain",
+				"SQL"
+			],
 			"startDate": "2024-09",
 			"endDate": "2024-09",
 			"highlights": [
@@ -508,12 +514,51 @@
 			}
 		},
 		{
+			"id": "onlinecal",
+			"name": "onlineCAL",
+			"description": "The production portal researchers use to book time on lab instruments. Requests flow through faculty and lab-assistant approval chains with per-instrument pricing. I maintain it as the undergraduate TA.",
+			"url": "https://github.com/CAL-BPHC/onlineCAL",
+			"entity": "Central Analytical Laboratory, BITS Hyderabad",
+			"keywords": [
+				"Python",
+				"Django",
+				"MySQL",
+				"DevOps"
+			],
+			"startDate": "2024-08",
+			"highlights": [
+				{
+					"id": "h_000o",
+					"text": "Maintain a real system with real users: approval workflows, pricing rules, email notifications."
+				},
+				{
+					"id": "h_000p",
+					"text": "Set up automated CI/CD so deploys stopped being manual events."
+				}
+			],
+			"x": {
+				"slug": "onlinecal",
+				"oneLiner": "live instrument-booking portal for campus researchers",
+				"links": [
+					{
+						"label": "source",
+						"href": "https://github.com/CAL-BPHC/onlineCAL"
+					}
+				],
+				"periodLabel": "Aug 2024 to present"
+			}
+		},
+		{
 			"id": "bitsgpt",
 			"name": "BitsGPT",
 			"description": "A campus assistant answering academic, course, and placement questions for BITS students. A classifier node routes each query to specialized agents that share tools and memory.",
 			"url": "https://github.com/crux-bphc/bitsgpt-rewrite",
 			"entity": "cruX, BITS Hyderabad programming club",
-			"keywords": ["Python", "LangGraph", "Vector DBs"],
+			"keywords": [
+				"Python",
+				"LangGraph",
+				"Vector DBs"
+			],
 			"startDate": "2024",
 			"endDate": "2024",
 			"highlights": [
@@ -545,7 +590,11 @@
 			"description": "The search service behind Chronofactorem, the timetable platform BITS students build their semesters on.",
 			"url": "https://github.com/crux-bphc/search-service",
 			"entity": "cruX, BITS Hyderabad programming club",
-			"keywords": ["Python", "Elasticsearch", "Docker"],
+			"keywords": [
+				"Python",
+				"Elasticsearch",
+				"Docker"
+			],
 			"startDate": "2024",
 			"endDate": "2024",
 			"highlights": [
@@ -581,7 +630,13 @@
 			"description": "The readout app for a colorimetric wound-dressing study, built for the research group running it. Photograph a dressing, and the app extracts the sample region, measures its colour and classifies it against the thresholds calibrated for that substrate, so the reading does not depend on who is looking at it.",
 			"url": "https://github.com/Chaitanya-Keyal/BioHue",
 			"entity": "Research group at BITS Hyderabad",
-			"keywords": ["Python", "FastAPI", "OpenCV", "Next.js", "MongoDB"],
+			"keywords": [
+				"Python",
+				"FastAPI",
+				"OpenCV",
+				"Next.js",
+				"MongoDB"
+			],
 			"startDate": "2025",
 			"endDate": "2026",
 			"highlights": [
@@ -624,7 +679,10 @@
 			"description": "Takes a Chronofactorem timetable ID and writes the whole semester into Google Calendar: classes with their rooms and instructors, exams with the seat allotted to that student, and nothing at all on holidays.",
 			"url": "https://github.com/Chaitanya-Keyal/Chrono2GCal",
 			"entity": "Personal project, used by BITS students",
-			"keywords": ["Python", "Google Calendar API"],
+			"keywords": [
+				"Python",
+				"Google Calendar API"
+			],
 			"startDate": "2023",
 			"highlights": [
 				{
@@ -663,7 +721,12 @@
 			"description": "Two board games played online against other people. Room and game events travel over a TCP protocol built for it, a Flask API handles accounts, and the client is Tkinter.",
 			"url": "https://github.com/Chaitanya-Keyal/Arcade",
 			"entity": "Personal project",
-			"keywords": ["Python", "Tkinter", "Flask", "MySQL"],
+			"keywords": [
+				"Python",
+				"Tkinter",
+				"Flask",
+				"MySQL"
+			],
 			"startDate": "2022",
 			"endDate": "2023",
 			"highlights": [
@@ -701,7 +764,15 @@
 		{
 			"id": "languages",
 			"name": "Languages",
-			"keywords": ["Python", "TypeScript", "Go", "C/C++", "Java", "SQL", "Bash"]
+			"keywords": [
+				"Python",
+				"TypeScript",
+				"Go",
+				"C/C++",
+				"Java",
+				"SQL",
+				"Bash"
+			]
 		},
 		{
 			"id": "backend",
@@ -734,7 +805,15 @@
 		{
 			"id": "infra",
 			"name": "Infra",
-			"keywords": ["Docker", "AWS", "Kubernetes", "GitHub Actions", "Linux", "CI/CD", "Git"]
+			"keywords": [
+				"Docker",
+				"AWS",
+				"Kubernetes",
+				"GitHub Actions",
+				"Linux",
+				"CI/CD",
+				"Git"
+			]
 		}
 	],
 	"awards": [],

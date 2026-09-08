@@ -20,7 +20,10 @@
 		"showLocation": false,
 		"showTagline": true,
 		"showSummary": false,
-		"profiles": ["GitHub", "LinkedIn"]
+		"profiles": [
+			"GitHub",
+			"LinkedIn"
+		]
 	},
 	"sections": [
 		{
@@ -39,18 +42,29 @@
 			"items": [
 				{
 					"ref": "work:summer-of-bitcoin/2026",
-					"bullets": ["h_0005", "h_hsecp8a7"],
+					"bullets": [
+						"h_0005",
+						"h_hsecp8a7"
+					],
 					"overrides": {
 						"showDescription": true
 					}
 				},
 				{
 					"ref": "work:onfinance/role",
-					"bullets": ["h_0001", "h_0002", "h_0003", "h_0004"]
+					"bullets": [
+						"h_0001",
+						"h_0002",
+						"h_0003",
+						"h_0004"
+					]
 				},
 				{
 					"ref": "work:summer-of-bitcoin/2025",
-					"bullets": ["h_0008", "h_pvjtdcik"],
+					"bullets": [
+						"h_0008",
+						"h_pvjtdcik"
+					],
 					"overrides": {
 						"bullets": {
 							"h_0008": {
@@ -63,7 +77,11 @@
 				},
 				{
 					"ref": "work:sellersetu/role",
-					"bullets": ["h_0009", "h_000a", "h_000b"]
+					"bullets": [
+						"h_0009",
+						"h_000a",
+						"h_000b"
+					]
 				}
 			]
 		},
@@ -73,11 +91,17 @@
 			"items": [
 				{
 					"ref": "volunteer:crux/role",
-					"bullets": ["h_000c", "h_000d", "h_000e"]
+					"bullets": [
+						"h_000c",
+						"h_000d",
+						"h_000e"
+					]
 				},
 				{
 					"ref": "volunteer:new/role",
-					"bullets": ["h_hntud69f"]
+					"bullets": [
+						"h_hntud69f"
+					]
 				}
 			]
 		},
@@ -87,7 +111,10 @@
 			"items": [
 				{
 					"ref": "projects:asynchrony",
-					"bullets": ["h_000q", "h_000r"],
+					"bullets": [
+						"h_000q",
+						"h_000r"
+					],
 					"overrides": {
 						"showDescription": true,
 						"showUrl": true
@@ -95,7 +122,10 @@
 				},
 				{
 					"ref": "projects:satbook",
-					"bullets": ["h_000l", "h_000m"],
+					"bullets": [
+						"h_000l",
+						"h_000m"
+					],
 					"overrides": {
 						"showDescription": true,
 						"showUrl": true,
