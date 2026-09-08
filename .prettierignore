@@ -11,3 +11,7 @@ src/lib/components/PixelPortrait.svelte
 # Copied in by `bun run fonts` / `bun run og`.
 static/fonts
 static/og
+
+# written by the resume builder, committed through GitHub as-is
+src/lib/data/profile.json
+src/lib/data/resume.json
