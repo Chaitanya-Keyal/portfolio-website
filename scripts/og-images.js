@@ -7,7 +7,7 @@ import { mkdirSync, readdirSync, readFileSync, unlinkSync, writeFileSync } from 
 import { profile } from '../src/lib/data/profile.ts';
 import { pages } from '../src/lib/data/site.ts';
 import { host } from '../src/lib/data/terminal.ts';
-import { allDocs } from '../src/lib/text/mandoc.ts';
+import { allDocs, docPath } from '../src/lib/text/mandoc.ts';
 
 // Posts reach the app through import.meta.glob, which only exists inside Vite,
 // so their frontmatter is read straight off disk here. Drafts get a card too:
@@ -59,10 +59,10 @@ const cards = [
 			detail: page.path === '/' ? profile.tagline : page.description
 		})),
 	...allDocs.map((doc) => {
-		const dir = doc.category === 'PROJECTS' ? 'projects' : 'work';
+		const path = docPath(doc).slice(1);
 		return {
-			key: `${dir}-${doc.slug}`,
-			command: `cat ${dir}/${doc.slug}`,
+			key: path.replaceAll('/', '-'),
+			command: `cat ${path}`,
 			title: doc.name,
 			detail: doc.oneLiner
 		};

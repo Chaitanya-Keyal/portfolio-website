@@ -2,7 +2,7 @@ import { error } from '@sveltejs/kit';
 import { toPlain } from '$lib/data/core/markup';
 import { profile } from '$lib/data/profile';
 import { domain } from '$lib/content';
-import { allDocs, docBySlug } from '$lib/text/mandoc';
+import { allDocs, docBySlug, docPath } from '$lib/text/mandoc';
 import type { EntryGenerator, RequestHandler } from './$types';
 
 export const prerender = true;
@@ -38,8 +38,7 @@ function roff(slug: string): string {
 	if (others.length > 0) {
 		lines.push('.SH "SEE ALSO"', others.map((o) => `${o.slug}(1)`).join(', '));
 	}
-	const path = doc.category === 'PROJECTS' ? `/projects/${doc.slug}` : `/work/${doc.slug}`;
-	lines.push('.SH "SEE ONLINE"', `${profile.site}${path}`);
+	lines.push('.SH "SEE ONLINE"', `${profile.site}${docPath(doc)}`);
 	return lines.join('\n') + '\n';
 }
 
