@@ -21,9 +21,8 @@ describe('resume.txt', () => {
 		}
 	});
 
-	it('opens with the name and closes with the site', () => {
+	it('opens with the name', () => {
 		expect(lines[0].trim()).toBe(profile.name.toUpperCase());
-		expect(text.trimEnd().split('\n').at(-1)).toBe(`  more at ${profile.site}`);
 	});
 
 	it('prints the composition sections in its order, uppercased and ruled', () => {

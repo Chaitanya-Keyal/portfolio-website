@@ -2,7 +2,6 @@ import { toPlain } from '$lib/data/core/markup';
 import { resolve } from '$lib/data/core/resolve/resolve';
 import type { ResolvedItem, ResolvedSection } from '$lib/data/core/resolve/types';
 import type { Resume, SectionType } from '$lib/data/core/schema/types';
-import { profile } from '$lib/data/profile';
 import { data, period } from '$lib/data/profile-json';
 import composition from '$lib/data/resume.json';
 
@@ -124,7 +123,6 @@ export function resumeText(): string {
 	lines.push(center(toPlain(resolved.header.name).toUpperCase()));
 	for (const line of packed(resolved.header.contacts.map((c) => c.text))) lines.push(center(line));
 	if (resolved.header.tagline) lines.push(center(toPlain(resolved.header.tagline)));
-	if (profile.status) lines.push(center(profile.status));
 	// Only when the composition's header asks for it, like the PDF.
 	if (resolved.header.summary) lines.push('', ...wrap(toPlain(resolved.header.summary), 2));
 	lines.push('');
@@ -140,6 +138,5 @@ export function resumeText(): string {
 		if (lines[lines.length - 1] !== '') lines.push('');
 	}
 
-	lines.push(`  more at ${profile.site}`);
 	return lines.join('\n') + '\n';
 }
