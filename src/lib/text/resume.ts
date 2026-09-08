@@ -125,6 +125,8 @@ export function resumeText(): string {
 	for (const line of packed(resolved.header.contacts.map((c) => c.text))) lines.push(center(line));
 	if (resolved.header.tagline) lines.push(center(toPlain(resolved.header.tagline)));
 	if (profile.status) lines.push(center(profile.status));
+	// Only when the composition's header asks for it, like the PDF.
+	if (resolved.header.summary) lines.push('', ...wrap(toPlain(resolved.header.summary), 2));
 	lines.push('');
 
 	for (const section of resolved.sections) {
