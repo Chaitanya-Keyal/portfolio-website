@@ -8,6 +8,10 @@
 #   RESUME_PHONE="+91 ..." bun run resume                          # print a phone number
 set -euo pipefail
 cd "$(dirname "$0")/.."
+if ! command -v pdflatex >/dev/null; then
+	echo "resume-pdf: pdflatex not found (Debian: apt-get install texlive-latex-base)" >&2
+	exit 1
+fi
 RB="${RESUME_BUILDER:-.resume-builder}"
 if [ ! -d "$RB" ]; then
 	git clone -q --depth 1 https://github.com/Chaitanya-Keyal/resume-builder "$RB"

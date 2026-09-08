@@ -17,14 +17,19 @@ curl -L okaybro.dev/man/seedsigner
 SvelteKit (static adapter) · Svelte 5 · TypeScript · hand-rolled TUI, no
 xterm.js · Fira Code
 
-Everything editable lives in `src/lib/data/`, and one source feeds the pages,
-the shell, the text endpoints and the man pages:
+Every page is built from `src/lib/data/profile.json`, the library written by
+the [resume builder](https://github.com/Chaitanya-Keyal/resume-builder) and
+committed here; `resume.json` beside it is the composition the resume page,
+`resume.txt` and the PDF print. One source feeds the pages, the shell, the
+text endpoints and the man pages:
 
 ```
 src/lib/
-  data/       nothing but the information: profile · education · experience · projects · site · terminal
+  data/       profile.json and resume.json, plus the modules that map them
+              onto the pages: profile · education · experience · projects · site · terminal
+  data/core/  the resume builder's renderer, vendored (markup, dates, resolve)
   data/blog/  posts, one markdown file each
-  types.ts    the shapes of everything in data/
+  types.ts    the shapes the pages consume
   content.ts  lookups over it, by slug, by route, the bare domain
   visibility.ts  what a listing shows, and in what order
   blog.ts     loads data/blog at build time
@@ -33,8 +38,8 @@ src/lib/
   components/ Meta, ManPage, PixelPortrait (generated)
 ```
 
-Adding a project or a role adds its page, its rail link, its man page and its
-sitemap entry with it. No copy is hardcoded in a route.
+Adding a project or a role to the library adds its page, its rail link, its
+man page and its sitemap entry with it. No copy is hardcoded in a route.
 
 ## Writing a post
 
@@ -64,6 +69,10 @@ bun install
 bun run fonts   # once: copy Fira Code subsets into static/
 bun run dev
 ```
+
+`bun run resume` builds `static/resume.pdf` from the two JSON files with the
+resume builder (cloned into `.resume-builder/`, or `RESUME_BUILDER=path` to a
+checkout) and needs `pdflatex`; CI runs it before every deploy.
 
 `bun run build` outputs a fully static site in `build/`. `bun run format` applies
 Prettier; `bun run lint` checks it and runs ESLint; `bun run check` type-checks; and
