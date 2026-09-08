@@ -19,10 +19,10 @@ describe('profile.json', () => {
 	});
 
 	it('keeps the phone number out of the public file', () => {
-		expect((raw as { basics: { phone?: string } }).basics.phone).toBeUndefined();
+		expect('phone' in raw.basics).toBe(false);
 	});
 
-	it('has unique ids and slugs', () => {
+	it('has unique slugs across work and projects', () => {
 		const slugs = [...experience.map((e) => e.slug), ...projects.map((p) => p.slug)];
 		expect(new Set(slugs).size).toBe(slugs.length);
 	});
@@ -33,7 +33,7 @@ describe('profile.json', () => {
 			...projects.map((p) => `/projects/${p.slug}`)
 		]);
 		for (const e of experience) for (const r of e.related) expect(pages.has(r.href)).toBe(true);
-		for (const r of education.campus) if ('link' in r) expect(pages.has(r.link)).toBe(true);
+		for (const r of education.campus) if (r.link) expect(pages.has(r.link)).toBe(true);
 	});
 
 	it('maps the basics the pages print', () => {

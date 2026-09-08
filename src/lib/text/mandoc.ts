@@ -15,7 +15,7 @@ export interface ManDoc {
 	/** Inline markup: the page renders it, the text forms strip it. */
 	did: string[];
 	links: Link[];
-	seeAlso: { label: string; href: string }[];
+	seeAlso: Link[];
 }
 
 export function projectDoc(project: Project): ManDoc {

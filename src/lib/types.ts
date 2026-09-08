@@ -1,5 +1,5 @@
-/** The shapes of everything in data/. Kept out of those files so they stay
- * nothing but the information itself. */
+/** The shapes the pages consume. The modules in data/ map profile.json onto
+ * them, so a page never reads the library's own schema. */
 
 export interface Link {
 	label: string;
@@ -38,7 +38,7 @@ export interface Experience {
 	points: string[];
 	links: Link[];
 	/** related pages on this site */
-	related: { label: string; href: string }[];
+	related: Link[];
 }
 
 /** A post's frontmatter, as written at the top of its .md file. */

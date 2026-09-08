@@ -4,9 +4,8 @@ import { projects } from '$lib/data/projects';
 import { pages } from '$lib/data/site';
 import type { Experience, Page, Project } from '$lib/types';
 
-/** Ways of asking questions about what is in data/. The data files themselves
- * hold nothing but the information, so that editing content never means
- * reading around code. */
+/** Ways of asking questions about what is in data/, kept out of the data
+ * modules so those stay plain mappings from profile.json. */
 
 export function projectBySlug(slug: string): Project | undefined {
 	return projects.find((p) => p.slug === slug);

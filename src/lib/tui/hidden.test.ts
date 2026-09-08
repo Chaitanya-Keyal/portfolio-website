@@ -164,8 +164,7 @@ describe('a hidden experience entry', () => {
 		expect(run('man quietco', '/').kind).toBe('print');
 	});
 
-	it('stays out of the work page description', async () => {
-		const { pages } = await import('$lib/data/site');
+	it('stays out of the work page description', () => {
 		const work = pages.find((p) => p.path === '/work');
 		expect(work?.description).toContain('OpenCo');
 		expect(work?.description).not.toContain('QuietCo');

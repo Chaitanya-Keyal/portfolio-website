@@ -1,10 +1,9 @@
-import { formatDate, formatRange } from '$lib/data/core/latex/dates';
 import { toPlain } from '$lib/data/core/markup';
 import { resolve } from '$lib/data/core/resolve/resolve';
-import type { DateRange, ResolvedItem, ResolvedSection } from '$lib/data/core/resolve/types';
+import type { ResolvedItem, ResolvedSection } from '$lib/data/core/resolve/types';
 import type { Resume, SectionType } from '$lib/data/core/schema/types';
 import { profile } from '$lib/data/profile';
-import { data } from '$lib/data/profile-json';
+import { data, period } from '$lib/data/profile-json';
 import composition from '$lib/data/resume.json';
 
 const WIDTH = 80;
@@ -52,13 +51,6 @@ function wrap(text: string, indent = 2, first = ' '.repeat(indent)): string[] {
 	return lines;
 }
 
-/** The site's period wording: `Jun 2025 to present`, `2022 to 2023`, a lone
- * date when the range starts and ends on it, or the label the library set. */
-function when(d: DateRange): string {
-	if (d.label === undefined && d.start && d.start === d.end) return formatDate(d.start, 'MMM yyyy');
-	return formatRange(d, { style: 'MMM yyyy', separator: ' to ', present: 'present' });
-}
-
 /** `a | b (dates)`, dropping whichever parts are empty. */
 function heading(main: string, detail: string | undefined, dates: string): string {
 	const left = detail ? `${main} | ${detail}` : main;
@@ -72,26 +64,28 @@ function itemLines(item: ResolvedItem, section: ResolvedSection): string[] {
 			if (section.type === 'education') {
 				// School on its own line, degree and year beneath it.
 				lines.push(...wrap(item.title, 4, '  '));
-				const dates = when(item.dates);
+				const dates = period(item.dates);
 				const degree = [item.subtitle, dates].filter(Boolean).join(' · ');
 				if (degree) lines.push(...wrap(degree, 4, '  '));
 			} else {
-				lines.push(...wrap(heading(item.title, item.subtitle, when(item.dates)), 4, '  '));
+				lines.push(...wrap(heading(item.title, item.subtitle, period(item.dates)), 4, '  '));
 			}
 			break;
 		case 'project':
-			lines.push(...wrap(heading(item.title, item.keywords.join(', '), when(item.dates)), 4, '  '));
+			lines.push(
+				...wrap(heading(item.title, item.keywords.join(', '), period(item.dates)), 4, '  ')
+			);
 			if (item.url) lines.push(`    ${item.url}`);
 			break;
 		case 'skills':
 			lines.push(...wrap(`${item.name}: ${item.keywords.join(', ')}`, 2));
 			break;
 		case 'award':
-			lines.push(...wrap(heading(item.title, item.awarder, when(item.dates)), 4, '  '));
+			lines.push(...wrap(heading(item.title, item.awarder, period(item.dates)), 4, '  '));
 			if (item.summary) lines.push(...wrap(toPlain(item.summary), 4));
 			break;
 		case 'simple':
-			lines.push(...wrap(heading(item.name, item.detail, when(item.dates)), 4, '  '));
+			lines.push(...wrap(heading(item.name, item.detail, period(item.dates)), 4, '  '));
 			if (item.url) lines.push(`    ${item.url}`);
 			break;
 	}
@@ -134,7 +128,7 @@ export function resumeText(): string {
 	lines.push('');
 
 	for (const section of resolved.sections) {
-		lines.push((section.title ?? TITLES[section.type] ?? section.type).toUpperCase());
+		lines.push((section.title ?? TITLES[section.type]).toUpperCase());
 		lines.push(rule());
 		for (const item of section.items) {
 			lines.push(...itemLines(item, section));

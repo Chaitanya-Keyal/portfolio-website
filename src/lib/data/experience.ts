@@ -1,25 +1,25 @@
 import type { Experience } from '$lib/types';
-import { data, period, plain, reachable } from './profile-json';
+import { toPlain } from './core/markup';
 import type { Engagement } from './core/schema/types';
+import { data, period, reachable } from './profile-json';
 
 /** Work and leadership entries alike: the site has one "work" lane. Each
  * organisation is one entry; its stints fold into one point list, newest
- * first, the way the site has always shown them. */
+ * first, and span one period from the earliest start to the latest end. */
 function toExperience(e: Engagement): Experience {
-	const newest = e.positions[0];
-	const starts = e.positions.map((p) => p.startDate).filter(Boolean) as string[];
+	const starts = e.positions.flatMap((p) => p.startDate ?? []).sort();
 	const ends = e.positions.map((p) => p.endDate);
-	const open = ends.some((x) => !x);
-	const start = starts.length ? starts.reduce((a, c) => (c < a ? c : a)) : undefined;
-	const end = open
-		? undefined
-		: (ends.filter(Boolean) as string[]).reduce((a, c) => (c > a ? c : a), '');
 	return {
 		slug: e.x?.slug ?? e.id,
-		org: plain(e.name),
+		org: toPlain(e.name),
 		hidden: e.x?.hidden,
-		role: newest?.position ?? '',
-		period: period(start, end || undefined, e.x?.periodLabel),
+		role: e.positions[0]?.position ?? '',
+		period: period({
+			label: e.x?.periodLabel,
+			start: starts[0],
+			// Any stint still open keeps the whole entry open.
+			end: ends.every(Boolean) ? ends.sort().at(-1) : undefined
+		}),
 		oneLiner: e.x?.oneLiner ?? '',
 		description: e.description ?? '',
 		stack: e.x?.stack ?? [],

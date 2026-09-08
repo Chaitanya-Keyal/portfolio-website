@@ -105,16 +105,13 @@
 		margin-bottom: 8px;
 	}
 
-	strong {
-		color: var(--fg);
-	}
-
 	p,
 	li,
 	dd {
 		color: var(--muted);
 	}
-	p strong,
+	/* :global, since the description and bullets arrive through @html. */
+	p :global(strong),
 	li :global(strong) {
 		color: var(--fg);
 		font-weight: 700;

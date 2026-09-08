@@ -1,7 +1,7 @@
 import { data } from './profile-json';
 
 const b = data.basics;
-const find = (network: string) =>
+const profileUrl = (network: string) =>
 	b.profiles.find((p) => p.network.toLowerCase() === network.toLowerCase())?.url ?? '';
 
 /** Skill groups the site lists, keyed for the home page rows. Groups marked
@@ -9,7 +9,7 @@ const find = (network: string) =>
 const skills: Record<string, string[]> = {};
 for (const g of data.skills) {
 	if (g.x?.hidden) continue;
-	skills[(g.x?.key as string | undefined) ?? g.id] = [...g.keywords];
+	skills[g.x?.key ?? g.id] = [...g.keywords];
 }
 
 export const profile = {
@@ -19,12 +19,12 @@ export const profile = {
 	tagline: b.x?.tagline ?? b.label ?? '',
 	summary: b.summary ?? '',
 	role: b.x?.role ?? b.label ?? '',
-	// Shown on home and every lane page; keep in sync with the resume.
+	// Shown on home and every lane page, and printed on the resume.
 	status: b.x?.status ?? '',
 	contact: {
 		email: b.email ?? '',
-		github: find('GitHub'),
-		linkedin: find('LinkedIn')
+		github: profileUrl('GitHub'),
+		linkedin: profileUrl('LinkedIn')
 	},
 	repo: b.x?.repo ?? '',
 	skills

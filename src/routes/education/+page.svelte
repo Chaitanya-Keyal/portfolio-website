@@ -47,7 +47,7 @@
 			     without a link keep their full stop tight. -->
 			{#each education.campus as role (role.text)}
 				<li>
-					{role.text}{#if 'link' in role}{' '}<a href="{base}{role.link}">{role.linkText}</a>{/if}.
+					{role.text}{#if role.link}{' '}<a href="{base}{role.link}">{role.linkText}</a>{/if}.
 				</li>
 			{/each}
 		</ul>
