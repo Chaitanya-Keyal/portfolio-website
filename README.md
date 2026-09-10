@@ -1,4 +1,4 @@
-# okaybro.dev
+# chaitanyakeyal.com
 
 My portfolio, built as a terminal in the browser: bordered panes, a working
 shell at the bottom (`cd`, `ls`, `man`, tab completion, a few surprises), and
@@ -8,8 +8,8 @@ progressive enhancement, so it all works with JavaScript off.
 It also speaks plain text:
 
 ```sh
-curl -L okaybro.dev/resume.txt
-curl -L okaybro.dev/man/seedsigner
+curl -L chaitanyakeyal.com/resume.txt
+curl -L chaitanyakeyal.com/man/seedsigner
 ```
 
 ## Stack

@@ -20,7 +20,7 @@ export default {
 	kit: {
 		adapter: adapter(),
 		paths: {
-			// Empty at okaybro.dev; '/portfolio-website' when serving from
+			// Empty at the custom domain; '/portfolio-website' when serving from
 			// project Pages without the custom domain (set by CI).
 			base: process.env.BASE_PATH || ''
 		},
