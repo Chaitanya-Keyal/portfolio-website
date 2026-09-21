@@ -370,6 +370,15 @@ export const ALIASES: Record<string, string> = {
 	':q!': ':q'
 };
 
+/** Whether the first word names something this shell can run, aliases and all.
+ * Used to tell a command from a typo, without running either. */
+export function isCommand(input: string): boolean {
+	const head = input.trim().split(/\s+/)[0];
+	if (!head) return false;
+	const name = (ALIASES[head] ?? head).split(/\s+/)[0];
+	return commands.some((c) => c.name === name);
+}
+
 /** `previous` is OLDPWD, where the last navigation came from, for `cd -`. */
 export function run(input: string, cwd: string, previous = ''): Outcome {
 	const trimmed = input.trim();

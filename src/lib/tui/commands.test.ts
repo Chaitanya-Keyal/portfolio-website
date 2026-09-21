@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { pages } from '$lib/data/site';
-import { commands, run } from './commands';
+import { commands, isCommand, run } from './commands';
 import { complete } from './completion';
 import { resolvePath } from './filesystem';
 
@@ -191,6 +191,28 @@ describe('theme', () => {
 	it('lists the options when given none, and rejects an unknown one', () => {
 		expect(run('theme', '/').kind).toBe('print');
 		expect(run('theme neon', '/').kind).toBe('error');
+	});
+});
+
+describe('isCommand', () => {
+	it('accepts a command, with or without arguments', () => {
+		expect(isCommand('help')).toBe(true);
+		expect(isCommand('  ls -la projects  ')).toBe(true);
+	});
+
+	it('accepts an alias, including one that carries flags', () => {
+		expect(isCommand('la')).toBe(true);
+		expect(isCommand('fetch')).toBe(true);
+	});
+
+	it('accepts an easter egg, which is still a command', () => {
+		expect(isCommand('sudo rm')).toBe(true);
+	});
+
+	it('rejects a typo and an empty prompt', () => {
+		expect(isCommand('helpp')).toBe(false);
+		expect(isCommand('')).toBe(false);
+		expect(isCommand('   ')).toBe(false);
 	});
 });
 

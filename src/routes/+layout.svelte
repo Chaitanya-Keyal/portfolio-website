@@ -4,6 +4,7 @@
 	import { afterNavigate, beforeNavigate, goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import { page } from '$app/state';
+	import { messages } from '$lib/data/terminal';
 	import { profile } from '$lib/data/profile';
 	import Rail from '$lib/tui/Rail.svelte';
 	import StatusBar from '$lib/tui/StatusBar.svelte';
@@ -123,7 +124,14 @@
 	// The scroll container is #main, not the window, so SvelteKit's own
 	// post-navigation scroll reset never reaches it; without this, the next
 	// page opens at the previous page's scroll offset.
-	afterNavigate(() => {
+	// A first arrival, not a return trip. SvelteKit calls the first load 'enter';
+	// every later navigation is a link, a goto or the back button, and by then
+	// the visitor has already used the thing the hint is pointing at.
+	let hint = $state<string | undefined>(undefined);
+
+	afterNavigate(({ type }) => {
+		hint = type === 'enter' && page.route.id === '/' ? messages.hint : undefined;
+
 		// Only a navigation the shell started counts. A link click, a shared
 		// link or a reload all leave this false, which is the default: read.
 		cameFromShell = shellNav;
@@ -251,6 +259,7 @@
 			ontheme={applyTheme}
 			oncrt={toggleCrt}
 			onfocuschange={(focused) => (shellFocused = focused)}
+			{hint}
 		/>
 		<StatusBar {theme} {mode} onthemecycle={cycleTheme} />
 	</div>

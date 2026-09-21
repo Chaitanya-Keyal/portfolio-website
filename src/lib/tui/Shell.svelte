@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import { host } from '$lib/data/terminal';
-	import { run } from './commands';
+	import { isCommand, run } from './commands';
 	import { complete } from './completion';
 	import type { Theme } from './theme';
 
@@ -17,13 +17,22 @@
 		ontheme: (theme: Theme) => void;
 		oncrt: () => 'on' | 'off';
 		onfocuschange: (focused: boolean) => void;
+		/** Placeholder for the empty prompt. Set only on a fresh landing. */
+		hint?: string;
 	}
-	let { cwd, previous, session, onnav, onopen, ontheme, oncrt, onfocuschange }: Props = $props();
+	let { cwd, previous, session, onnav, onopen, ontheme, oncrt, onfocuschange, hint }: Props =
+		$props();
 
 	interface Line {
 		text: string;
 		kind: 'cmd' | 'out' | 'err';
 	}
+
+	// Sticky, unlike an empty scrollback: `clear` wipes the lines but the visitor
+	// has still proved they can drive the thing, so the suggestion should not
+	// come back.
+	let ran = $state(false);
+	const suggesting = $derived(Boolean(hint) && !ran);
 
 	let lines = $state<Line[]>([]);
 	let value = $state('');
@@ -126,6 +135,7 @@
 		const entry = value.trim();
 		value = '';
 		historyIndex = -1;
+		if (isCommand(entry)) ran = true;
 		if (entry) remember(entry);
 		append({ text: `${ps1} ${entry}`, kind: 'cmd' });
 		const outcome = run(entry, cwd, previous);
@@ -173,6 +183,13 @@
 	}
 
 	function tab() {
+		// Tab on an empty prompt accepts what the placeholder is offering, rather
+		// than printing every command there is. Once something has run, the
+		// suggestion is gone and Tab goes back to listing.
+		if (!value && suggesting && hint) {
+			value = hint;
+			return;
+		}
 		const completion = complete(value, cwd);
 		value = completion.value;
 		if (completion.options.length > 1) {
@@ -253,6 +270,7 @@
 				autocomplete="off"
 				autocapitalize="off"
 				aria-label="Shell prompt, try `help`"
+				placeholder={suggesting ? hint : undefined}
 			/>
 		</div>
 	</div>
@@ -385,6 +403,14 @@
 	}
 	input:focus {
 		outline: none;
+	}
+
+	/* Faint, so it reads as a suggestion rather than as something already
+	   typed. It goes the moment a key lands, and for good once a command has
+	   run, because by then the shell has proved it is real. */
+	input::placeholder {
+		color: var(--faint);
+		opacity: 1;
 	}
 
 	/* Under 16px, iOS Safari zooms the page on focus. */

@@ -27,6 +27,9 @@ export const messages = {
 	notFound: (name: string) => `bash: ${name}: command not found (try \`help\`)`,
 	helpHeader: 'some of what works here:',
 	helpKeys: 'keys: : or / to type here · tab complete · esc to leave',
+	/** Shown in the empty prompt on a fresh landing, so the first visitor knows
+	 * it is a real shell rather than decoration. */
+	hint: 'help',
 	/** The 404 page, which is a shell error rather than a page. */
 	noSuchPath: 'zsh: no such file or directory:',
 	didYouMean: 'did you mean:'
