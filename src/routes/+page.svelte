@@ -41,6 +41,16 @@
 	const MIN_PX = 5;
 	const MAX_PX = 14;
 	const INFO_MIN_REM = 34;
+	/** The most of the window's height the portrait may take. Matching the text
+	 * is the right shape on a tall screen, but the text is a fixed number of
+	 * rows, so on a short one the portrait would stand as tall as the whole
+	 * window and leave the terminal nothing. Past this it stops growing and
+	 * simply sits shorter than the text, as it already does when the width runs
+	 * out first. */
+	const MAX_VIEWPORT_SHARE = 0.6;
+	/** The portrait's own geometry, set by scripts/pixel-portrait.py. */
+	const LINE_EM = 1.2;
+	const CELL_EM = 0.6;
 
 	$effect(() => {
 		const logoEl = logo;
@@ -58,12 +68,20 @@
 		// narrowed inside it.
 		const fit = () => {
 			if (!perPxHigh) {
-				const pre = logoEl.querySelector('pre');
-				const box = logoEl.getBoundingClientRect();
-				if (!pre || !box.height) return; // hidden by the phone layout
-				const unit = parseFloat(getComputedStyle(pre).fontSize);
-				perPxHigh = box.height / unit;
-				perPxWide = box.width / unit;
+				// Counted, not measured. The portrait is a fixed grid of half-block
+				// characters: one line per <span class="r">, each 1.2em tall, each
+				// cell 0.6em wide. Measuring the rendered box instead makes the
+				// basis depend on which font drew those blocks, and until Fira
+				// Code's symbols subset arrives they come from a fallback whose
+				// line box is half again as tall. Taken from that frame and kept,
+				// the basis stayed wrong, and the portrait stood half again as tall
+				// as the text it is supposed to match.
+				const lines = logoEl.querySelectorAll('.r');
+				if (!lines.length) return;
+				let cols = 0;
+				for (const line of lines) cols = Math.max(cols, line.textContent?.length ?? 0);
+				perPxHigh = lines.length * LINE_EM;
+				perPxWide = cols * CELL_EM;
 			}
 			// Room is measured off the row rather than the portrait, so it stays
 			// true once the portrait is out of the flow.
@@ -74,7 +92,8 @@
 			if (cramped) return;
 
 			const target = infoEl.getBoundingClientRect().height / perPxHigh;
-			const next = Math.min(target, room, MAX_PX);
+			const ceiling = (window.innerHeight * MAX_VIEWPORT_SHARE) / perPxHigh;
+			const next = Math.min(target, room, MAX_PX, ceiling);
 			// Ignoring hair-thin corrections keeps a resize from oscillating:
 			// the portrait's width feeds back into how the text wraps.
 			if (Math.abs(next - size) > 0.05) size = next;
@@ -82,7 +101,15 @@
 
 		const observer = new ResizeObserver(fit);
 		observer.observe(infoEl);
-		return () => observer.disconnect();
+		// The ceiling moves with the window, and a resize that leaves the text
+		// the same height (a shorter window, same width) never reaches the
+		// observer, so the portrait would keep a size the window no longer has
+		// room for.
+		window.addEventListener('resize', fit);
+		return () => {
+			observer.disconnect();
+			window.removeEventListener('resize', fit);
+		};
 	});
 
 	// Runs while the head is parsed, before anything paints, and only on this
@@ -232,6 +259,27 @@ setTimeout(function(){delete d.dataset.boot},3000)}catch(e){}`;
 	   column, the text wins. */
 	.logo.cramped {
 		display: none;
+	}
+
+	/* A laptop is wide but short, and the fetch output is a fixed number of rows,
+	   so its height barely moves with the window: at 700-800px it took about four
+	   fifths of the screen and left the terminal a sliver. Tighten the block
+	   itself rather than scaling the whole page down; the portrait follows, being
+	   sized against this column. */
+	@media (min-width: 720px) and (max-height: 900px) {
+		.fetch {
+			font-size: 0.875rem;
+			line-height: 1.45;
+		}
+	}
+
+	@media (min-width: 720px) and (max-height: 720px) {
+		/* Tighter still. The portrait is not dropped here: it is capped against
+		   the window instead, so it shrinks rather than disappearing. */
+		.fetch {
+			font-size: 0.8125rem;
+			line-height: 1.4;
+		}
 	}
 
 	.info {

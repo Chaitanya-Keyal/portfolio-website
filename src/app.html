@@ -12,6 +12,17 @@
 			type="font/woff2"
 			crossorigin
 		/>
+		<!-- The block characters the portrait is drawn with. Left to be discovered
+		     from the stylesheet it arrives late, and until it does those blocks
+		     come from a fallback whose line box is taller, so the portrait is
+		     drawn about half again as tall as the text it is sized against. -->
+		<link
+			rel="preload"
+			href="%sveltekit.assets%/fonts/fira-code-symbols2-400-normal.woff2"
+			as="font"
+			type="font/woff2"
+			crossorigin
+		/>
 		<style>
 			@font-face {
 				font-family: 'Fira Code';

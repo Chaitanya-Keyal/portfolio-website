@@ -321,7 +321,11 @@
 	   the shell stays docked. */
 	@media (min-width: 720px) {
 		.frame[data-home] {
-			grid-template-rows: minmax(0, auto) 1fr auto;
+			/* The terminal keeps a floor. The fetch output is a fixed number of
+			   rows, so without one a short viewport hands it the whole screen and
+			   leaves the prompt sitting on the status bar. Past the floor the
+			   output scrolls, which is what a real terminal does anyway. */
+			grid-template-rows: minmax(0, auto) minmax(min(26vh, 11rem), 1fr) auto;
 			row-gap: 0;
 		}
 		/* The other half of the seam, on the same clock as the shell's. */
