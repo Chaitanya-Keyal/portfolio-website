@@ -50,18 +50,6 @@
 			a.row:active {
 				background: #21262d;
 			}
-			.dot {
-				flex: 0 0 0.6rem;
-				height: 0.6rem;
-				border-radius: 50%;
-				background: #484f58;
-			}
-			.dot.up {
-				background: #3fb950;
-			}
-			.dot.down {
-				background: #f85149;
-			}
 			.what {
 				flex: 1;
 			}
@@ -77,79 +65,34 @@
 	</head>
 	<body>
 		<h1>tailnet</h1>
-		<p class="note">
-			These only open on devices signed in to Tailscale. Dots show what's up right now.
-		</p>
+		<p class="note">These only open on devices signed in to Tailscale.</p>
 
 		<h2>Terminals</h2>
 		<a class="row" href="https://tesseract.polecat-zebra.ts.net/">
-			<span
-				class="dot"
-				data-probe="https://tesseract.polecat-zebra.ts.net/assets/favicon-32.png"
-			></span>
 			<span class="what">tesseract<span class="sub">laptop (WSL): pick a tmux session</span></span>
 			<span class="go">open</span>
 		</a>
 		<a class="row" href="https://tesseract.polecat-zebra.ts.net/?arg=new">
-			<span
-				class="dot"
-				data-probe="https://tesseract.polecat-zebra.ts.net/assets/favicon-32.png"
-			></span>
 			<span class="what">tesseract: new shell<span class="sub">fresh tmux session</span></span>
 			<span class="go">open</span>
 		</a>
 		<a class="row" href="https://oracle-hyd.polecat-zebra.ts.net/">
-			<span
-				class="dot"
-				data-probe="https://oracle-hyd.polecat-zebra.ts.net/assets/favicon-32.png"
-			></span>
 			<span class="what"
 				>oracle-hyd<span class="sub">Oracle VM: the agent's tmux sessions (cc-*)</span></span
 			>
 			<span class="go">open</span>
 		</a>
 		<a class="row" href="https://oracle-hyd.polecat-zebra.ts.net/?arg=new">
-			<span
-				class="dot"
-				data-probe="https://oracle-hyd.polecat-zebra.ts.net/assets/favicon-32.png"
-			></span>
 			<span class="what">oracle-hyd: new shell<span class="sub">fresh tmux session</span></span>
 			<span class="go">open</span>
 		</a>
 
 		<h2>Agent</h2>
 		<a class="row" href="https://oracle-hyd.polecat-zebra.ts.net:8443/">
-			<span
-				class="dot"
-				data-probe="https://oracle-hyd.polecat-zebra.ts.net:8443/favicon.ico"
-			></span>
 			<span class="what"
 				>Hermes dashboard<span class="sub">sessions, cron, skills, logs</span></span
 			>
 			<span class="go">open</span>
 		</a>
-		<a class="row" href="https://t.me/okaybro_agent_bot">
-			<span class="dot up"></span>
-			<span class="what">Telegram<span class="sub">@okaybro_agent_bot</span></span>
-			<span class="go">open</span>
-		</a>
-
-		<h2>Apps</h2>
-		<a class="row" href="https://satbook.okaybro.dev/">
-			<span class="dot up"></span>
-			<span class="what">satbook<span class="sub">public, on azure-pune</span></span>
-			<span class="go">open</span>
-		</a>
-
-		<script>
-			// An image load works cross-origin, so it tells us whether each tailnet service answers.
-			for (const dot of document.querySelectorAll('[data-probe]')) {
-				const img = new Image();
-				const timer = setTimeout(() => (img.src = ''), 6000);
-				img.onload = () => (clearTimeout(timer), dot.classList.add('up'));
-				img.onerror = () => (clearTimeout(timer), dot.classList.add('down'));
-				img.src = dot.dataset.probe + '?t=' + Date.now();
-			}
-		</script>
 	</body>
 </html>
