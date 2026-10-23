@@ -255,7 +255,7 @@
 			{previous}
 			session={atHome}
 			onnav={navigate}
-			onopen={(url) => (location.href = base + url)}
+			onopen={(url) => (location.href = /^https?:\/\//.test(url) ? url : base + url)}
 			ontheme={applyTheme}
 			oncrt={toggleCrt}
 			onfocuschange={(focused) => (shellFocused = focused)}

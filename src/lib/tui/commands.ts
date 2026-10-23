@@ -13,6 +13,7 @@ import {
 	treeLines
 } from './filesystem';
 import { themes, isTheme, currentTheme, type Theme } from './theme';
+import { unseal, type Sealed, type TailnetLink } from '$lib/tailnet';
 
 /** What running a command means; navigation and settings are applied by the
  * layout, printing by the shell. */
@@ -28,6 +29,13 @@ export type Outcome =
 	/** Not printable: let the browser show it. */
 	| { kind: 'open'; url: string }
 	| { kind: 'animate'; frames: string[][]; interval: number }
+	/** Ask for a secret on a masked line that never reaches history, then carry on with it.
+	 * `load` is handed in by the shell, which knows the site's base path. */
+	| {
+			kind: 'askpass';
+			prompt: string;
+			then: (secret: string, load: () => Promise<Sealed>) => Promise<Outcome>;
+	  }
 	| { kind: 'clear' }
 	| { kind: 'none' };
 
@@ -147,6 +155,49 @@ function theme(args: string[]): Outcome {
 	}
 	if (!isTheme(target)) return { kind: 'error', lines: [`theme: unknown theme: ${target}`] };
 	return { kind: 'theme', theme: target };
+}
+
+/* ---------- tailnet (hidden, password-locked) ---------- */
+
+/** Unlocked links, kept in memory for this tab only: a reload locks them again. */
+let unlocked: TailnetLink[] | null = null;
+
+function tailnetResult(links: TailnetLink[], target?: string): Outcome {
+	if (!target) {
+		const width = Math.max(...links.map((l) => l.name.length)) + 2;
+		return {
+			kind: 'print',
+			lines: [
+				...links.map((l) => l.name.padEnd(width) + l.label),
+				'',
+				'open one with: tailnet <name>'
+			]
+		};
+	}
+	const link = links.find((l) => l.name === target);
+	return link
+		? { kind: 'open', url: link.url }
+		: { kind: 'error', lines: [`tailnet: no such link: ${target}`] };
+}
+
+function tailnet(args: string[]): Outcome {
+	if (unlocked) return tailnetResult(unlocked, args[0]);
+	return {
+		kind: 'askpass',
+		prompt: 'password:',
+		then: async (secret, load) => {
+			let sealed: Sealed;
+			try {
+				sealed = await load();
+			} catch {
+				return { kind: 'error', lines: ["tailnet: couldn't fetch the locked list; try again"] };
+			}
+			const links = await unseal(sealed, secret);
+			if (!links) return { kind: 'error', lines: ['tailnet: wrong password'] };
+			unlocked = links;
+			return tailnetResult(links, args[0]);
+		}
+	};
 }
 
 /* ---------- easter eggs ---------- */
@@ -348,6 +399,13 @@ export const commands: CommandSpec[] = [
 			args.includes('-rf') && args.includes('/')
 				? { kind: 'print', lines: [eggs.rmRoot] }
 				: { kind: 'error', lines: [eggs.rmDenied] }
+	},
+	{
+		name: 'tailnet',
+		usage: 'tailnet [name]',
+		description: '',
+		hidden: true,
+		run: (args) => tailnet(args)
 	}
 ];
 

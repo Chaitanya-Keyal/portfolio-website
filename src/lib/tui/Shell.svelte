@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import { host } from '$lib/data/terminal';
-	import { isCommand, run } from './commands';
+	import { isCommand, run, type Outcome } from './commands';
+	import { SEALED_PATH, type Sealed } from '$lib/tailnet';
 	import { complete } from './completion';
 	import type { Theme } from './theme';
 
@@ -50,6 +51,16 @@
 		history = JSON.parse(sessionStorage.getItem(HISTORY_KEY) ?? '[]');
 	} catch {
 		history = [];
+	}
+
+	/** A command waiting on a secret: the next line typed is masked, sent to it, and never
+	 * echoed or remembered. Escape gives up. */
+	let pending = $state<Extract<Outcome, { kind: 'askpass' }> | null>(null);
+
+	async function loadSealed(): Promise<Sealed> {
+		const response = await fetch(base + SEALED_PATH);
+		if (!response.ok) throw new Error(`${SEALED_PATH}: ${response.status}`);
+		return response.json();
 	}
 
 	export function focusPrompt() {
@@ -132,13 +143,25 @@
 
 	async function submit() {
 		stopAnimation();
+		if (pending) {
+			const asked = pending;
+			const secret = value;
+			value = '';
+			pending = null;
+			append({ text: asked.prompt, kind: 'cmd' });
+			await apply(await asked.then(secret, loadSealed));
+			return;
+		}
 		const entry = value.trim();
 		value = '';
 		historyIndex = -1;
 		if (isCommand(entry)) ran = true;
 		if (entry) remember(entry);
 		append({ text: `${ps1} ${entry}`, kind: 'cmd' });
-		const outcome = run(entry, cwd, previous);
+		await apply(run(entry, cwd, previous));
+	}
+
+	async function apply(outcome: Outcome) {
 		switch (outcome.kind) {
 			case 'print':
 				append(...outcome.lines.map((text) => ({ text, kind: 'out' as const })));
@@ -167,9 +190,15 @@
 				}
 				break;
 			}
-			case 'open':
-				append({ text: `opening ${outcome.url.split('/').pop()}...`, kind: 'out' });
+			case 'open': {
+				const external = /^https?:\/\//.test(outcome.url);
+				const label = external ? new URL(outcome.url).host : outcome.url.split('/').pop();
+				append({ text: `opening ${label}...`, kind: 'out' });
 				onopen(outcome.url);
+				break;
+			}
+			case 'askpass':
+				pending = outcome;
 				break;
 			case 'animate':
 				animate(outcome.frames, outcome.interval);
@@ -206,21 +235,27 @@
 				void submit();
 				return;
 			case 'Escape':
+				if (pending) {
+					pending = null;
+					value = '';
+					append({ text: '^C', kind: 'cmd' });
+					return;
+				}
 				input?.blur();
 				return;
 			case 'Tab':
 				event.preventDefault();
-				tab();
+				if (!pending) tab();
 				return;
 			case 'ArrowUp':
 				event.preventDefault();
-				if (history.length === 0) return;
+				if (pending || history.length === 0) return;
 				historyIndex = historyIndex === -1 ? history.length - 1 : Math.max(0, historyIndex - 1);
 				value = history[historyIndex];
 				return;
 			case 'ArrowDown':
 				event.preventDefault();
-				if (historyIndex === -1) return;
+				if (pending || historyIndex === -1) return;
 				historyIndex = historyIndex + 1 >= history.length ? -1 : historyIndex + 1;
 				value = historyIndex === -1 ? '' : history[historyIndex];
 				return;
@@ -254,9 +289,13 @@
 		{/each}
 		<div class="promptline">
 			<label for="prompt" class="ps1">
-				<span class="user">{host}</span><span class="colon">:</span><span class="cwd"
-					>{display}</span
-				><span class="dollar">$</span>
+				{#if pending}
+					{pending.prompt}
+				{:else}
+					<span class="user">{host}</span><span class="colon">:</span><span class="cwd"
+						>{display}</span
+					><span class="dollar">$</span>
+				{/if}
 			</label>
 			<input
 				id="prompt"
@@ -265,11 +304,11 @@
 				{onkeydown}
 				onfocus={() => onfocuschange(true)}
 				onblur={() => onfocuschange(false)}
-				type="text"
+				type={pending ? 'password' : 'text'}
 				spellcheck="false"
 				autocomplete="off"
 				autocapitalize="off"
-				aria-label="Shell prompt, try `help`"
+				aria-label={pending ? pending.prompt : 'Shell prompt, try `help`'}
 				placeholder={suggesting ? hint : undefined}
 			/>
 		</div>

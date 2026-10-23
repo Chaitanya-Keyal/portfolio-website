@@ -15,7 +15,8 @@
 		"portrait": "python3 scripts/pixel-portrait.py",
 		"prepare": "svelte-kit sync && husky",
 		"og": "bun scripts/og-images.js",
-		"resume": "bash scripts/resume-pdf.sh"
+		"resume": "bash scripts/resume-pdf.sh",
+		"tailnet:seal": "bun scripts/tailnet-seal.js"
 	},
 	"lint-staged": {
 		"*.{js,ts,svelte}": [
