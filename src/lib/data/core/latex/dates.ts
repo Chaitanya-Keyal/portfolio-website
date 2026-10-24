@@ -4,53 +4,53 @@ import type { DateRange } from '../resolve/types';
 export type DateStyle = 'MMM yyyy' | 'MMMM yyyy' | 'MM/yyyy' | 'yyyy';
 
 const MONTHS = [
-	'January',
-	'February',
-	'March',
-	'April',
-	'May',
-	'June',
-	'July',
-	'August',
-	'September',
-	'October',
-	'November',
-	'December'
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
 ];
 
 /** `YYYY`, `YYYY-MM` or `YYYY-MM-DD` → text. A bare year prints as the year in every style. */
 export function formatDate(iso: string, style: DateStyle): string {
-	const [y, m] = iso.split('-');
-	if (!m) return y;
-	const month = Number(m);
-	if (!(month >= 1 && month <= 12)) return iso;
-	switch (style) {
-		case 'MMM yyyy':
-			return `${MONTHS[month - 1].slice(0, 3)} ${y}`;
-		case 'MMMM yyyy':
-			return `${MONTHS[month - 1]} ${y}`;
-		case 'MM/yyyy':
-			return `${String(month).padStart(2, '0')}/${y}`;
-		case 'yyyy':
-			return y;
-	}
+  const [y, m] = iso.split('-');
+  if (!m) return y;
+  const month = Number(m);
+  if (!(month >= 1 && month <= 12)) return iso;
+  switch (style) {
+    case 'MMM yyyy':
+      return `${MONTHS[month - 1].slice(0, 3)} ${y}`;
+    case 'MMMM yyyy':
+      return `${MONTHS[month - 1]} ${y}`;
+    case 'MM/yyyy':
+      return `${String(month).padStart(2, '0')}/${y}`;
+    case 'yyyy':
+      return y;
+  }
 }
 
 export interface RangeOptions {
-	style: DateStyle;
-	/** Between start and end; LaTeX wants `--`, HTML wants an en dash. */
-	separator: string;
-	present: string;
+  style: DateStyle;
+  /** Between start and end; LaTeX wants `--`, HTML wants an en dash. */
+  separator: string;
+  present: string;
 }
 
 /** `label` wins (an empty label prints nothing); otherwise "start SEP end", "start SEP Present", or just the end date. */
 export function formatRange(d: DateRange, o: RangeOptions): string {
-	if (d.label !== undefined) return d.label;
-	if (d.start) {
-		const a = formatDate(d.start, o.style);
-		const b = d.end ? formatDate(d.end, o.style) : o.present;
-		// A one-month (or, at year precision, one-year) stint prints once, not "Aug 2026 -- Aug 2026".
-		return a === b ? a : `${a}${o.separator}${b}`;
-	}
-	return d.end ? formatDate(d.end, o.style) : '';
+  if (d.label !== undefined) return d.label;
+  if (d.start) {
+    const a = formatDate(d.start, o.style);
+    const b = d.end ? formatDate(d.end, o.style) : o.present;
+    // A one-month (or, at year precision, one-year) stint prints once, not "Aug 2026 -- Aug 2026".
+    return a === b ? a : `${a}${o.separator}${b}`;
+  }
+  return d.end ? formatDate(d.end, o.style) : '';
 }

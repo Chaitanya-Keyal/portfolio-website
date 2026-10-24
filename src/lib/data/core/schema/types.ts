@@ -22,218 +22,218 @@
 export type Iso = string;
 
 export interface Highlight {
-	id: string;
-	text: string;
-	/** Kept in the library but skipped by consumers that list everything (a website). */
-	hidden?: boolean;
+  id: string;
+  text: string;
+  /** Kept in the library but skipped by consumers that list everything (a website). */
+  hidden?: boolean;
 }
 
 export interface Link {
-	label: string;
-	href: string;
+  label: string;
+  href: string;
 }
 
 export interface Location {
-	address?: string;
-	postalCode?: string;
-	city?: string;
-	countryCode?: string;
-	region?: string;
+  address?: string;
+  postalCode?: string;
+  city?: string;
+  countryCode?: string;
+  region?: string;
 }
 
 export interface SocialProfile {
-	/** e.g. "GitHub", "LinkedIn". Used as the key when a resume orders profiles. */
-	network: string;
-	username?: string;
-	url: string;
+  /** e.g. "GitHub", "LinkedIn". Used as the key when a resume orders profiles. */
+  network: string;
+  username?: string;
+  url: string;
 }
 
 export interface BasicsX {
-	handle?: string;
-	role?: string;
-	status?: string;
-	repo?: string;
-	/** Short lowercase tagline for a website; `basics.label` is the resume's. */
-	tagline?: string;
-	[key: string]: unknown;
+  handle?: string;
+  role?: string;
+  status?: string;
+  repo?: string;
+  /** Short lowercase tagline for a website; `basics.label` is the resume's. */
+  tagline?: string;
+  [key: string]: unknown;
 }
 
 export interface Basics {
-	name: string;
-	/** One-line headline printed under the contact line on the resume. */
-	label?: string;
-	image?: string;
-	email?: string;
-	/** Belongs in the private overlay, not here: the profile is public. */
-	phone?: string;
-	url?: string;
-	summary?: string;
-	location?: Location;
-	profiles: SocialProfile[];
-	x?: BasicsX;
+  name: string;
+  /** One-line headline printed under the contact line on the resume. */
+  label?: string;
+  image?: string;
+  email?: string;
+  /** Belongs in the private overlay, not here: the profile is public. */
+  phone?: string;
+  url?: string;
+  summary?: string;
+  location?: Location;
+  profiles: SocialProfile[];
+  x?: BasicsX;
 }
 
 export interface EntryX {
-	slug?: string;
-	hidden?: boolean;
-	oneLiner?: string;
-	stack?: string[];
-	links?: Link[];
-	related?: Link[];
-	/** Free-text period for a website ("Summer 2025 and Summer 2026"). */
-	periodLabel?: string;
-	[key: string]: unknown;
+  slug?: string;
+  hidden?: boolean;
+  oneLiner?: string;
+  stack?: string[];
+  links?: Link[];
+  related?: Link[];
+  /** Free-text period for a website ("Summer 2025 and Summer 2026"). */
+  periodLabel?: string;
+  [key: string]: unknown;
 }
 
 export interface Position {
-	id: string;
-	/** Job title. */
-	position: string;
-	startDate?: Iso;
-	endDate?: Iso;
-	/** Wins over the formatted date range when set ("Summer 2025"). */
-	dateLabel?: string;
-	/** Overrides the engagement's location for this stint. */
-	location?: string;
-	summary?: string;
-	highlights: Highlight[];
+  id: string;
+  /** Job title. */
+  position: string;
+  startDate?: Iso;
+  endDate?: Iso;
+  /** Wins over the formatted date range when set ("Summer 2025"). */
+  dateLabel?: string;
+  /** Overrides the engagement's location for this stint. */
+  location?: string;
+  summary?: string;
+  highlights: Highlight[];
 }
 
 /** A `work` or `volunteer` item: one organisation, one or more stints. */
 export interface Engagement {
-	id: string;
-	name: string;
-	url?: string;
-	location?: string;
-	description?: string;
-	/** Newest first. */
-	positions: Position[];
-	x?: EntryX;
+  id: string;
+  name: string;
+  url?: string;
+  location?: string;
+  description?: string;
+  /** Newest first. */
+  positions: Position[];
+  x?: EntryX;
 }
 
 export interface Education {
-	id: string;
-	institution: string;
-	url?: string;
-	area?: string;
-	studyType?: string;
-	startDate?: Iso;
-	endDate?: Iso;
-	dateLabel?: string;
-	score?: string;
-	courses: string[];
-	location?: string;
-	highlights: Highlight[];
-	x?: EducationX;
+  id: string;
+  institution: string;
+  url?: string;
+  area?: string;
+  studyType?: string;
+  startDate?: Iso;
+  endDate?: Iso;
+  dateLabel?: string;
+  score?: string;
+  courses: string[];
+  location?: string;
+  highlights: Highlight[];
+  x?: EducationX;
 }
 
 export interface EducationX extends EntryX {
-	institutionShort?: string;
-	/** The full degree line as it should print ("B.E. CS, M.Sc. Math, Minor in DS"). */
-	degreeLine?: string;
-	short?: string;
-	minor?: string;
-	summary?: string;
-	campus?: { text: string; link?: string; linkText?: string }[];
+  institutionShort?: string;
+  /** The full degree line as it should print ("B.E. CS, M.Sc. Math, Minor in DS"). */
+  degreeLine?: string;
+  short?: string;
+  minor?: string;
+  summary?: string;
+  campus?: { text: string; link?: string; linkText?: string }[];
 }
 
 export interface Project {
-	id: string;
-	name: string;
-	description?: string;
-	url?: string;
-	/** Organisation or event the project belongs to ("ACM Hackathon"). */
-	entity?: string;
-	type?: string;
-	roles?: string[];
-	/** The stack; printed after the name on the resume. */
-	keywords: string[];
-	startDate?: Iso;
-	endDate?: Iso;
-	dateLabel?: string;
-	highlights: Highlight[];
-	x?: EntryX;
+  id: string;
+  name: string;
+  description?: string;
+  url?: string;
+  /** Organisation or event the project belongs to ("ACM Hackathon"). */
+  entity?: string;
+  type?: string;
+  roles?: string[];
+  /** The stack; printed after the name on the resume. */
+  keywords: string[];
+  startDate?: Iso;
+  endDate?: Iso;
+  dateLabel?: string;
+  highlights: Highlight[];
+  x?: EntryX;
 }
 
 export interface SkillGroup {
-	id: string;
-	/** Category name ("Languages"). */
-	name: string;
-	level?: string;
-	keywords: string[];
-	x?: { key?: string; [key: string]: unknown };
+  id: string;
+  /** Category name ("Languages"). */
+  name: string;
+  level?: string;
+  keywords: string[];
+  x?: { key?: string; [key: string]: unknown };
 }
 
 export interface Award {
-	id: string;
-	title: string;
-	date?: Iso;
-	dateLabel?: string;
-	awarder?: string;
-	summary?: string;
-	url?: string;
+  id: string;
+  title: string;
+  date?: Iso;
+  dateLabel?: string;
+  awarder?: string;
+  summary?: string;
+  url?: string;
 }
 
 export interface Certificate {
-	id: string;
-	name: string;
-	date?: Iso;
-	dateLabel?: string;
-	issuer?: string;
-	url?: string;
+  id: string;
+  name: string;
+  date?: Iso;
+  dateLabel?: string;
+  issuer?: string;
+  url?: string;
 }
 
 export interface Publication {
-	id: string;
-	name: string;
-	publisher?: string;
-	releaseDate?: Iso;
-	dateLabel?: string;
-	url?: string;
-	summary?: string;
+  id: string;
+  name: string;
+  publisher?: string;
+  releaseDate?: Iso;
+  dateLabel?: string;
+  url?: string;
+  summary?: string;
 }
 
 export interface Language {
-	id: string;
-	language: string;
-	fluency?: string;
+  id: string;
+  language: string;
+  fluency?: string;
 }
 
 export interface Interest {
-	id: string;
-	name: string;
-	keywords: string[];
+  id: string;
+  name: string;
+  keywords: string[];
 }
 
 export interface Reference {
-	id: string;
-	name: string;
-	reference?: string;
+  id: string;
+  name: string;
+  reference?: string;
 }
 
 export interface Meta {
-	canonical?: string;
-	version?: string;
-	lastModified?: string;
-	[key: string]: unknown;
+  canonical?: string;
+  version?: string;
+  lastModified?: string;
+  [key: string]: unknown;
 }
 
 export interface Profile {
-	$schema?: string;
-	version: 1;
-	basics: Basics;
-	work: Engagement[];
-	volunteer: Engagement[];
-	education: Education[];
-	projects: Project[];
-	skills: SkillGroup[];
-	awards: Award[];
-	certificates: Certificate[];
-	publications: Publication[];
-	languages: Language[];
-	interests: Interest[];
-	references: Reference[];
-	meta?: Meta;
+  $schema?: string;
+  version: 1;
+  basics: Basics;
+  work: Engagement[];
+  volunteer: Engagement[];
+  education: Education[];
+  projects: Project[];
+  skills: SkillGroup[];
+  awards: Award[];
+  certificates: Certificate[];
+  publications: Publication[];
+  languages: Language[];
+  interests: Interest[];
+  references: Reference[];
+  meta?: Meta;
 }
 
 /* ------------------------------------------------------------------------ */
@@ -241,105 +241,105 @@ export interface Profile {
 /* ------------------------------------------------------------------------ */
 
 export type SectionType =
-	| 'work'
-	| 'volunteer'
-	| 'education'
-	| 'projects'
-	| 'skills'
-	| 'awards'
-	| 'certificates'
-	| 'publications'
-	| 'languages'
-	| 'interests'
-	| 'custom';
+  | 'work'
+  | 'volunteer'
+  | 'education'
+  | 'projects'
+  | 'skills'
+  | 'awards'
+  | 'certificates'
+  | 'publications'
+  | 'languages'
+  | 'interests'
+  | 'custom';
 
 /** Collections a ref can point into (every SectionType except 'custom'). */
 export type RefCollection = Exclude<SectionType, 'custom'>;
 
 export interface BulletOverride {
-	text: string;
-	/** Library text at the time of the override, to detect drift. */
-	baseText: string;
-	origin?: 'user' | 'ai';
+  text: string;
+  /** Library text at the time of the override, to detect drift. */
+  baseText: string;
+  origin?: 'user' | 'ai';
 }
 
 export interface ExtraBullet {
-	id: string;
-	text: string;
-	/** Highlight id to print after; appended when absent. */
-	after?: string;
+  id: string;
+  text: string;
+  /** Highlight id to print after; appended when absent. */
+  after?: string;
 }
 
 export interface ItemOverride {
-	title?: string;
-	subtitle?: string;
-	dateLabel?: string;
-	location?: string;
-	/** Projects: stack subset/order. Skills: keyword subset/order. */
-	keywords?: string[];
-	/** Print the library description (or a position's summary) as a paragraph under the heading. */
-	showDescription?: boolean;
-	/** Projects: print the library URL in the heading line. */
-	showUrl?: boolean;
-	/** Projects: print the organisation or event after the name, "name (entity)". */
-	showEntity?: boolean;
-	bullets?: Record<string, BulletOverride>;
-	extraBullets?: ExtraBullet[];
+  title?: string;
+  subtitle?: string;
+  dateLabel?: string;
+  location?: string;
+  /** Projects: stack subset/order. Skills: keyword subset/order. */
+  keywords?: string[];
+  /** Print the library description (or a position's summary) as a paragraph under the heading. */
+  showDescription?: boolean;
+  /** Projects: print the library URL in the heading line. */
+  showUrl?: boolean;
+  /** Projects: print the organisation or event after the name, "name (entity)". */
+  showEntity?: boolean;
+  bullets?: Record<string, BulletOverride>;
+  extraBullets?: ExtraBullet[];
 }
 
 /** A library item placed in a resume: `<collection>:<id>` or `<collection>:<id>/<positionId>`. */
 export interface ItemRef {
-	ref: string;
-	/** Highlight ids to print, in order. Empty means no bullets. */
-	bullets: string[];
-	overrides?: ItemOverride;
+  ref: string;
+  /** Highlight ids to print, in order. Empty means no bullets. */
+  bullets: string[];
+  overrides?: ItemOverride;
 }
 
 /** An item that exists only in this resume (custom sections). */
 export interface CustomItem {
-	id: string;
-	title: string;
-	subtitle?: string;
-	dateLabel?: string;
-	location?: string;
-	bullets: { id: string; text: string }[];
+  id: string;
+  title: string;
+  subtitle?: string;
+  dateLabel?: string;
+  location?: string;
+  bullets: { id: string; text: string }[];
 }
 
 export type SectionItem = ItemRef | CustomItem;
 
 export interface Section {
-	id: string;
-	type: SectionType;
-	/** Falls back to the template's default title for the type. */
-	title?: string;
-	items: SectionItem[];
+  id: string;
+  type: SectionType;
+  /** Falls back to the template's default title for the type. */
+  title?: string;
+  items: SectionItem[];
 }
 
 export interface HeaderOptions {
-	showPhone: boolean;
-	showEmail: boolean;
-	showUrl: boolean;
-	showLocation: boolean;
-	showTagline: boolean;
-	/** Print `basics.summary` as a short paragraph under the contact line. */
-	showSummary: boolean;
-	/** Network names from `basics.profiles`, in print order. */
-	profiles: string[];
-	/** Resume-specific headline; falls back to `basics.label`. */
-	tagline?: string;
+  showPhone: boolean;
+  showEmail: boolean;
+  showUrl: boolean;
+  showLocation: boolean;
+  showTagline: boolean;
+  /** Print `basics.summary` as a short paragraph under the contact line. */
+  showSummary: boolean;
+  /** Network names from `basics.profiles`, in print order. */
+  profiles: string[];
+  /** Resume-specific headline; falls back to `basics.label`. */
+  tagline?: string;
 }
 
 export interface Resume {
-	id: string;
-	name: string;
-	labels: string[];
-	createdAt: string;
-	updatedAt: string;
-	template: string;
-	/** Template-specific; validated by the template's own schema. */
-	options: Record<string, unknown>;
-	header: HeaderOptions;
-	sections: Section[];
+  id: string;
+  name: string;
+  labels: string[];
+  createdAt: string;
+  updatedAt: string;
+  template: string;
+  /** Template-specific; validated by the template's own schema. */
+  options: Record<string, unknown>;
+  header: HeaderOptions;
+  sections: Section[];
 }
 
 /* ------------------------------------------------------------------------ */
@@ -347,52 +347,52 @@ export interface Resume {
 /* ------------------------------------------------------------------------ */
 
 export interface Overlay {
-	version: 1;
-	basics?: Partial<Pick<Basics, 'phone' | 'email' | 'url' | 'location'>>;
-	/** Shallow per-item patches keyed by ref, for private fields on entries. */
-	patches?: { ref: string; fields: Record<string, string> }[];
+  version: 1;
+  basics?: Partial<Pick<Basics, 'phone' | 'email' | 'url' | 'location'>>;
+  /** Shallow per-item patches keyed by ref, for private fields on entries. */
+  patches?: { ref: string; fields: Record<string, string> }[];
 }
 
 /** Optional link to a site that reads profile.json; off unless the user has one. */
 export interface WebsiteSync {
-	enabled: boolean;
-	/** GitHub `owner/repo`. */
-	repo?: string;
-	branch?: string;
-	/** Path of profile.json inside the repo. */
-	path?: string;
-	/** Where the site keeps the resume PDF, e.g. `static/resume.pdf`. */
-	pdfPath?: string;
-	/** The resume the site builds its PDF from, and where its composition lives. */
-	resumeId?: string;
-	resumePath?: string;
+  enabled: boolean;
+  /** GitHub `owner/repo`. */
+  repo?: string;
+  branch?: string;
+  /** Path of profile.json inside the repo. */
+  path?: string;
+  /** Where the site keeps the resume PDF, e.g. `static/resume.pdf`. */
+  pdfPath?: string;
+  /** The resume the site builds its PDF from, and where its composition lives. */
+  resumeId?: string;
+  resumePath?: string;
 }
 
 export interface Settings {
-	website: WebsiteSync;
-	/** Where the profile was last imported from, for one-click re-import. */
-	sourceUrl?: string;
-	autoCompile: boolean;
-	theme: 'system' | 'light' | 'dark';
+  website: WebsiteSync;
+  /** Where the profile was last imported from, for one-click re-import. */
+  sourceUrl?: string;
+  autoCompile: boolean;
+  theme: 'system' | 'light' | 'dark';
 }
 
 export interface SnapshotMeta {
-	id: string;
-	resumeId: string;
-	createdAt: string;
-	note?: string;
-	pinned?: boolean;
-	pages: number;
-	texHash: string;
-	bytes: number;
+  id: string;
+  resumeId: string;
+  createdAt: string;
+  note?: string;
+  pinned?: boolean;
+  pages: number;
+  texHash: string;
+  bytes: number;
 }
 
 export interface Workspace {
-	$schema?: string;
-	version: 1;
-	exportedAt: string;
-	profile: Profile;
-	overlay?: Overlay;
-	resumes: Resume[];
-	settings?: Settings;
+  $schema?: string;
+  version: 1;
+  exportedAt: string;
+  profile: Profile;
+  overlay?: Overlay;
+  resumes: Resume[];
+  settings?: Settings;
 }

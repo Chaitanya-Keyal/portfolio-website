@@ -5,61 +5,61 @@ import { describe, expect, it, vi } from 'vitest';
  * The mock is why these live apart from commands.test.ts: it replaces the data
  * module for the whole file. */
 vi.mock('$lib/data/projects', () => ({
-	projects: [
-		{
-			slug: 'shown',
-			name: 'Shown',
-			oneLiner: 'a listed project',
-			context: '',
-			period: '',
-			stack: [],
-			description: 'listed',
-			highlights: [],
-			links: [{ label: 'source', href: 'https://example.com/shown' }]
-		},
-		{
-			slug: 'secret',
-			name: 'Secret',
-			hidden: true,
-			oneLiner: 'an unlisted project',
-			context: '',
-			period: '',
-			stack: [],
-			description: 'unlisted',
-			highlights: [],
-			links: [{ label: 'source', href: 'https://example.com/secret' }]
-		}
-	]
+  projects: [
+    {
+      slug: 'shown',
+      name: 'Shown',
+      oneLiner: 'a listed project',
+      context: '',
+      period: '',
+      stack: [],
+      description: 'listed',
+      highlights: [],
+      links: [{ label: 'source', href: 'https://example.com/shown' }]
+    },
+    {
+      slug: 'secret',
+      name: 'Secret',
+      hidden: true,
+      oneLiner: 'an unlisted project',
+      context: '',
+      period: '',
+      stack: [],
+      description: 'unlisted',
+      highlights: [],
+      links: [{ label: 'source', href: 'https://example.com/secret' }]
+    }
+  ]
 }));
 
 vi.mock('$lib/data/experience', () => ({
-	experience: [
-		{
-			slug: 'openco',
-			org: 'OpenCo',
-			role: 'Engineer',
-			period: '2025',
-			oneLiner: 'a listed role',
-			description: 'listed',
-			stack: [],
-			points: [],
-			links: [],
-			related: []
-		},
-		{
-			slug: 'quietco',
-			org: 'QuietCo',
-			hidden: true,
-			role: 'Engineer',
-			period: '2025',
-			oneLiner: 'an unlisted role',
-			description: 'unlisted',
-			stack: [],
-			points: [],
-			links: [],
-			related: []
-		}
-	]
+  experience: [
+    {
+      slug: 'openco',
+      org: 'OpenCo',
+      role: 'Engineer',
+      period: '2025',
+      oneLiner: 'a listed role',
+      description: 'listed',
+      stack: [],
+      points: [],
+      links: [],
+      related: []
+    },
+    {
+      slug: 'quietco',
+      org: 'QuietCo',
+      hidden: true,
+      role: 'Engineer',
+      period: '2025',
+      oneLiner: 'an unlisted role',
+      description: 'unlisted',
+      stack: [],
+      points: [],
+      links: [],
+      related: []
+    }
+  ]
 }));
 
 const { pageAt } = await import('$lib/content');
@@ -70,103 +70,103 @@ const { run } = await import('./commands');
 const { complete } = await import('./completion');
 
 const linesOf = (out: ReturnType<typeof run>) =>
-	out.kind === 'print' ? out.lines.join('\n') : `<${out.kind}>`;
+  out.kind === 'print' ? out.lines.join('\n') : `<${out.kind}>`;
 
 describe('listed', () => {
-	it('drops hidden items and keeps the rest in order', () => {
-		expect(listed([{ hidden: true }, {}, { hidden: false }])).toEqual([{}, { hidden: false }]);
-	});
+  it('drops hidden items and keeps the rest in order', () => {
+    expect(listed([{ hidden: true }, {}, { hidden: false }])).toEqual([{}, { hidden: false }]);
+  });
 });
 
 describe('hiddenLast', () => {
-	it('moves hidden items to the end without reordering either group', () => {
-		const items = [
-			{ id: 'a' },
-			{ id: 'b', hidden: true },
-			{ id: 'c' },
-			{ id: 'd', hidden: true },
-			{ id: 'e' }
-		];
-		expect(hiddenLast(items).map((i) => i.id)).toEqual(['a', 'c', 'e', 'b', 'd']);
-	});
+  it('moves hidden items to the end without reordering either group', () => {
+    const items = [
+      { id: 'a' },
+      { id: 'b', hidden: true },
+      { id: 'c' },
+      { id: 'd', hidden: true },
+      { id: 'e' }
+    ];
+    expect(hiddenLast(items).map((i) => i.id)).toEqual(['a', 'c', 'e', 'b', 'd']);
+  });
 
-	it('keeps every item, and leaves a list with nothing hidden untouched', () => {
-		const plain: { id: string; hidden?: boolean }[] = [{ id: 'a' }, { id: 'b' }];
-		expect(hiddenLast(plain)).toEqual(plain);
-		expect(hiddenLast([{ hidden: true }, { hidden: true }])).toHaveLength(2);
-	});
+  it('keeps every item, and leaves a list with nothing hidden untouched', () => {
+    const plain: { id: string; hidden?: boolean }[] = [{ id: 'a' }, { id: 'b' }];
+    expect(hiddenLast(plain)).toEqual(plain);
+    expect(hiddenLast([{ hidden: true }, { hidden: true }])).toHaveLength(2);
+  });
 });
 
 describe('a hidden project', () => {
-	it('is still a real page, so a direct link resolves', () => {
-		expect(pageAt('/projects/secret')).toBeDefined();
-		expect(pages.some((p) => p.path === '/projects/secret')).toBe(true);
-	});
+  it('is still a real page, so a direct link resolves', () => {
+    expect(pageAt('/projects/secret')).toBeDefined();
+    expect(pages.some((p) => p.path === '/projects/secret')).toBe(true);
+  });
 
-	it('is left out of a bare listing but shown by ls -a', () => {
-		expect(linesOf(run('ls projects', '/'))).toContain('shown');
-		expect(linesOf(run('ls projects', '/'))).not.toContain('secret');
-		expect(linesOf(run('ls -a projects', '/'))).toContain('secret');
-		expect(linesOf(run('ls -la projects', '/'))).toContain('secret');
-	});
+  it('is left out of a bare listing but shown by ls -a', () => {
+    expect(linesOf(run('ls projects', '/'))).toContain('shown');
+    expect(linesOf(run('ls projects', '/'))).not.toContain('secret');
+    expect(linesOf(run('ls -a projects', '/'))).toContain('secret');
+    expect(linesOf(run('ls -la projects', '/'))).toContain('secret');
+  });
 
-	it('is left out of tree but shown by tree -a', () => {
-		expect(treeLines().join('\n')).not.toContain('secret');
-		expect(treeLines(true).join('\n')).toContain('secret');
-		expect(linesOf(run('tree -a', '/'))).toContain('secret');
-	});
+  it('is left out of tree but shown by tree -a', () => {
+    expect(treeLines().join('\n')).not.toContain('secret');
+    expect(treeLines(true).join('\n')).toContain('secret');
+    expect(linesOf(run('tree -a', '/'))).toContain('secret');
+  });
 
-	it('can still be cd-ed into and read with man', () => {
-		expect(run('cd projects/secret', '/')).toEqual({ kind: 'nav', to: '/projects/secret' });
-		expect(run('man secret', '/').kind).toBe('print');
-	});
+  it('can still be cd-ed into and read with man', () => {
+    expect(run('cd projects/secret', '/')).toEqual({ kind: 'nav', to: '/projects/secret' });
+    expect(run('man secret', '/').kind).toBe('print');
+  });
 
-	it('is listed with a leading dot, and answers to that spelling', () => {
-		expect(linesOf(run('ls -a projects', '/'))).toContain('.secret');
-		expect(treeLines(true).join('\n')).toContain('.secret');
-		// What you read is what you can type, but the route keeps the real name.
-		expect(run('cd projects/.secret', '/')).toEqual({ kind: 'nav', to: '/projects/secret' });
-		expect(run('cd projects/secret', '/')).toEqual({ kind: 'nav', to: '/projects/secret' });
-	});
+  it('is listed with a leading dot, and answers to that spelling', () => {
+    expect(linesOf(run('ls -a projects', '/'))).toContain('.secret');
+    expect(treeLines(true).join('\n')).toContain('.secret');
+    // What you read is what you can type, but the route keeps the real name.
+    expect(run('cd projects/.secret', '/')).toEqual({ kind: 'nav', to: '/projects/secret' });
+    expect(run('cd projects/secret', '/')).toEqual({ kind: 'nav', to: '/projects/secret' });
+  });
 
-	it('completes once you start typing it, but never on a bare tab', () => {
-		expect(complete('ls projects/', '/').options).not.toContain('projects/.secret');
-		expect(complete('ls projects/.sec', '/').value).toBe('ls projects/.secret');
-		// Bash's rule: without the dot, a hidden entry is not a candidate.
-		expect(complete('ls projects/sec', '/').options).not.toContain('projects/.secret');
-	});
+  it('completes once you start typing it, but never on a bare tab', () => {
+    expect(complete('ls projects/', '/').options).not.toContain('projects/.secret');
+    expect(complete('ls projects/.sec', '/').value).toBe('ls projects/.secret');
+    // Bash's rule: without the dot, a hidden entry is not a candidate.
+    expect(complete('ls projects/sec', '/').options).not.toContain('projects/.secret');
+  });
 
-	it('is revealed by `la`, since the alias now carries the flag', () => {
-		expect(linesOf(run('la', '/projects'))).toContain('.secret');
-		expect(linesOf(run('ls', '/projects'))).not.toContain('.secret');
-		expect(linesOf(run('lla', '/projects'))).toContain('.secret');
-		// `l` and `dir` are plain `ls`, so they still hide.
-		expect(linesOf(run('l', '/projects'))).not.toContain('.secret');
-		expect(linesOf(run('dir', '/projects'))).not.toContain('.secret');
-	});
+  it('is revealed by `la`, since the alias now carries the flag', () => {
+    expect(linesOf(run('la', '/projects'))).toContain('.secret');
+    expect(linesOf(run('ls', '/projects'))).not.toContain('.secret');
+    expect(linesOf(run('lla', '/projects'))).toContain('.secret');
+    // `l` and `dir` are plain `ls`, so they still hide.
+    expect(linesOf(run('l', '/projects'))).not.toContain('.secret');
+    expect(linesOf(run('dir', '/projects'))).not.toContain('.secret');
+  });
 });
 
 describe('childrenOf', () => {
-	it('hides by default and reveals when asked', () => {
-		const names = (all?: boolean) => childrenOf('/projects', all).map((p) => p.name);
-		expect(names()).toEqual(['shown']);
-		// Hidden last, which here is also the order the data gave them.
-		expect(names(true)).toEqual(['shown', 'secret']);
-	});
+  it('hides by default and reveals when asked', () => {
+    const names = (all?: boolean) => childrenOf('/projects', all).map((p) => p.name);
+    expect(names()).toEqual(['shown']);
+    // Hidden last, which here is also the order the data gave them.
+    expect(names(true)).toEqual(['shown', 'secret']);
+  });
 });
 
 describe('a hidden experience entry', () => {
-	it('behaves exactly like a hidden project', () => {
-		expect(pageAt('/work/quietco')).toBeDefined();
-		expect(linesOf(run('ls work', '/'))).not.toContain('quietco');
-		expect(linesOf(run('ls -a work', '/'))).toContain('quietco');
-		expect(run('cd work/quietco', '/')).toEqual({ kind: 'nav', to: '/work/quietco' });
-		expect(run('man quietco', '/').kind).toBe('print');
-	});
+  it('behaves exactly like a hidden project', () => {
+    expect(pageAt('/work/quietco')).toBeDefined();
+    expect(linesOf(run('ls work', '/'))).not.toContain('quietco');
+    expect(linesOf(run('ls -a work', '/'))).toContain('quietco');
+    expect(run('cd work/quietco', '/')).toEqual({ kind: 'nav', to: '/work/quietco' });
+    expect(run('man quietco', '/').kind).toBe('print');
+  });
 
-	it('stays out of the work page description', () => {
-		const work = pages.find((p) => p.path === '/work');
-		expect(work?.description).toContain('OpenCo');
-		expect(work?.description).not.toContain('QuietCo');
-	});
+  it('stays out of the work page description', () => {
+    const work = pages.find((p) => p.path === '/work');
+    expect(work?.description).toContain('OpenCo');
+    expect(work?.description).not.toContain('QuietCo');
+  });
 });

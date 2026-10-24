@@ -8,75 +8,75 @@ import type { Iso, SectionType } from '../schema/types';
  */
 
 export interface ContactItem {
-	kind: 'phone' | 'email' | 'url' | 'location' | 'profile';
-	/** Display text (URLs without scheme). */
-	text: string;
-	href?: string;
-	network?: string;
+  kind: 'phone' | 'email' | 'url' | 'location' | 'profile';
+  /** Display text (URLs without scheme). */
+  text: string;
+  href?: string;
+  network?: string;
 }
 
 export interface ResolvedHeader {
-	name: string;
-	tagline?: string;
-	/** Only when the resume asked for it. */
-	summary?: string;
-	contacts: ContactItem[];
+  name: string;
+  tagline?: string;
+  /** Only when the resume asked for it. */
+  summary?: string;
+  contacts: ContactItem[];
 }
 
 export interface DateRange {
-	/** Wins over start/end when set. */
-	label?: string;
-	start?: Iso;
-	end?: Iso;
+  /** Wins over start/end when set. */
+  label?: string;
+  start?: Iso;
+  end?: Iso;
 }
 
 export interface ResolvedBullet {
-	id: string;
-	text: string;
-	/** Text differs from the library. */
-	overridden?: boolean;
-	/** Resume-only bullet. */
-	extra?: boolean;
+  id: string;
+  text: string;
+  /** Text differs from the library. */
+  overridden?: boolean;
+  /** Resume-only bullet. */
+  extra?: boolean;
 }
 
 interface Base {
-	/** Ref for library items, item id for custom ones. Stable across renders. */
-	key: string;
-	/** Paragraph under the heading, only when the resume asked for it. */
-	description?: string;
-	bullets: ResolvedBullet[];
+  /** Ref for library items, item id for custom ones. Stable across renders. */
+  key: string;
+  /** Paragraph under the heading, only when the resume asked for it. */
+  description?: string;
+  bullets: ResolvedBullet[];
 }
 
 export type ResolvedItem =
-	| (Base & {
-			kind: 'subheading';
-			title: string;
-			subtitle: string;
-			dates: DateRange;
-			location: string;
-	  })
-	| (Base & { kind: 'project'; title: string; keywords: string[]; url?: string; dates: DateRange })
-	| (Base & { kind: 'skills'; name: string; keywords: string[] })
-	| (Base & { kind: 'award'; title: string; awarder?: string; dates: DateRange; summary?: string })
-	| (Base & { kind: 'simple'; name: string; detail?: string; dates: DateRange; url?: string });
+  | (Base & {
+      kind: 'subheading';
+      title: string;
+      subtitle: string;
+      dates: DateRange;
+      location: string;
+    })
+  | (Base & { kind: 'project'; title: string; keywords: string[]; url?: string; dates: DateRange })
+  | (Base & { kind: 'skills'; name: string; keywords: string[] })
+  | (Base & { kind: 'award'; title: string; awarder?: string; dates: DateRange; summary?: string })
+  | (Base & { kind: 'simple'; name: string; detail?: string; dates: DateRange; url?: string });
 
 export interface ResolvedSection {
-	id: string;
-	type: SectionType;
-	/** Undefined means "use the template's default for this type". */
-	title?: string;
-	items: ResolvedItem[];
+  id: string;
+  type: SectionType;
+  /** Undefined means "use the template's default for this type". */
+  title?: string;
+  items: ResolvedItem[];
 }
 
 export interface ResolvedResume {
-	header: ResolvedHeader;
-	sections: ResolvedSection[];
+  header: ResolvedHeader;
+  sections: ResolvedSection[];
 }
 
 export interface ResolveProblem {
-	kind: 'orphan-ref' | 'orphan-bullet' | 'stale-override' | 'orphan-after';
-	sectionId: string;
-	ref?: string;
-	id?: string;
-	message: string;
+  kind: 'orphan-ref' | 'orphan-bullet' | 'stale-override' | 'orphan-after';
+  sectionId: string;
+  ref?: string;
+  id?: string;
+  message: string;
 }

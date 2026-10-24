@@ -187,24 +187,24 @@ def main() -> None:
 <pre class="portrait" aria-hidden="true">{markup}</pre>
 
 <style>
-	.portrait {{
-		margin: 0;
-		/* The page sets --px-size to whatever makes the portrait as tall as the
-		   text beside it; the fallback only has to be sane. */
-		font-size: var(--px-size, 6px);
-		/* Must be twice the glyph's 0.6em block height, or the two halves of
-		   each cell come out unequal (24px over 16px) and squash the picture. */
-		line-height: {LINE_HEIGHT};
-		white-space: pre;
-		user-select: none;
-		font-variant-ligatures: none;
-	}}
+  .portrait {{
+    margin: 0;
+    /* The page sets --px-size to whatever makes the portrait as tall as the
+       text beside it; the fallback only has to be sane. */
+    font-size: var(--px-size, 6px);
+    /* Must be twice the glyph's 0.6em block height, or the two halves of
+       each cell come out unequal (24px over 16px) and squash the picture. */
+    line-height: {LINE_HEIGHT};
+    white-space: pre;
+    user-select: none;
+    font-variant-ligatures: none;
+  }}
 
-	.r {{
-		/* Block, not inline-block: an inline-block sits on the text baseline and
-		   reserves descender space under each row, which shows as seams. */
-		display: block;
-	}}
+  .r {{
+    /* Block, not inline-block: an inline-block sits on the text baseline and
+       reserves descender space under each row, which shows as seams. */
+    display: block;
+  }}
 
 {css}
 </style>

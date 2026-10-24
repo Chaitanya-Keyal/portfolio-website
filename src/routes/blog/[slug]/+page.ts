@@ -7,7 +7,7 @@ import type { EntryGenerator, PageLoad } from './$types';
 export const entries: EntryGenerator = () => posts.map(({ slug }) => ({ slug }));
 
 export const load: PageLoad = ({ params }) => {
-	const post = postBySlug(params.slug);
-	if (!post) error(404, 'no such post');
-	return { post };
+  const post = postBySlug(params.slug);
+  if (!post) error(404, 'no such post');
+  return { post };
 };

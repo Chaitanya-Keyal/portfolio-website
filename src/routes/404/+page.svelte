@@ -1,104 +1,104 @@
 <script lang="ts">
-	import { base } from '$app/paths';
-	import { profile } from '$lib/data/profile';
-	import { pages } from '$lib/data/site';
-	import { urlOf } from '$lib/content';
-	import { messages } from '$lib/data/terminal';
+  import { base } from '$app/paths';
+  import { profile } from '$lib/data/profile';
+  import { pages } from '$lib/data/site';
+  import { urlOf } from '$lib/content';
+  import { messages } from '$lib/data/terminal';
 
-	// Filled client-side: static hosting serves this page for every unknown URL.
-	let missing = $state('/...');
-	let suggestions = $state<{ name: string; href: string }[]>([]);
+  // Filled client-side: static hosting serves this page for every unknown URL.
+  let missing = $state('/...');
+  let suggestions = $state<{ name: string; href: string }[]>([]);
 
-	function distance(a: string, b: string): number {
-		const rows = Array.from({ length: a.length + 1 }, (_, i) => [i, ...Array(b.length).fill(0)]);
-		for (let j = 1; j <= b.length; j++) rows[0][j] = j;
-		for (let i = 1; i <= a.length; i++) {
-			for (let j = 1; j <= b.length; j++) {
-				rows[i][j] = Math.min(
-					rows[i - 1][j] + 1,
-					rows[i][j - 1] + 1,
-					rows[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
-				);
-			}
-		}
-		return rows[a.length][b.length];
-	}
+  function distance(a: string, b: string): number {
+    const rows = Array.from({ length: a.length + 1 }, (_, i) => [i, ...Array(b.length).fill(0)]);
+    for (let j = 1; j <= b.length; j++) rows[0][j] = j;
+    for (let i = 1; i <= a.length; i++) {
+      for (let j = 1; j <= b.length; j++) {
+        rows[i][j] = Math.min(
+          rows[i - 1][j] + 1,
+          rows[i][j - 1] + 1,
+          rows[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+        );
+      }
+    }
+    return rows[a.length][b.length];
+  }
 
-	$effect(() => {
-		missing = location.pathname.slice(base.length) || '/';
-		const sought = missing.replace(/^\/+/, '');
-		suggestions = pages
-			.map((p) => ({ ...p, score: distance(sought, p.path.replace(/^\/+/, '')) }))
-			.filter((p) => p.score <= Math.max(3, sought.length / 2))
-			.sort((a, b) => a.score - b.score)
-			.slice(0, 3)
-			.map((p) => ({ name: p.name, href: urlOf(p) }));
-	});
+  $effect(() => {
+    missing = location.pathname.slice(base.length) || '/';
+    const sought = missing.replace(/^\/+/, '');
+    suggestions = pages
+      .map((p) => ({ ...p, score: distance(sought, p.path.replace(/^\/+/, '')) }))
+      .filter((p) => p.score <= Math.max(3, sought.length / 2))
+      .sort((a, b) => a.score - b.score)
+      .slice(0, 3)
+      .map((p) => ({ name: p.name, href: urlOf(p) }));
+  });
 </script>
 
 <svelte:head>
-	<title>404 | {profile.name}</title>
-	<meta name="robots" content="noindex" />
+  <title>404 | {profile.name}</title>
+  <meta name="robots" content="noindex" />
 </svelte:head>
 
 <div class="notfound reveal">
-	<p class="err glitch">{messages.noSuchPath} <span>{missing}</span></p>
-	{#if suggestions.length > 0}
-		<p class="hint">{messages.didYouMean}</p>
-		<ul>
-			{#each suggestions as s (s.href)}
-				<li><a href="{base}{s.href}">{s.href}</a></li>
-			{/each}
-		</ul>
-	{:else}
-		<ul>
-			{#each pages.filter((p) => p.rail) as p (p.path)}
-				<li><a href="{base}{p.path}">{p.path}</a></li>
-			{/each}
-		</ul>
-	{/if}
+  <p class="err glitch">{messages.noSuchPath} <span>{missing}</span></p>
+  {#if suggestions.length > 0}
+    <p class="hint">{messages.didYouMean}</p>
+    <ul>
+      {#each suggestions as s (s.href)}
+        <li><a href="{base}{s.href}">{s.href}</a></li>
+      {/each}
+    </ul>
+  {:else}
+    <ul>
+      {#each pages.filter((p) => p.rail) as p (p.path)}
+        <li><a href="{base}{p.path}">{p.path}</a></li>
+      {/each}
+    </ul>
+  {/if}
 </div>
 
 <style>
-	.err {
-		color: var(--red);
-	}
-	.err span {
-		color: var(--fg);
-	}
+  .err {
+    color: var(--red);
+  }
+  .err span {
+    color: var(--fg);
+  }
 
-	.glitch {
-		animation: glitch 0.9s steps(2, jump-none) 2;
-	}
+  .glitch {
+    animation: glitch 0.9s steps(2, jump-none) 2;
+  }
 
-	@keyframes glitch {
-		20% {
-			text-shadow:
-				-2px 0 var(--cyan),
-				2px 0 var(--red);
-			transform: translateX(1px);
-		}
-		40% {
-			text-shadow:
-				2px 0 var(--purple),
-				-2px 0 var(--red);
-			transform: translateX(-1px);
-		}
-		60% {
-			text-shadow: none;
-			transform: none;
-		}
-	}
+  @keyframes glitch {
+    20% {
+      text-shadow:
+        -2px 0 var(--cyan),
+        2px 0 var(--red);
+      transform: translateX(1px);
+    }
+    40% {
+      text-shadow:
+        2px 0 var(--purple),
+        -2px 0 var(--red);
+      transform: translateX(-1px);
+    }
+    60% {
+      text-shadow: none;
+      transform: none;
+    }
+  }
 
-	.hint {
-		color: var(--muted);
-		margin-top: 16px;
-	}
+  .hint {
+    color: var(--muted);
+    margin-top: 16px;
+  }
 
-	ul {
-		margin-top: 8px;
-	}
-	li {
-		padding: 2px 0;
-	}
+  ul {
+    margin-top: 8px;
+  }
+  li {
+    padding: 2px 0;
+  }
 </style>

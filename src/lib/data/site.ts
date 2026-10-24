@@ -11,71 +11,71 @@ import { posts } from '$lib/blog';
  * generated from the work and project entries, so adding one of those adds a
  * route, a rail link and a sitemap entry with it. */
 export const pages: Page[] = [
-	{
-		name: 'home',
-		path: '/',
-		rail: '~',
-		short: '~',
-		title: profile.name + ': ' + profile.tagline,
-		description: profile.summary,
-		command: 'whoami'
-	},
-	{
-		name: 'work',
-		path: '/work',
-		rail: 'work/',
-		short: 'work',
-		title: 'work',
-		description:
-			'Work history: ' +
-			listed(experience)
-				.map((e) => e.org)
-				.join(', ') +
-			'.',
-		command: 'ls work/'
-	},
-	...experience.map((e) => ({ name: e.slug, path: `/work/${e.slug}`, hidden: e.hidden })),
-	{
-		name: 'projects',
-		path: '/projects',
-		rail: 'projects/',
-		short: 'proj',
-		title: 'projects',
-		description: 'Things I have built: Bitcoin tooling, AI agents, autonomous systems, and more.',
-		command: 'ls projects/'
-	},
-	...projects.map((p) => ({ name: p.slug, path: `/projects/${p.slug}`, hidden: p.hidden })),
-	{
-		name: 'blog',
-		path: '/blog',
-		rail: 'blog/',
-		short: 'blog',
-		collapsed: true,
-		title: 'blog',
-		description: 'Notes on open source, Bitcoin tooling and backend work.',
-		command: 'ls blog/'
-	},
-	...posts.map((p) => ({ name: p.slug, path: `/blog/${p.slug}`, hidden: p.hidden })),
-	{
-		name: 'education',
-		path: '/education',
-		rail: 'education',
-		short: 'edu',
-		title: 'education',
-		description: `${education.degree}, ${education.schoolShort}, class of ${education.classOf}.`,
-		command: 'cat education'
-	},
-	{
-		name: 'resume',
-		path: '/resume',
-		rail: 'resume',
-		short: 'cv',
-		title: 'resume',
-		description: 'Resume in plain text, PDF, or piped straight into your terminal.',
-		command: 'cd resume'
-	},
-	{ name: 'resume.txt', path: '/resume/resume.txt', url: '/resume.txt', file: true },
-	{ name: 'resume.pdf', path: '/resume/resume.pdf', url: '/resume.pdf', file: true, binary: true },
-	// The library every page is built from, for the resume builder's "import from URL".
-	{ name: 'profile.json', path: '/resume/profile.json', url: '/profile.json', file: true }
+  {
+    name: 'home',
+    path: '/',
+    rail: '~',
+    short: '~',
+    title: profile.name + ': ' + profile.tagline,
+    description: profile.summary,
+    command: 'whoami'
+  },
+  {
+    name: 'work',
+    path: '/work',
+    rail: 'work/',
+    short: 'work',
+    title: 'work',
+    description:
+      'Work history: ' +
+      listed(experience)
+        .map((e) => e.org)
+        .join(', ') +
+      '.',
+    command: 'ls work/'
+  },
+  ...experience.map((e) => ({ name: e.slug, path: `/work/${e.slug}`, hidden: e.hidden })),
+  {
+    name: 'projects',
+    path: '/projects',
+    rail: 'projects/',
+    short: 'proj',
+    title: 'projects',
+    description: 'Things I have built: Bitcoin tooling, AI agents, autonomous systems, and more.',
+    command: 'ls projects/'
+  },
+  ...projects.map((p) => ({ name: p.slug, path: `/projects/${p.slug}`, hidden: p.hidden })),
+  {
+    name: 'blog',
+    path: '/blog',
+    rail: 'blog/',
+    short: 'blog',
+    collapsed: true,
+    title: 'blog',
+    description: 'Notes on open source, Bitcoin tooling and backend work.',
+    command: 'ls blog/'
+  },
+  ...posts.map((p) => ({ name: p.slug, path: `/blog/${p.slug}`, hidden: p.hidden })),
+  {
+    name: 'education',
+    path: '/education',
+    rail: 'education',
+    short: 'edu',
+    title: 'education',
+    description: `${education.degree}, ${education.schoolShort}, class of ${education.classOf}.`,
+    command: 'cat education'
+  },
+  {
+    name: 'resume',
+    path: '/resume',
+    rail: 'resume',
+    short: 'cv',
+    title: 'resume',
+    description: 'Resume in plain text, PDF, or piped straight into your terminal.',
+    command: 'cd resume'
+  },
+  { name: 'resume.txt', path: '/resume/resume.txt', url: '/resume.txt', file: true },
+  { name: 'resume.pdf', path: '/resume/resume.pdf', url: '/resume.pdf', file: true, binary: true },
+  // The library every page is built from, for the resume builder's "import from URL".
+  { name: 'profile.json', path: '/resume/profile.json', url: '/profile.json', file: true }
 ];

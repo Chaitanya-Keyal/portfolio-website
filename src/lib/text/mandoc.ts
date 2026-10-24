@@ -5,110 +5,110 @@ import type { Experience, Link, Project } from '$lib/types';
 
 /** One shape for every man-page-style document on the site. */
 export interface ManDoc {
-	slug: string;
-	category: 'PROJECTS' | 'WORK';
-	name: string;
-	oneLiner: string;
-	synopsis: { label: string; value: string }[];
-	description: string;
-	didTitle: string;
-	/** Inline markup: the page renders it, the text forms strip it. */
-	did: string[];
-	links: Link[];
-	seeAlso: Link[];
+  slug: string;
+  category: 'PROJECTS' | 'WORK';
+  name: string;
+  oneLiner: string;
+  synopsis: { label: string; value: string }[];
+  description: string;
+  didTitle: string;
+  /** Inline markup: the page renders it, the text forms strip it. */
+  did: string[];
+  links: Link[];
+  seeAlso: Link[];
 }
 
 export function projectDoc(project: Project): ManDoc {
-	return {
-		slug: project.slug,
-		category: 'PROJECTS',
-		name: project.name,
-		oneLiner: project.oneLiner,
-		synopsis: [
-			{ label: 'context', value: project.context },
-			{ label: 'period', value: project.period },
-			{ label: 'stack', value: project.stack.join(', ') }
-		],
-		description: project.description,
-		didTitle: 'highlights',
-		did: project.highlights,
-		links: project.links,
-		seeAlso: []
-	};
+  return {
+    slug: project.slug,
+    category: 'PROJECTS',
+    name: project.name,
+    oneLiner: project.oneLiner,
+    synopsis: [
+      { label: 'context', value: project.context },
+      { label: 'period', value: project.period },
+      { label: 'stack', value: project.stack.join(', ') }
+    ],
+    description: project.description,
+    didTitle: 'highlights',
+    did: project.highlights,
+    links: project.links,
+    seeAlso: []
+  };
 }
 
 export function workDoc(job: Experience): ManDoc {
-	return {
-		slug: job.slug,
-		category: 'WORK',
-		name: job.org,
-		oneLiner: job.oneLiner,
-		synopsis: [
-			{ label: 'role', value: job.role },
-			{ label: 'period', value: job.period },
-			{ label: 'stack', value: job.stack.join(', ') }
-		],
-		description: job.description,
-		didTitle: 'highlights',
-		did: job.points,
-		links: job.links,
-		seeAlso: job.related
-	};
+  return {
+    slug: job.slug,
+    category: 'WORK',
+    name: job.org,
+    oneLiner: job.oneLiner,
+    synopsis: [
+      { label: 'role', value: job.role },
+      { label: 'period', value: job.period },
+      { label: 'stack', value: job.stack.join(', ') }
+    ],
+    description: job.description,
+    didTitle: 'highlights',
+    did: job.points,
+    links: job.links,
+    seeAlso: job.related
+  };
 }
 
 export const allDocs: ManDoc[] = [...projects.map(projectDoc), ...experience.map(workDoc)];
 
 export function docBySlug(slug: string): ManDoc | undefined {
-	return allDocs.find((d) => d.slug === slug);
+  return allDocs.find((d) => d.slug === slug);
 }
 
 export function docPath(doc: ManDoc): string {
-	return doc.category === 'PROJECTS' ? `/projects/${doc.slug}` : `/work/${doc.slug}`;
+  return doc.category === 'PROJECTS' ? `/projects/${doc.slug}` : `/work/${doc.slug}`;
 }
 
 const WIDTH = 78;
 
 /** Wraps at WIDTH with a hanging indent, man-page style. */
 function wrap(text: string, first: string, indent: string): string[] {
-	const lines: string[] = [];
-	let line = first;
-	let empty = true;
-	for (const word of text.split(/\s+/)) {
-		const candidate = empty ? line + word : `${line} ${word}`;
-		if (candidate.length > WIDTH && !empty) {
-			lines.push(line);
-			line = indent + word;
-		} else {
-			line = candidate;
-		}
-		empty = false;
-	}
-	lines.push(line);
-	return lines;
+  const lines: string[] = [];
+  let line = first;
+  let empty = true;
+  for (const word of text.split(/\s+/)) {
+    const candidate = empty ? line + word : `${line} ${word}`;
+    if (candidate.length > WIDTH && !empty) {
+      lines.push(line);
+      line = indent + word;
+    } else {
+      line = candidate;
+    }
+    empty = false;
+  }
+  lines.push(line);
+  return lines;
 }
 
 /** Rendered man-page text, used by the shell's `man` and /man/<slug>. */
 export function manLines(doc: ManDoc): string[] {
-	return [
-		`${doc.slug.toUpperCase()}${' '.repeat(Math.max(1, 40 - doc.slug.length))}${doc.category}`,
-		'',
-		'NAME',
-		...wrap(`${doc.name} - ${doc.oneLiner}`, '  ', '  '),
-		'',
-		'SYNOPSIS',
-		// Wrapped like every other section, with the continuation lined up under
-		// the value: a long stack list used to run straight past 80 columns.
-		...doc.synopsis.flatMap((s) => wrap(s.value, `  ${s.label.padEnd(9)}`, ' '.repeat(11))),
-		'',
-		'DESCRIPTION',
-		...wrap(toPlain(doc.description), '  ', '  '),
-		'',
-		doc.didTitle.toUpperCase(),
-		...doc.did.flatMap((d) => wrap(toPlain(d), '  • ', '    ')),
-		// Wrapped like everything else: a long URL is one unbreakable word, so
-		// it drops to its own indented line rather than running past 80.
-		...(doc.links.length > 0
-			? ['', 'LINKS', ...doc.links.flatMap((p) => wrap(`-> ${p.label}: ${p.href}`, '  ', '    '))]
-			: [])
-	];
+  return [
+    `${doc.slug.toUpperCase()}${' '.repeat(Math.max(1, 40 - doc.slug.length))}${doc.category}`,
+    '',
+    'NAME',
+    ...wrap(`${doc.name} - ${doc.oneLiner}`, '  ', '  '),
+    '',
+    'SYNOPSIS',
+    // Wrapped like every other section, with the continuation lined up under
+    // the value: a long stack list used to run straight past 80 columns.
+    ...doc.synopsis.flatMap((s) => wrap(s.value, `  ${s.label.padEnd(9)}`, ' '.repeat(11))),
+    '',
+    'DESCRIPTION',
+    ...wrap(toPlain(doc.description), '  ', '  '),
+    '',
+    doc.didTitle.toUpperCase(),
+    ...doc.did.flatMap((d) => wrap(toPlain(d), '  • ', '    ')),
+    // Wrapped like everything else: a long URL is one unbreakable word, so
+    // it drops to its own indented line rather than running past 80.
+    ...(doc.links.length > 0
+      ? ['', 'LINKS', ...doc.links.flatMap((p) => wrap(`-> ${p.label}: ${p.href}`, '  ', '    '))]
+      : [])
+  ];
 }

@@ -1,8 +1,8 @@
 declare global {
-	namespace App {}
+  namespace App {}
 
-	// Injected by vite.config.ts at build time.
-	const __COMMIT__: string;
+  // Injected by vite.config.ts at build time.
+  const __COMMIT__: string;
 }
 
 export {};

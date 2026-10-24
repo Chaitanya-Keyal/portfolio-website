@@ -11,14 +11,14 @@
 import { copyFileSync, mkdirSync } from 'node:fs';
 
 const files = [
-	'fira-code-latin-400-normal.woff2',
-	'fira-code-latin-500-normal.woff2',
-	'fira-code-latin-700-normal.woff2',
-	'fira-code-symbols2-400-normal.woff2'
+  'fira-code-latin-400-normal.woff2',
+  'fira-code-latin-500-normal.woff2',
+  'fira-code-latin-700-normal.woff2',
+  'fira-code-symbols2-400-normal.woff2'
 ];
 
 mkdirSync('static/fonts', { recursive: true });
 for (const file of files) {
-	copyFileSync(`node_modules/@fontsource/fira-code/files/${file}`, `static/fonts/${file}`);
-	console.log(`static/fonts/${file}`);
+  copyFileSync(`node_modules/@fontsource/fira-code/files/${file}`, `static/fonts/${file}`);
+  console.log(`static/fonts/${file}`);
 }

@@ -11,17 +11,17 @@ import { docBySlug } from '$lib/text/mandoc';
 export { pageAt };
 
 export function childrenOf(route: string, all = false): Page[] {
-	const prefix = route === '/' ? '/' : `${route}/`;
-	const kids = pages.filter(
-		(p) => p.path !== '/' && p.path.startsWith(prefix) && !p.path.slice(prefix.length).includes('/')
-	);
-	return all ? hiddenLast(kids) : listed(kids);
+  const prefix = route === '/' ? '/' : `${route}/`;
+  const kids = pages.filter(
+    (p) => p.path !== '/' && p.path.startsWith(prefix) && !p.path.slice(prefix.length).includes('/')
+  );
+  return all ? hiddenLast(kids) : listed(kids);
 }
 
 /** How an entry is written in a listing. Hidden ones get a leading dot, the way
  * a real shell shows them, so that what you read is also what you can type. */
 export function displayName(page: Page): string {
-	return page.hidden ? `.${page.name}` : page.name;
+  return page.hidden ? `.${page.name}` : page.name;
 }
 
 /** Whether a listing writes this entry with a trailing slash. The slash means
@@ -30,44 +30,44 @@ export function displayName(page: Page): string {
  * imply `cat` will not work on a leaf when it will. Honours the same `all` the
  * listing itself used, so the mark never advertises hidden children. */
 export function isBranch(page: Page, all = false): boolean {
-	return !page.file && childrenOf(page.path, all).length > 0;
+  return !page.file && childrenOf(page.path, all).length > 0;
 }
 
 /** Resolve a shell path argument against the working directory into a route. */
 export function resolvePath(cwd: string, arg: string): string {
-	const absolute = arg.startsWith('/') || arg.startsWith('~');
-	const start = absolute ? [] : cwd.split('/').filter(Boolean);
-	const rest = arg.replace(/^~\/?/, '').replace(/^\//, '');
-	for (const segment of rest.split('/').filter(Boolean)) {
-		if (segment === '.') continue;
-		if (segment === '..') start.pop();
-		// `.` and `..` are already gone, so a leading dot here is the display
-		// spelling of a hidden entry. Routes and URLs keep the undotted name.
-		else start.push(segment.startsWith('.') ? segment.slice(1) : segment);
-	}
-	return '/' + start.join('/');
+  const absolute = arg.startsWith('/') || arg.startsWith('~');
+  const start = absolute ? [] : cwd.split('/').filter(Boolean);
+  const rest = arg.replace(/^~\/?/, '').replace(/^\//, '');
+  for (const segment of rest.split('/').filter(Boolean)) {
+    if (segment === '.') continue;
+    if (segment === '..') start.pop();
+    // `.` and `..` are already gone, so a leading dot here is the display
+    // spelling of a hidden entry. Routes and URLs keep the undotted name.
+    else start.push(segment.startsWith('.') ? segment.slice(1) : segment);
+  }
+  return '/' + start.join('/');
 }
 
 export function displayPath(route: string): string {
-	return route === '/' ? '~' : `~${route}`;
+  return route === '/' ? '~' : `~${route}`;
 }
 
 /** The manual page for a route, if it has one. */
 export function docAt(route: string) {
-	return docBySlug(route.split('/').pop() ?? '');
+  return docBySlug(route.split('/').pop() ?? '');
 }
 
 export function treeLines(all = false): string[] {
-	const lines = ['.'];
-	const tops = childrenOf('/', all);
-	tops.forEach((top, ti) => {
-		const lastTop = ti === tops.length - 1;
-		const kids = childrenOf(top.path, all);
-		lines.push(`${lastTop ? '└──' : '├──'} ${displayName(top)}${isBranch(top, all) ? '/' : ''}`);
-		kids.forEach((kid, ki) => {
-			const branch = ki === kids.length - 1 ? '└──' : '├──';
-			lines.push(`${lastTop ? '    ' : '│   '}${branch} ${displayName(kid)}`);
-		});
-	});
-	return lines;
+  const lines = ['.'];
+  const tops = childrenOf('/', all);
+  tops.forEach((top, ti) => {
+    const lastTop = ti === tops.length - 1;
+    const kids = childrenOf(top.path, all);
+    lines.push(`${lastTop ? '└──' : '├──'} ${displayName(top)}${isBranch(top, all) ? '/' : ''}`);
+    kids.forEach((kid, ki) => {
+      const branch = ki === kids.length - 1 ? '└──' : '├──';
+      lines.push(`${lastTop ? '    ' : '│   '}${branch} ${displayName(kid)}`);
+    });
+  });
+  return lines;
 }

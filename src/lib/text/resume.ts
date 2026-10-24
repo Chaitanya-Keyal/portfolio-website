@@ -13,101 +13,101 @@ const resume = composition as unknown as Resume;
 
 /** Section titles when the composition does not name one. */
 export const TITLES: Record<SectionType, string> = {
-	work: 'EXPERIENCE',
-	volunteer: 'VOLUNTEERING',
-	education: 'EDUCATION',
-	projects: 'PROJECTS',
-	skills: 'SKILLS',
-	awards: 'AWARDS',
-	certificates: 'CERTIFICATES',
-	publications: 'PUBLICATIONS',
-	languages: 'LANGUAGES',
-	interests: 'INTERESTS',
-	custom: 'OTHER'
+  work: 'EXPERIENCE',
+  volunteer: 'VOLUNTEERING',
+  education: 'EDUCATION',
+  projects: 'PROJECTS',
+  skills: 'SKILLS',
+  awards: 'AWARDS',
+  certificates: 'CERTIFICATES',
+  publications: 'PUBLICATIONS',
+  languages: 'LANGUAGES',
+  interests: 'INTERESTS',
+  custom: 'OTHER'
 };
 
 function rule(char = '─'): string {
-	return char.repeat(WIDTH);
+  return char.repeat(WIDTH);
 }
 
 /** Wraps at WIDTH; every line gets `indent` spaces, the first one `first`
  * instead when given (a hanging indent). */
 function wrap(text: string, indent = 2, first = ' '.repeat(indent)): string[] {
-	const words = text.split(' ');
-	const lines: string[] = [];
-	let line = first;
-	let empty = true;
-	for (const word of words) {
-		if (!empty && line.length + word.length + 1 > WIDTH) {
-			lines.push(line);
-			line = ' '.repeat(indent) + word;
-		} else {
-			line = empty ? line + word : `${line} ${word}`;
-		}
-		empty = false;
-	}
-	lines.push(line);
-	return lines;
+  const words = text.split(' ');
+  const lines: string[] = [];
+  let line = first;
+  let empty = true;
+  for (const word of words) {
+    if (!empty && line.length + word.length + 1 > WIDTH) {
+      lines.push(line);
+      line = ' '.repeat(indent) + word;
+    } else {
+      line = empty ? line + word : `${line} ${word}`;
+    }
+    empty = false;
+  }
+  lines.push(line);
+  return lines;
 }
 
 /** `a | b (dates)`, dropping whichever parts are empty. */
 function heading(main: string, detail: string | undefined, dates: string): string {
-	const left = detail ? `${main} | ${detail}` : main;
-	return dates ? `${left} (${dates})` : left;
+  const left = detail ? `${main} | ${detail}` : main;
+  return dates ? `${left} (${dates})` : left;
 }
 
 function itemLines(item: ResolvedItem, section: ResolvedSection): string[] {
-	const lines: string[] = [];
-	switch (item.kind) {
-		case 'subheading':
-			if (section.type === 'education') {
-				// School on its own line, degree and year beneath it.
-				lines.push(...wrap(item.title, 4, '  '));
-				const dates = period(item.dates);
-				const degree = [item.subtitle, dates].filter(Boolean).join(' · ');
-				if (degree) lines.push(...wrap(degree, 4, '  '));
-			} else {
-				lines.push(...wrap(heading(item.title, item.subtitle, period(item.dates)), 4, '  '));
-			}
-			break;
-		case 'project':
-			lines.push(
-				...wrap(heading(item.title, item.keywords.join(', '), period(item.dates)), 4, '  ')
-			);
-			if (item.url) lines.push(`    ${item.url}`);
-			break;
-		case 'skills':
-			lines.push(...wrap(`${item.name}: ${item.keywords.join(', ')}`, 2));
-			break;
-		case 'award':
-			lines.push(...wrap(heading(item.title, item.awarder, period(item.dates)), 4, '  '));
-			if (item.summary) lines.push(...wrap(toPlain(item.summary), 4));
-			break;
-		case 'simple':
-			lines.push(...wrap(heading(item.name, item.detail, period(item.dates)), 4, '  '));
-			if (item.url) lines.push(`    ${item.url}`);
-			break;
-	}
-	if (item.description) lines.push(...wrap(toPlain(item.description), 4));
-	for (const bullet of item.bullets) lines.push(...wrap(`* ${toPlain(bullet.text)}`, 4));
-	return lines;
+  const lines: string[] = [];
+  switch (item.kind) {
+    case 'subheading':
+      if (section.type === 'education') {
+        // School on its own line, degree and year beneath it.
+        lines.push(...wrap(item.title, 4, '  '));
+        const dates = period(item.dates);
+        const degree = [item.subtitle, dates].filter(Boolean).join(' · ');
+        if (degree) lines.push(...wrap(degree, 4, '  '));
+      } else {
+        lines.push(...wrap(heading(item.title, item.subtitle, period(item.dates)), 4, '  '));
+      }
+      break;
+    case 'project':
+      lines.push(
+        ...wrap(heading(item.title, item.keywords.join(', '), period(item.dates)), 4, '  ')
+      );
+      if (item.url) lines.push(`    ${item.url}`);
+      break;
+    case 'skills':
+      lines.push(...wrap(`${item.name}: ${item.keywords.join(', ')}`, 2));
+      break;
+    case 'award':
+      lines.push(...wrap(heading(item.title, item.awarder, period(item.dates)), 4, '  '));
+      if (item.summary) lines.push(...wrap(toPlain(item.summary), 4));
+      break;
+    case 'simple':
+      lines.push(...wrap(heading(item.name, item.detail, period(item.dates)), 4, '  '));
+      if (item.url) lines.push(`    ${item.url}`);
+      break;
+  }
+  if (item.description) lines.push(...wrap(toPlain(item.description), 4));
+  for (const bullet of item.bullets) lines.push(...wrap(`* ${toPlain(bullet.text)}`, 4));
+  return lines;
 }
 
 /** Contacts on as few centred lines as fit, `a · b · c`. */
 function packed(parts: string[]): string[] {
-	const lines: string[] = [];
-	let line = '';
-	for (const part of parts) {
-		const joined = line ? `${line} · ${part}` : part;
-		if (line && joined.length > WIDTH) {
-			lines.push(line);
-			line = part;
-		} else {
-			line = joined;
-		}
-	}
-	if (line) lines.push(line);
-	return lines;
+  const lines: string[] = [];
+  let line = '';
+  for (const part of parts) {
+    const joined = line ? `${line} · ${part}` : part;
+    if (line && joined.length > WIDTH) {
+      lines.push(line);
+      line = part;
+    } else {
+      line = joined;
+    }
+  }
+  if (line) lines.push(line);
+  return lines;
 }
 
 /** The one resume: feeds /resume (page), /resume.txt (raw), and `cat`. It
@@ -115,28 +115,28 @@ function packed(parts: string[]): string[] {
  * does; entries the library no longer has are reported by resolve() and
  * skipped. */
 export function resumeText(): string {
-	const { resolved } = resolve(data, undefined, resume);
-	const lines: string[] = [];
-	const center = (text: string) =>
-		' '.repeat(Math.max(0, Math.floor((WIDTH - text.length) / 2))) + text;
+  const { resolved } = resolve(data, undefined, resume);
+  const lines: string[] = [];
+  const center = (text: string) =>
+    ' '.repeat(Math.max(0, Math.floor((WIDTH - text.length) / 2))) + text;
 
-	lines.push(center(toPlain(resolved.header.name).toUpperCase()));
-	for (const line of packed(resolved.header.contacts.map((c) => c.text))) lines.push(center(line));
-	if (resolved.header.tagline) lines.push(center(toPlain(resolved.header.tagline)));
-	// Only when the composition's header asks for it, like the PDF.
-	if (resolved.header.summary) lines.push('', ...wrap(toPlain(resolved.header.summary), 2));
-	lines.push('');
+  lines.push(center(toPlain(resolved.header.name).toUpperCase()));
+  for (const line of packed(resolved.header.contacts.map((c) => c.text))) lines.push(center(line));
+  if (resolved.header.tagline) lines.push(center(toPlain(resolved.header.tagline)));
+  // Only when the composition's header asks for it, like the PDF.
+  if (resolved.header.summary) lines.push('', ...wrap(toPlain(resolved.header.summary), 2));
+  lines.push('');
 
-	for (const section of resolved.sections) {
-		lines.push((section.title ?? TITLES[section.type]).toUpperCase());
-		lines.push(rule());
-		for (const item of section.items) {
-			lines.push(...itemLines(item, section));
-			// Bullets make an entry a block; blocks get air between them.
-			if (item.bullets.length || item.description) lines.push('');
-		}
-		if (lines[lines.length - 1] !== '') lines.push('');
-	}
+  for (const section of resolved.sections) {
+    lines.push((section.title ?? TITLES[section.type]).toUpperCase());
+    lines.push(rule());
+    for (const item of section.items) {
+      lines.push(...itemLines(item, section));
+      // Bullets make an entry a block; blocks get air between them.
+      if (item.bullets.length || item.description) lines.push('');
+    }
+    if (lines[lines.length - 1] !== '') lines.push('');
+  }
 
-	return lines.join('\n') + '\n';
+  return lines.join('\n') + '\n';
 }

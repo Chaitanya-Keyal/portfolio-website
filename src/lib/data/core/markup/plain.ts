@@ -2,23 +2,23 @@
 import { parseMarkup, textOf, type Inline } from './parse';
 
 export interface PlainOptions {
-	/** Append ` (url)` after link text. */
-	showUrls?: boolean;
+  /** Append ` (url)` after link text. */
+  showUrls?: boolean;
 }
 
 export function inlinesToPlain(nodes: Inline[], opts: PlainOptions = {}): string {
-	let out = '';
-	for (const n of nodes) {
-		if (n.type === 'text') out += n.value;
-		else if (n.type === 'link') {
-			out += inlinesToPlain(n.children, opts);
-			if (opts.showUrls) out += ` (${n.href})`;
-		} else out += inlinesToPlain(n.children, opts);
-	}
-	return out;
+  let out = '';
+  for (const n of nodes) {
+    if (n.type === 'text') out += n.value;
+    else if (n.type === 'link') {
+      out += inlinesToPlain(n.children, opts);
+      if (opts.showUrls) out += ` (${n.href})`;
+    } else out += inlinesToPlain(n.children, opts);
+  }
+  return out;
 }
 
 /** Markup string → plain text (markup stripped). */
 export function toPlain(markup: string, opts: PlainOptions = {}): string {
-	return opts.showUrls ? inlinesToPlain(parseMarkup(markup), opts) : textOf(parseMarkup(markup));
+  return opts.showUrls ? inlinesToPlain(parseMarkup(markup), opts) : textOf(parseMarkup(markup));
 }

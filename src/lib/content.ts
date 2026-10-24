@@ -8,21 +8,21 @@ import type { Experience, Page, Project } from '$lib/types';
  * modules so those stay plain mappings from profile.json. */
 
 export function projectBySlug(slug: string): Project | undefined {
-	return projects.find((p) => p.slug === slug);
+  return projects.find((p) => p.slug === slug);
 }
 
 export function experienceBySlug(slug: string): Experience | undefined {
-	return experience.find((e) => e.slug === slug);
+  return experience.find((e) => e.slug === slug);
 }
 
 export function pageAt(route: string): Page | undefined {
-	return pages.find((p) => p.path === route);
+  return pages.find((p) => p.path === route);
 }
 
 /** Where a page or file is actually served, which is its shell path unless it
  * says otherwise. */
 export function urlOf(page: Page): string {
-	return page.url ?? page.path;
+  return page.url ?? page.path;
 }
 
 /** The site without its protocol, for places that print a URL as plain text. */

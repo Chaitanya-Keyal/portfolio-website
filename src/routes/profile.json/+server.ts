@@ -6,7 +6,7 @@ export const prerender = true;
  * answers with `access-control-allow-origin: *`, so "import from URL" works
  * from any origin. */
 export function GET(): Response {
-	return new Response(JSON.stringify(raw, null, '\t') + '\n', {
-		headers: { 'Content-Type': 'application/json; charset=utf-8' }
-	});
+  return new Response(JSON.stringify(raw, null, '\t') + '\n', {
+    headers: { 'Content-Type': 'application/json; charset=utf-8' }
+  });
 }

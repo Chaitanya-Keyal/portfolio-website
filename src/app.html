@@ -1,80 +1,80 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="icon" href="%sveltekit.assets%/favicon.svg" type="image/svg+xml" />
-		<link rel="manifest" href="%sveltekit.assets%/site.webmanifest" />
-		<link
-			rel="preload"
-			href="%sveltekit.assets%/fonts/fira-code-latin-400-normal.woff2"
-			as="font"
-			type="font/woff2"
-			crossorigin
-		/>
-		<!-- The block characters the portrait is drawn with. Left to be discovered
-		     from the stylesheet it arrives late, and until it does those blocks
-		     come from a fallback whose line box is taller, so the portrait is
-		     drawn about half again as tall as the text it is sized against. -->
-		<link
-			rel="preload"
-			href="%sveltekit.assets%/fonts/fira-code-symbols2-400-normal.woff2"
-			as="font"
-			type="font/woff2"
-			crossorigin
-		/>
-		<style>
-			@font-face {
-				font-family: 'Fira Code';
-				font-style: normal;
-				font-weight: 400;
-				font-display: swap;
-				src: url('%sveltekit.assets%/fonts/fira-code-latin-400-normal.woff2') format('woff2');
-			}
-			@font-face {
-				font-family: 'Fira Code';
-				font-style: normal;
-				font-weight: 500;
-				font-display: swap;
-				src: url('%sveltekit.assets%/fonts/fira-code-latin-500-normal.woff2') format('woff2');
-			}
-			@font-face {
-				font-family: 'Fira Code';
-				font-style: normal;
-				font-weight: 700;
-				font-display: swap;
-				src: url('%sveltekit.assets%/fonts/fira-code-latin-700-normal.woff2') format('woff2');
-			}
-			/* Box drawing and block elements: absent from the latin subset, so
-			   without this every block character falls back to a system font
-			   with a different advance and the pixel art comes out squashed. */
-			@font-face {
-				font-family: 'Fira Code';
-				font-style: normal;
-				font-weight: 400;
-				font-display: block;
-				src: url('%sveltekit.assets%/fonts/fira-code-symbols2-400-normal.woff2') format('woff2');
-				unicode-range: U+2190-21BB, U+2500-259F, U+25A0-25FF, U+2630-2637;
-			}
-		</style>
-		<script>
-			// Apply persisted theme and CRT preference before first paint to avoid a flash.
-			try {
-				const theme = localStorage.getItem('theme');
-				if (theme) document.documentElement.dataset.theme = theme;
-				const crt = localStorage.getItem('crt');
-				if (crt) document.documentElement.dataset.crt = crt;
-				// A shared post opens as a document, not as someone else's desktop.
-				// Settled here so the first paint is already the right chrome.
-				if (/\/blog\/[^/]+$/.test(location.pathname)) {
-					document.documentElement.dataset.view =
-						localStorage.getItem('view') === 'terminal' ? 'terminal' : 'reader';
-				}
-			} catch {}
-		</script>
-		%sveltekit.head%
-	</head>
-	<body data-sveltekit-preload-data="tap">
-		<div style="display: contents">%sveltekit.body%</div>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="%sveltekit.assets%/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="%sveltekit.assets%/site.webmanifest" />
+    <link
+      rel="preload"
+      href="%sveltekit.assets%/fonts/fira-code-latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <!-- The block characters the portrait is drawn with. Left to be discovered
+         from the stylesheet it arrives late, and until it does those blocks
+         come from a fallback whose line box is taller, so the portrait is
+         drawn about half again as tall as the text it is sized against. -->
+    <link
+      rel="preload"
+      href="%sveltekit.assets%/fonts/fira-code-symbols2-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <style>
+      @font-face {
+        font-family: 'Fira Code';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url('%sveltekit.assets%/fonts/fira-code-latin-400-normal.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'Fira Code';
+        font-style: normal;
+        font-weight: 500;
+        font-display: swap;
+        src: url('%sveltekit.assets%/fonts/fira-code-latin-500-normal.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'Fira Code';
+        font-style: normal;
+        font-weight: 700;
+        font-display: swap;
+        src: url('%sveltekit.assets%/fonts/fira-code-latin-700-normal.woff2') format('woff2');
+      }
+      /* Box drawing and block elements: absent from the latin subset, so
+         without this every block character falls back to a system font
+         with a different advance and the pixel art comes out squashed. */
+      @font-face {
+        font-family: 'Fira Code';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url('%sveltekit.assets%/fonts/fira-code-symbols2-400-normal.woff2') format('woff2');
+        unicode-range: U+2190-21BB, U+2500-259F, U+25A0-25FF, U+2630-2637;
+      }
+    </style>
+    <script>
+      // Apply persisted theme and CRT preference before first paint to avoid a flash.
+      try {
+        const theme = localStorage.getItem('theme');
+        if (theme) document.documentElement.dataset.theme = theme;
+        const crt = localStorage.getItem('crt');
+        if (crt) document.documentElement.dataset.crt = crt;
+        // A shared post opens as a document, not as someone else's desktop.
+        // Settled here so the first paint is already the right chrome.
+        if (/\/blog\/[^/]+$/.test(location.pathname)) {
+          document.documentElement.dataset.view =
+            localStorage.getItem('view') === 'terminal' ? 'terminal' : 'reader';
+        }
+      } catch {}
+    </script>
+    %sveltekit.head%
+  </head>
+  <body data-sveltekit-preload-data="tap">
+    <div style="display: contents">%sveltekit.body%</div>
+  </body>
 </html>

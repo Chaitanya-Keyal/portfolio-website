@@ -11,39 +11,39 @@ export const entries: EntryGenerator = () => allDocs.map(({ slug }) => ({ slug }
 
 /** These pages aren't just styled like man pages, `man -l` renders this. */
 function roff(slug: string): string {
-	const doc = docBySlug(slug);
-	if (!doc) error(404, 'no such page');
-	const period = doc.synopsis.find((s) => s.label === 'period')?.value ?? '';
-	const category = doc.category[0] + doc.category.slice(1).toLowerCase();
-	const lines = [
-		`.TH "${doc.slug.toUpperCase()}" 1 "${period}" "${domain}" "${category}"`,
-		'.SH NAME',
-		`${doc.slug} \\- ${doc.oneLiner}`,
-		'.SH SYNOPSIS',
-		doc.synopsis.map((s) => `${s.label}: ${s.value}`).join('; ') + '.',
-		'.SH DESCRIPTION',
-		toPlain(doc.description),
-		`.SH "${doc.didTitle.toUpperCase()}"`
-	];
-	for (const item of doc.did) {
-		lines.push('.IP \\(bu 2', toPlain(item));
-	}
-	if (doc.links.length > 0) {
-		lines.push('.SH LINKS');
-		for (const link of doc.links) {
-			lines.push('.IP \\(bu 2', `${link.label}: ${link.href}`);
-		}
-	}
-	const others = allDocs.filter((o) => o.category === doc.category && o.slug !== doc.slug);
-	if (others.length > 0) {
-		lines.push('.SH "SEE ALSO"', others.map((o) => `${o.slug}(1)`).join(', '));
-	}
-	lines.push('.SH "SEE ONLINE"', `${profile.site}${docPath(doc)}`);
-	return lines.join('\n') + '\n';
+  const doc = docBySlug(slug);
+  if (!doc) error(404, 'no such page');
+  const period = doc.synopsis.find((s) => s.label === 'period')?.value ?? '';
+  const category = doc.category[0] + doc.category.slice(1).toLowerCase();
+  const lines = [
+    `.TH "${doc.slug.toUpperCase()}" 1 "${period}" "${domain}" "${category}"`,
+    '.SH NAME',
+    `${doc.slug} \\- ${doc.oneLiner}`,
+    '.SH SYNOPSIS',
+    doc.synopsis.map((s) => `${s.label}: ${s.value}`).join('; ') + '.',
+    '.SH DESCRIPTION',
+    toPlain(doc.description),
+    `.SH "${doc.didTitle.toUpperCase()}"`
+  ];
+  for (const item of doc.did) {
+    lines.push('.IP \\(bu 2', toPlain(item));
+  }
+  if (doc.links.length > 0) {
+    lines.push('.SH LINKS');
+    for (const link of doc.links) {
+      lines.push('.IP \\(bu 2', `${link.label}: ${link.href}`);
+    }
+  }
+  const others = allDocs.filter((o) => o.category === doc.category && o.slug !== doc.slug);
+  if (others.length > 0) {
+    lines.push('.SH "SEE ALSO"', others.map((o) => `${o.slug}(1)`).join(', '));
+  }
+  lines.push('.SH "SEE ONLINE"', `${profile.site}${docPath(doc)}`);
+  return lines.join('\n') + '\n';
 }
 
 export const GET: RequestHandler = ({ params }) => {
-	return new Response(roff(params.slug), {
-		headers: { 'Content-Type': 'text/troff; charset=utf-8' }
-	});
+  return new Response(roff(params.slug), {
+    headers: { 'Content-Type': 'text/troff; charset=utf-8' }
+  });
 };

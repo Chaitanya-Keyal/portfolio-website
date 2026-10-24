@@ -6,301 +6,301 @@ import { resolvePath } from './filesystem';
 
 /** The shell's filesystem is the route table, so these walk real paths. */
 describe('resolvePath', () => {
-	it('resolves relative names against the working directory', () => {
-		expect(resolvePath('/', 'work')).toBe('/work');
-		expect(resolvePath('/work', 'crux')).toBe('/work/crux');
-	});
+  it('resolves relative names against the working directory', () => {
+    expect(resolvePath('/', 'work')).toBe('/work');
+    expect(resolvePath('/work', 'crux')).toBe('/work/crux');
+  });
 
-	it('treats a leading slash or tilde as absolute', () => {
-		expect(resolvePath('/work/crux', '/projects')).toBe('/projects');
-		expect(resolvePath('/work/crux', '~/projects')).toBe('/projects');
-		expect(resolvePath('/work/crux', '~')).toBe('/');
-	});
+  it('treats a leading slash or tilde as absolute', () => {
+    expect(resolvePath('/work/crux', '/projects')).toBe('/projects');
+    expect(resolvePath('/work/crux', '~/projects')).toBe('/projects');
+    expect(resolvePath('/work/crux', '~')).toBe('/');
+  });
 
-	it('walks up, and stops at the root rather than above it', () => {
-		expect(resolvePath('/work/crux', '..')).toBe('/work');
-		expect(resolvePath('/work/crux', '../..')).toBe('/');
-		expect(resolvePath('/work/crux', '../../../..')).toBe('/');
-	});
+  it('walks up, and stops at the root rather than above it', () => {
+    expect(resolvePath('/work/crux', '..')).toBe('/work');
+    expect(resolvePath('/work/crux', '../..')).toBe('/');
+    expect(resolvePath('/work/crux', '../../../..')).toBe('/');
+  });
 
-	it('ignores "." and empty segments from stray slashes', () => {
-		expect(resolvePath('/work', '.')).toBe('/work');
-		expect(resolvePath('/', 'work//crux/')).toBe('/work/crux');
-		expect(resolvePath('/work', './crux')).toBe('/work/crux');
-	});
+  it('ignores "." and empty segments from stray slashes', () => {
+    expect(resolvePath('/work', '.')).toBe('/work');
+    expect(resolvePath('/', 'work//crux/')).toBe('/work/crux');
+    expect(resolvePath('/work', './crux')).toBe('/work/crux');
+  });
 });
 
 describe('cd', () => {
-	it('navigates to a directory', () => {
-		expect(run('cd work', '/')).toEqual({ kind: 'nav', to: '/work' });
-	});
+  it('navigates to a directory', () => {
+    expect(run('cd work', '/')).toEqual({ kind: 'nav', to: '/work' });
+  });
 
-	it('goes home with no argument, ~ or /', () => {
-		for (const input of ['cd', 'cd ~', 'cd /']) {
-			expect(run(input, '/work')).toEqual({ kind: 'nav', to: '/' });
-		}
-	});
+  it('goes home with no argument, ~ or /', () => {
+    for (const input of ['cd', 'cd ~', 'cd /']) {
+      expect(run(input, '/work')).toEqual({ kind: 'nav', to: '/' });
+    }
+  });
 
-	it('refuses files and unknown paths', () => {
-		expect(run('cd resume.txt', '/').kind).toBe('error');
-		expect(run('cd nowhere', '/').kind).toBe('error');
-	});
+  it('refuses files and unknown paths', () => {
+    expect(run('cd resume.txt', '/').kind).toBe('error');
+    expect(run('cd nowhere', '/').kind).toBe('error');
+  });
 
-	it('goes back to OLDPWD on `cd -`', () => {
-		expect(run('cd -', '/projects', '/work/crux')).toEqual({ kind: 'nav', to: '/work/crux' });
-		expect(run('cd -', '/work', '/')).toEqual({ kind: 'nav', to: '/' });
-	});
+  it('goes back to OLDPWD on `cd -`', () => {
+    expect(run('cd -', '/projects', '/work/crux')).toEqual({ kind: 'nav', to: '/work/crux' });
+    expect(run('cd -', '/work', '/')).toEqual({ kind: 'nav', to: '/' });
+  });
 
-	it('has no OLDPWD before anything has moved', () => {
-		expect(run('cd -', '/').kind).toBe('error');
-		expect(run('cd -', '/work', '/work').kind).toBe('error');
-	});
+  it('has no OLDPWD before anything has moved', () => {
+    expect(run('cd -', '/').kind).toBe('error');
+    expect(run('cd -', '/work', '/work').kind).toBe('error');
+  });
 });
 
 describe('ls', () => {
-	it('lists children, marking directories', () => {
-		const out = run('ls', '/');
-		expect(out.kind).toBe('print');
-		expect(out.kind === 'print' && out.lines[0]).toContain('work/');
-		expect(out.kind === 'print' && out.lines[0]).toContain('resume/');
-	});
+  it('lists children, marking directories', () => {
+    const out = run('ls', '/');
+    expect(out.kind).toBe('print');
+    expect(out.kind === 'print' && out.lines[0]).toContain('work/');
+    expect(out.kind === 'print' && out.lines[0]).toContain('resume/');
+  });
 
-	it('keeps the resume files inside the resume directory', () => {
-		const root = run('ls', '/');
-		expect(root.kind === 'print' && root.lines[0]).not.toContain('resume.txt');
-		const dir = run('ls', '/resume');
-		expect(dir.kind === 'print' && dir.lines[0]).toContain('resume.txt');
-		expect(dir.kind === 'print' && dir.lines[0]).toContain('resume.pdf');
-	});
+  it('keeps the resume files inside the resume directory', () => {
+    const root = run('ls', '/');
+    expect(root.kind === 'print' && root.lines[0]).not.toContain('resume.txt');
+    const dir = run('ls', '/resume');
+    expect(dir.kind === 'print' && dir.lines[0]).toContain('resume.txt');
+    expect(dir.kind === 'print' && dir.lines[0]).toContain('resume.pdf');
+  });
 
-	it('points at `man` only where there is a page behind it', () => {
-		const leaf = run('ls', '/work/crux');
-		expect(leaf.kind === 'print' && leaf.lines[0]).toBe('(nothing here, try `man`)');
-		const bare = run('ls', '/education');
-		expect(bare.kind === 'print' && bare.lines[0]).toBe('(nothing here)');
-	});
+  it('points at `man` only where there is a page behind it', () => {
+    const leaf = run('ls', '/work/crux');
+    expect(leaf.kind === 'print' && leaf.lines[0]).toBe('(nothing here, try `man`)');
+    const bare = run('ls', '/education');
+    expect(bare.kind === 'print' && bare.lines[0]).toBe('(nothing here)');
+  });
 
-	it('marks only what has something inside it', () => {
-		// The slash predicts that `cd` goes somewhere new. A leaf page is still
-		// a place you can cd to, but there is nothing under it, and `cat` opens
-		// it, so dressing it as a directory would mislead on both counts.
-		const root = run('ls', '/');
-		const line = root.kind === 'print' ? root.lines[0] : '';
-		expect(line).toContain('work/');
-		expect(line).toContain('education');
-		expect(line).not.toContain('education/');
+  it('marks only what has something inside it', () => {
+    // The slash predicts that `cd` goes somewhere new. A leaf page is still
+    // a place you can cd to, but there is nothing under it, and `cat` opens
+    // it, so dressing it as a directory would mislead on both counts.
+    const root = run('ls', '/');
+    const line = root.kind === 'print' ? root.lines[0] : '';
+    expect(line).toContain('work/');
+    expect(line).toContain('education');
+    expect(line).not.toContain('education/');
 
-		const leaves = run('ls', '/projects');
-		const names = leaves.kind === 'print' ? leaves.lines[0] : '';
-		expect(names).toContain('seedsigner');
-		expect(names).not.toContain('seedsigner/');
-	});
+    const leaves = run('ls', '/projects');
+    const names = leaves.kind === 'print' ? leaves.lines[0] : '';
+    expect(names).toContain('seedsigner');
+    expect(names).not.toContain('seedsigner/');
+  });
 
-	it('gives the long form a description column, and `ll` means that', () => {
-		const long = run('ls -l', '/projects');
-		const lines = long.kind === 'print' ? long.lines : [];
-		expect(lines.length).toBeGreaterThan(1); // one entry per line, not one row
-		const seed = lines.find((l) => l.startsWith('seedsigner'));
-		expect(seed).toMatch(/^seedsigner\s+air-gapped Bitcoin signing device$/);
-		expect(run('ll', '/projects')).toEqual(long);
-	});
+  it('gives the long form a description column, and `ll` means that', () => {
+    const long = run('ls -l', '/projects');
+    const lines = long.kind === 'print' ? long.lines : [];
+    expect(lines.length).toBeGreaterThan(1); // one entry per line, not one row
+    const seed = lines.find((l) => l.startsWith('seedsigner'));
+    expect(seed).toMatch(/^seedsigner\s+air-gapped Bitcoin signing device$/);
+    expect(run('ll', '/projects')).toEqual(long);
+  });
 
-	it('lets a typed flag join the one an alias carries', () => {
-		expect(run('ll -a', '/projects')).toEqual(run('ls -l -a', '/projects'));
-	});
+  it('lets a typed flag join the one an alias carries', () => {
+    expect(run('ll -a', '/projects')).toEqual(run('ls -l -a', '/projects'));
+  });
 
-	it('errors on a path that does not exist', () => {
-		expect(run('ls nowhere', '/').kind).toBe('error');
-	});
+  it('errors on a path that does not exist', () => {
+    expect(run('ls nowhere', '/').kind).toBe('error');
+  });
 });
 
 describe('man', () => {
-	it('reads the page you are standing in when given no argument', () => {
-		const out = run('man', '/work/crux');
-		expect(out.kind).toBe('print');
-		expect(out.kind === 'print' && out.lines.join('\n')).toContain('CRUX');
-	});
+  it('reads the page you are standing in when given no argument', () => {
+    const out = run('man', '/work/crux');
+    expect(out.kind).toBe('print');
+    expect(out.kind === 'print' && out.lines.join('\n')).toContain('CRUX');
+  });
 
-	it('names the pages in a section instead of refusing', () => {
-		const out = run('man work', '/');
-		expect(out.kind).toBe('print');
-		expect(out.kind === 'print' && out.lines[0]).toContain('is a section');
-		expect(out.kind === 'print' && out.lines[0]).toContain('crux');
-	});
+  it('names the pages in a section instead of refusing', () => {
+    const out = run('man work', '/');
+    expect(out.kind).toBe('print');
+    expect(out.kind === 'print' && out.lines[0]).toContain('is a section');
+    expect(out.kind === 'print' && out.lines[0]).toContain('crux');
+  });
 
-	it('takes a slug, a path, or a .1 suffix', () => {
-		const slug = run('man crux', '/');
-		const path = run('man work/crux', '/');
-		const suffixed = run('man crux.1', '/');
-		expect(slug).toEqual(path);
-		expect(slug).toEqual(suffixed);
-	});
+  it('takes a slug, a path, or a .1 suffix', () => {
+    const slug = run('man crux', '/');
+    const path = run('man work/crux', '/');
+    const suffixed = run('man crux.1', '/');
+    expect(slug).toEqual(path);
+    expect(slug).toEqual(suffixed);
+  });
 
-	it('has no entry for something that is not a page', () => {
-		expect(run('man nonsense', '/').kind).toBe('error');
-	});
+  it('has no entry for something that is not a page', () => {
+    expect(run('man nonsense', '/').kind).toBe('error');
+  });
 
-	// `ls` on an empty page tells people to try `man`; that has to work.
-	it('answers everywhere `ls` sends people', () => {
-		for (const page of pages) {
-			if (page.file) continue;
-			const empty = run('ls', page.path);
-			const suggests = empty.kind === 'print' && empty.lines[0].includes('`man`');
-			if (suggests) expect(run('man', page.path).kind).toBe('print');
-		}
-	});
+  // `ls` on an empty page tells people to try `man`; that has to work.
+  it('answers everywhere `ls` sends people', () => {
+    for (const page of pages) {
+      if (page.file) continue;
+      const empty = run('ls', page.path);
+      const suggests = empty.kind === 'print' && empty.lines[0].includes('`man`');
+      if (suggests) expect(run('man', page.path).kind).toBe('print');
+    }
+  });
 });
 
 describe('cat', () => {
-	it('reads a text file at its published url, not its shell path', () => {
-		expect(run('cat resume/resume.txt', '/')).toEqual({ kind: 'cat', url: '/resume.txt' });
-		expect(run('cat resume.txt', '/resume')).toEqual({ kind: 'cat', url: '/resume.txt' });
-	});
+  it('reads a text file at its published url, not its shell path', () => {
+    expect(run('cat resume/resume.txt', '/')).toEqual({ kind: 'cat', url: '/resume.txt' });
+    expect(run('cat resume.txt', '/resume')).toEqual({ kind: 'cat', url: '/resume.txt' });
+  });
 
-	it('hands a binary to the browser rather than printing it', () => {
-		expect(run('cat resume/resume.pdf', '/')).toEqual({ kind: 'open', url: '/resume.pdf' });
-	});
+  it('hands a binary to the browser rather than printing it', () => {
+    expect(run('cat resume/resume.pdf', '/')).toEqual({ kind: 'open', url: '/resume.pdf' });
+  });
 
-	// End pages open rather than print: `man` is the one that prints them, and
-	// both `cd` and `cat` should get you to a page whichever you reach for.
-	it('opens an end page, the same as cd would', () => {
-		expect(run('cat work/onfinance', '/')).toEqual({ kind: 'nav', to: '/work/onfinance' });
-		expect(run('cat onfinance', '/work')).toEqual(run('cd onfinance', '/work'));
-		expect(run('cat education', '/')).toEqual({ kind: 'nav', to: '/education' });
-	});
+  // End pages open rather than print: `man` is the one that prints them, and
+  // both `cd` and `cat` should get you to a page whichever you reach for.
+  it('opens an end page, the same as cd would', () => {
+    expect(run('cat work/onfinance', '/')).toEqual({ kind: 'nav', to: '/work/onfinance' });
+    expect(run('cat onfinance', '/work')).toEqual(run('cd onfinance', '/work'));
+    expect(run('cat education', '/')).toEqual({ kind: 'nav', to: '/education' });
+  });
 
-	it('refuses anything with pages under it, the way cat refuses a directory', () => {
-		for (const dir of ['cat work', 'cat projects', 'cat resume']) {
-			const out = run(dir, '/');
-			expect(out.kind).toBe('error');
-			expect(out.kind === 'error' && out.lines[0]).toContain('is a directory');
-		}
-	});
+  it('refuses anything with pages under it, the way cat refuses a directory', () => {
+    for (const dir of ['cat work', 'cat projects', 'cat resume']) {
+      const out = run(dir, '/');
+      expect(out.kind).toBe('error');
+      expect(out.kind === 'error' && out.lines[0]).toContain('is a directory');
+    }
+  });
 
-	it('reports a missing path', () => {
-		expect(run('cat nope.txt', '/').kind).toBe('error');
-		expect(run('cat', '/').kind).toBe('error');
-	});
+  it('reports a missing path', () => {
+    expect(run('cat nope.txt', '/').kind).toBe('error');
+    expect(run('cat', '/').kind).toBe('error');
+  });
 });
 
 describe('theme', () => {
-	it('switches to a known theme', () => {
-		expect(run('theme gruvbox', '/')).toEqual({ kind: 'theme', theme: 'gruvbox' });
-	});
+  it('switches to a known theme', () => {
+    expect(run('theme gruvbox', '/')).toEqual({ kind: 'theme', theme: 'gruvbox' });
+  });
 
-	it('lists the options when given none, and rejects an unknown one', () => {
-		expect(run('theme', '/').kind).toBe('print');
-		expect(run('theme neon', '/').kind).toBe('error');
-	});
+  it('lists the options when given none, and rejects an unknown one', () => {
+    expect(run('theme', '/').kind).toBe('print');
+    expect(run('theme neon', '/').kind).toBe('error');
+  });
 });
 
 describe('isCommand', () => {
-	it('accepts a command, with or without arguments', () => {
-		expect(isCommand('help')).toBe(true);
-		expect(isCommand('  ls -la projects  ')).toBe(true);
-	});
+  it('accepts a command, with or without arguments', () => {
+    expect(isCommand('help')).toBe(true);
+    expect(isCommand('  ls -la projects  ')).toBe(true);
+  });
 
-	it('accepts an alias, including one that carries flags', () => {
-		expect(isCommand('la')).toBe(true);
-		expect(isCommand('fetch')).toBe(true);
-	});
+  it('accepts an alias, including one that carries flags', () => {
+    expect(isCommand('la')).toBe(true);
+    expect(isCommand('fetch')).toBe(true);
+  });
 
-	it('accepts an easter egg, which is still a command', () => {
-		expect(isCommand('sudo rm')).toBe(true);
-	});
+  it('accepts an easter egg, which is still a command', () => {
+    expect(isCommand('sudo rm')).toBe(true);
+  });
 
-	it('rejects a typo and an empty prompt', () => {
-		expect(isCommand('helpp')).toBe(false);
-		expect(isCommand('')).toBe(false);
-		expect(isCommand('   ')).toBe(false);
-	});
+  it('rejects a typo and an empty prompt', () => {
+    expect(isCommand('helpp')).toBe(false);
+    expect(isCommand('')).toBe(false);
+    expect(isCommand('   ')).toBe(false);
+  });
 });
 
 describe('the command table', () => {
-	it('resolves aliases to their commands', () => {
-		expect(run('fetch', '/work')).toEqual(run('neofetch', '/work'));
-		expect(run('la', '/')).toEqual(run('ls', '/'));
-		expect(run('open work', '/')).toEqual(run('cd work', '/'));
-	});
+  it('resolves aliases to their commands', () => {
+    expect(run('fetch', '/work')).toEqual(run('neofetch', '/work'));
+    expect(run('la', '/')).toEqual(run('ls', '/'));
+    expect(run('open work', '/')).toEqual(run('cd work', '/'));
+  });
 
-	it('clears the scrollback on the way home, so neofetch looks like it ran', () => {
-		for (const name of ['neofetch', 'fetch', 'fastfetch', 'screenfetch']) {
-			expect(run(name, '/projects')).toEqual({ kind: 'nav', to: '/', clear: true });
-		}
-	});
+  it('clears the scrollback on the way home, so neofetch looks like it ran', () => {
+    for (const name of ['neofetch', 'fetch', 'fastfetch', 'screenfetch']) {
+      expect(run(name, '/projects')).toEqual({ kind: 'nav', to: '/', clear: true });
+    }
+  });
 
-	it('reports an unknown command the way a shell does', () => {
-		const out = run('sudoku', '/');
-		expect(out.kind).toBe('error');
-		expect(out.kind === 'error' && out.lines[0]).toContain('command not found');
-	});
+  it('reports an unknown command the way a shell does', () => {
+    const out = run('sudoku', '/');
+    expect(out.kind).toBe('error');
+    expect(out.kind === 'error' && out.lines[0]).toContain('command not found');
+  });
 
-	it('does nothing with empty input', () => {
-		expect(run('   ', '/')).toEqual({ kind: 'none' });
-	});
+  it('does nothing with empty input', () => {
+    expect(run('   ', '/')).toEqual({ kind: 'none' });
+  });
 
-	it('still runs the commands kept off the help list', () => {
-		expect(run('pwd', '/work')).toEqual({ kind: 'print', lines: ['~/work'] });
-		expect(run('echo hello there', '/')).toEqual({ kind: 'print', lines: ['hello there'] });
-	});
+  it('still runs the commands kept off the help list', () => {
+    expect(run('pwd', '/work')).toEqual({ kind: 'print', lines: ['~/work'] });
+    expect(run('echo hello there', '/')).toEqual({ kind: 'print', lines: ['hello there'] });
+  });
 
-	it('lists only the commands meant to be listed in help', () => {
-		const out = run('help', '/');
-		const text = out.kind === 'print' ? out.lines.join('\n') : '';
-		const listed = commands.filter((c) => !c.hidden && !c.unlisted);
-		const withheld = commands.filter((c) => c.hidden || c.unlisted);
-		for (const c of listed) expect(text).toContain(c.usage);
-		for (const c of withheld) expect(text).not.toContain(`  ${c.usage.padEnd(14)}`);
-		expect(listed.length).toBeGreaterThan(0);
-		expect(withheld.length).toBeGreaterThan(0);
-	});
+  it('lists only the commands meant to be listed in help', () => {
+    const out = run('help', '/');
+    const text = out.kind === 'print' ? out.lines.join('\n') : '';
+    const listed = commands.filter((c) => !c.hidden && !c.unlisted);
+    const withheld = commands.filter((c) => c.hidden || c.unlisted);
+    for (const c of listed) expect(text).toContain(c.usage);
+    for (const c of withheld) expect(text).not.toContain(`  ${c.usage.padEnd(14)}`);
+    expect(listed.length).toBeGreaterThan(0);
+    expect(withheld.length).toBeGreaterThan(0);
+  });
 
-	it('keeps the easter eggs runnable', () => {
-		expect(run('sudo rm', '/').kind).toBe('print');
-		expect(run(':q', '/').kind).toBe('print');
-	});
+  it('keeps the easter eggs runnable', () => {
+    expect(run('sudo rm', '/').kind).toBe('print');
+    expect(run(':q', '/').kind).toBe('print');
+  });
 
-	it('gives every listed command a usage and a description', () => {
-		for (const c of commands.filter((x) => !x.hidden && !x.unlisted)) {
-			expect(c.usage.startsWith(c.name)).toBe(true);
-			expect(c.description).not.toBe('');
-		}
-	});
+  it('gives every listed command a usage and a description', () => {
+    for (const c of commands.filter((x) => !x.hidden && !x.unlisted)) {
+      expect(c.usage.startsWith(c.name)).toBe(true);
+      expect(c.description).not.toBe('');
+    }
+  });
 });
 
 describe('tab completion', () => {
-	it('completes a unique command and leaves a space to type the argument', () => {
-		expect(complete('who', '/').value).toBe('whoami ');
-	});
+  it('completes a unique command and leaves a space to type the argument', () => {
+    expect(complete('who', '/').value).toBe('whoami ');
+  });
 
-	it('leaves input alone when nothing matches', () => {
-		expect(complete('zzz', '/')).toEqual({ value: 'zzz', options: [] });
-	});
+  it('leaves input alone when nothing matches', () => {
+    expect(complete('zzz', '/')).toEqual({ value: 'zzz', options: [] });
+  });
 
-	it('offers the options when a prefix is ambiguous', () => {
-		const out = complete('c', '/');
-		expect(out.options.length).toBeGreaterThan(1);
-		expect(out.options).toContain('cd');
-		expect(out.options).toContain('cat');
-	});
+  it('offers the options when a prefix is ambiguous', () => {
+    const out = complete('c', '/');
+    expect(out.options.length).toBeGreaterThan(1);
+    expect(out.options).toContain('cd');
+    expect(out.options).toContain('cat');
+  });
 
-	// A trailing slash on a directory, the way bash does it, so the next
-	// keystroke carries straight on into the path.
-	it('completes paths after a command that takes one', () => {
-		expect(complete('cd wo', '/').value).toBe('cd work/');
-		// `work` has entries under it, `crux` is a leaf, and completion marks
-		// the difference the same way `ls` does.
-		expect(complete('cd ', '/work').options).toContain('crux');
-		expect(complete('cd ', '/work').options).not.toContain('crux/');
-	});
+  // A trailing slash on a directory, the way bash does it, so the next
+  // keystroke carries straight on into the path.
+  it('completes paths after a command that takes one', () => {
+    expect(complete('cd wo', '/').value).toBe('cd work/');
+    // `work` has entries under it, `crux` is a leaf, and completion marks
+    // the difference the same way `ls` does.
+    expect(complete('cd ', '/work').options).toContain('crux');
+    expect(complete('cd ', '/work').options).not.toContain('crux/');
+  });
 
-	it('completes through aliases', () => {
-		expect(complete('open wo', '/').value).toBe('open work/');
-	});
+  it('completes through aliases', () => {
+    expect(complete('open wo', '/').value).toBe('open work/');
+  });
 
-	it('offers commands kept off help, but never the easter eggs', () => {
-		expect(complete('neof', '/').value).toBe('neofetch ');
-		expect(complete('sud', '/').options).toEqual([]);
-		expect(complete('sud', '/').value).toBe('sud');
-	});
+  it('offers commands kept off help, but never the easter eggs', () => {
+    expect(complete('neof', '/').value).toBe('neofetch ');
+    expect(complete('sud', '/').options).toEqual([]);
+    expect(complete('sud', '/').value).toBe('sud');
+  });
 });

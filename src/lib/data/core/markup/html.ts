@@ -2,35 +2,35 @@
 import { parseMarkup, type Inline } from './parse';
 
 export function escapeHtml(text: string): string {
-	return text
-		.replace(/&/g, '&amp;')
-		.replace(/</g, '&lt;')
-		.replace(/>/g, '&gt;')
-		.replace(/"/g, '&quot;');
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }
 
 export function inlinesToHtml(nodes: Inline[]): string {
-	let out = '';
-	for (const n of nodes) {
-		switch (n.type) {
-			case 'text':
-				out += escapeHtml(n.value);
-				break;
-			case 'bold':
-				out += `<strong>${inlinesToHtml(n.children)}</strong>`;
-				break;
-			case 'italic':
-				out += `<em>${inlinesToHtml(n.children)}</em>`;
-				break;
-			case 'link':
-				out += `<a href="${escapeHtml(n.href)}" rel="noopener">${inlinesToHtml(n.children)}</a>`;
-				break;
-		}
-	}
-	return out;
+  let out = '';
+  for (const n of nodes) {
+    switch (n.type) {
+      case 'text':
+        out += escapeHtml(n.value);
+        break;
+      case 'bold':
+        out += `<strong>${inlinesToHtml(n.children)}</strong>`;
+        break;
+      case 'italic':
+        out += `<em>${inlinesToHtml(n.children)}</em>`;
+        break;
+      case 'link':
+        out += `<a href="${escapeHtml(n.href)}" rel="noopener">${inlinesToHtml(n.children)}</a>`;
+        break;
+    }
+  }
+  return out;
 }
 
 /** Markup string → HTML fragment, safe to insert as markup. */
 export function toHtml(markup: string): string {
-	return inlinesToHtml(parseMarkup(markup));
+  return inlinesToHtml(parseMarkup(markup));
 }

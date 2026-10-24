@@ -1,189 +1,189 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="robots" content="noindex, nofollow" />
-		<meta name="referrer" content="no-referrer" />
-		<title>tailnet</title>
-		<style>
-			body {
-				max-width: 34rem;
-				margin: 2rem auto;
-				padding: 0 1rem;
-				background: #0b0d10;
-				color: #d6dae0;
-				font:
-					16px/1.5 ui-monospace,
-					SFMono-Regular,
-					Menlo,
-					Consolas,
-					monospace;
-			}
-			h1 {
-				font-size: 1.3rem;
-				margin-bottom: 0.25rem;
-			}
-			p.note {
-				color: #8b949e;
-				font-size: 0.85rem;
-				margin-top: 0;
-			}
-			form {
-				display: flex;
-				gap: 0.5rem;
-				margin-top: 1.5rem;
-			}
-			input {
-				flex: 1;
-				min-width: 0;
-				padding: 0.7rem 0.8rem;
-				border: 1px solid #30363d;
-				border-radius: 8px;
-				background: #161b22;
-				color: #d6dae0;
-				font: inherit;
-			}
-			button {
-				padding: 0 1rem;
-				border: 0;
-				border-radius: 8px;
-				background: #238636;
-				color: #fff;
-				font: inherit;
-			}
-			#status {
-				color: #f85149;
-				min-height: 1.5em;
-			}
-			a.row {
-				display: flex;
-				align-items: center;
-				gap: 0.75rem;
-				padding: 0.85rem 1rem;
-				margin: 0.4rem 0;
-				border-radius: 10px;
-				background: #161b22;
-				color: #d6dae0;
-				text-decoration: none;
-			}
-			a.row:active {
-				background: #21262d;
-			}
-			.what {
-				flex: 1;
-			}
-			.sub {
-				display: block;
-				color: #8b949e;
-				font-size: 0.8rem;
-			}
-			.go {
-				color: #7ee787;
-			}
-		</style>
-	</head>
-	<body>
-		<h1>tailnet</h1>
-		<p class="note">Locked. The links only open on devices signed in to Tailscale.</p>
-		<form id="unlock">
-			<input type="text" name="username" value="tailnet" autocomplete="username" hidden />
-			<input
-				id="password"
-				type="password"
-				name="password"
-				autocomplete="current-password"
-				placeholder="password"
-				aria-label="password"
-				required
-			/>
-			<button>unlock</button>
-		</form>
-		<p id="status" role="status"></p>
-		<div id="links"></div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="referrer" content="no-referrer" />
+    <title>tailnet</title>
+    <style>
+      body {
+        max-width: 34rem;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        background: #0b0d10;
+        color: #d6dae0;
+        font:
+          16px/1.5 ui-monospace,
+          SFMono-Regular,
+          Menlo,
+          Consolas,
+          monospace;
+      }
+      h1 {
+        font-size: 1.3rem;
+        margin-bottom: 0.25rem;
+      }
+      p.note {
+        color: #8b949e;
+        font-size: 0.85rem;
+        margin-top: 0;
+      }
+      form {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+      }
+      input {
+        flex: 1;
+        min-width: 0;
+        padding: 0.7rem 0.8rem;
+        border: 1px solid #30363d;
+        border-radius: 8px;
+        background: #161b22;
+        color: #d6dae0;
+        font: inherit;
+      }
+      button {
+        padding: 0 1rem;
+        border: 0;
+        border-radius: 8px;
+        background: #238636;
+        color: #fff;
+        font: inherit;
+      }
+      #status {
+        color: #f85149;
+        min-height: 1.5em;
+      }
+      a.row {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.85rem 1rem;
+        margin: 0.4rem 0;
+        border-radius: 10px;
+        background: #161b22;
+        color: #d6dae0;
+        text-decoration: none;
+      }
+      a.row:active {
+        background: #21262d;
+      }
+      .what {
+        flex: 1;
+      }
+      .sub {
+        display: block;
+        color: #8b949e;
+        font-size: 0.8rem;
+      }
+      .go {
+        color: #7ee787;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>tailnet</h1>
+    <p class="note">Locked. The links only open on devices signed in to Tailscale.</p>
+    <form id="unlock">
+      <input type="text" name="username" value="tailnet" autocomplete="username" hidden />
+      <input
+        id="password"
+        type="password"
+        name="password"
+        autocomplete="current-password"
+        placeholder="password"
+        aria-label="password"
+        required
+      />
+      <button>unlock</button>
+    </form>
+    <p id="status" role="status"></p>
+    <div id="links"></div>
 
-		<script type="module">
-			// Same scheme as src/lib/tailnet.ts, keep the two in step: PBKDF2-SHA256 stretches the
-			// password into an AES-256-GCM key. sealed.json is the only form the list is published
-			// in, and the password never leaves this page.
-			const fromBase64 = (text) => Uint8Array.from(atob(text), (c) => c.charCodeAt(0));
+    <script type="module">
+      // Same scheme as src/lib/tailnet.ts, keep the two in step: PBKDF2-SHA256 stretches the
+      // password into an AES-256-GCM key. sealed.json is the only form the list is published
+      // in, and the password never leaves this page.
+      const fromBase64 = (text) => Uint8Array.from(atob(text), (c) => c.charCodeAt(0));
 
-			async function unseal(sealed, password) {
-				const material = await crypto.subtle.importKey(
-					'raw',
-					new TextEncoder().encode(password),
-					'PBKDF2',
-					false,
-					['deriveKey']
-				);
-				const key = await crypto.subtle.deriveKey(
-					{
-						name: 'PBKDF2',
-						hash: 'SHA-256',
-						salt: fromBase64(sealed.salt),
-						iterations: sealed.iterations
-					},
-					material,
-					{ name: 'AES-GCM', length: 256 },
-					false,
-					['decrypt']
-				);
-				const plain = await crypto.subtle.decrypt(
-					{ name: 'AES-GCM', iv: fromBase64(sealed.iv) },
-					key,
-					fromBase64(sealed.data)
-				);
-				return JSON.parse(new TextDecoder().decode(plain));
-			}
+      async function unseal(sealed, password) {
+        const material = await crypto.subtle.importKey(
+          'raw',
+          new TextEncoder().encode(password),
+          'PBKDF2',
+          false,
+          ['deriveKey']
+        );
+        const key = await crypto.subtle.deriveKey(
+          {
+            name: 'PBKDF2',
+            hash: 'SHA-256',
+            salt: fromBase64(sealed.salt),
+            iterations: sealed.iterations
+          },
+          material,
+          { name: 'AES-GCM', length: 256 },
+          false,
+          ['decrypt']
+        );
+        const plain = await crypto.subtle.decrypt(
+          { name: 'AES-GCM', iv: fromBase64(sealed.iv) },
+          key,
+          fromBase64(sealed.data)
+        );
+        return JSON.parse(new TextDecoder().decode(plain));
+      }
 
-			function row(link) {
-				const a = document.createElement('a');
-				a.className = 'row';
-				a.href = link.url;
-				const what = document.createElement('span');
-				what.className = 'what';
-				what.textContent = link.name;
-				const sub = document.createElement('span');
-				sub.className = 'sub';
-				sub.textContent = link.label;
-				what.append(sub);
-				const go = document.createElement('span');
-				go.className = 'go';
-				go.textContent = 'open';
-				a.append(what, go);
-				return a;
-			}
+      function row(link) {
+        const a = document.createElement('a');
+        a.className = 'row';
+        a.href = link.url;
+        const what = document.createElement('span');
+        what.className = 'what';
+        what.textContent = link.name;
+        const sub = document.createElement('span');
+        sub.className = 'sub';
+        sub.textContent = link.label;
+        what.append(sub);
+        const go = document.createElement('span');
+        go.className = 'go';
+        go.textContent = 'open';
+        a.append(what, go);
+        return a;
+      }
 
-			const form = document.getElementById('unlock');
-			const status = document.getElementById('status');
-			form.addEventListener('submit', async (event) => {
-				event.preventDefault();
-				status.textContent = 'unlocking…';
-				let sealed;
-				try {
-					const response = await fetch('sealed.json', { cache: 'no-store' });
-					if (!response.ok) throw new Error(String(response.status));
-					sealed = await response.json();
-				} catch {
-					status.textContent = "couldn't fetch the locked list; try again";
-					return;
-				}
-				let links;
-				try {
-					links = await unseal(sealed, document.getElementById('password').value);
-				} catch {
-					status.textContent = 'wrong password';
-					return;
-				}
-				// The list also points at this page (for the terminal's `tailnet links`); skip it here.
-				const here = new URL('.', location.href).href;
-				const list = document.getElementById('links');
-				for (const link of links) {
-					if (new URL(link.url, here).href !== here) list.append(row(link));
-				}
-				form.remove();
-				status.textContent = '';
-			});
-		</script>
-	</body>
+      const form = document.getElementById('unlock');
+      const status = document.getElementById('status');
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        status.textContent = 'unlocking…';
+        let sealed;
+        try {
+          const response = await fetch('sealed.json', { cache: 'no-store' });
+          if (!response.ok) throw new Error(String(response.status));
+          sealed = await response.json();
+        } catch {
+          status.textContent = "couldn't fetch the locked list; try again";
+          return;
+        }
+        let links;
+        try {
+          links = await unseal(sealed, document.getElementById('password').value);
+        } catch {
+          status.textContent = 'wrong password';
+          return;
+        }
+        // The list also points at this page (for the terminal's `tailnet links`); skip it here.
+        const here = new URL('.', location.href).href;
+        const list = document.getElementById('links');
+        for (const link of links) {
+          if (new URL(link.url, here).href !== here) list.append(row(link));
+        }
+        form.remove();
+        status.textContent = '';
+      });
+    </script>
+  </body>
 </html>

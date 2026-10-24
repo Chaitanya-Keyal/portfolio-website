@@ -11,163 +11,163 @@
  */
 
 export type Inline =
-	| { type: 'text'; value: string }
-	| { type: 'bold'; children: Inline[] }
-	| { type: 'italic'; children: Inline[] }
-	| { type: 'link'; href: string; children: Inline[] };
+  | { type: 'text'; value: string }
+  | { type: 'bold'; children: Inline[] }
+  | { type: 'italic'; children: Inline[] }
+  | { type: 'link'; href: string; children: Inline[] };
 
 const URL_OK = /^(https?:\/\/|mailto:)/i;
 
 export function parseMarkup(src: string): Inline[] {
-	const p = new Parser(src);
-	return p.parseUntil(null);
+  const p = new Parser(src);
+  return p.parseUntil(null);
 }
 
 class Parser {
-	private i = 0;
-	constructor(private readonly s: string) {}
+  private i = 0;
+  constructor(private readonly s: string) {}
 
-	private peek(n = 0) {
-		return this.s[this.i + n];
-	}
-	private startsWith(t: string) {
-		return this.s.startsWith(t, this.i);
-	}
+  private peek(n = 0) {
+    return this.s[this.i + n];
+  }
+  private startsWith(t: string) {
+    return this.s.startsWith(t, this.i);
+  }
 
-	/** Parses inlines until `closer` is found at the current position (consumed) or the end. */
-	parseUntil(closer: string | null): Inline[] {
-		const out: Inline[] = [];
-		let text = '';
-		const flush = () => {
-			if (text) out.push({ type: 'text', value: text });
-			text = '';
-		};
+  /** Parses inlines until `closer` is found at the current position (consumed) or the end. */
+  parseUntil(closer: string | null): Inline[] {
+    const out: Inline[] = [];
+    let text = '';
+    const flush = () => {
+      if (text) out.push({ type: 'text', value: text });
+      text = '';
+    };
 
-		while (this.i < this.s.length) {
-			if (closer && this.startsWith(closer) && !(closer === '_' && this.isWordChar(this.peek(1)))) {
-				this.i += closer.length;
-				flush();
-				return out;
-			}
-			const c = this.peek();
+    while (this.i < this.s.length) {
+      if (closer && this.startsWith(closer) && !(closer === '_' && this.isWordChar(this.peek(1)))) {
+        this.i += closer.length;
+        flush();
+        return out;
+      }
+      const c = this.peek();
 
-			if (c === '\\' && this.i + 1 < this.s.length && '*_[]\\()'.includes(this.peek(1))) {
-				text += this.peek(1);
-				this.i += 2;
-				continue;
-			}
+      if (c === '\\' && this.i + 1 < this.s.length && '*_[]\\()'.includes(this.peek(1))) {
+        text += this.peek(1);
+        this.i += 2;
+        continue;
+      }
 
-			if (this.startsWith('**')) {
-				const node = this.tryDelimited('**', 'bold');
-				if (node) {
-					flush();
-					out.push(node);
-					continue;
-				}
-			} else if (c === '*') {
-				const node = this.tryDelimited('*', 'italic');
-				if (node) {
-					flush();
-					out.push(node);
-					continue;
-				}
-			} else if (c === '_' && !this.isWordChar(this.s[this.i - 1])) {
-				const node = this.tryDelimited('_', 'italic');
-				if (node) {
-					flush();
-					out.push(node);
-					continue;
-				}
-			} else if (c === '[') {
-				const node = this.tryLink();
-				if (node) {
-					flush();
-					out.push(node);
-					continue;
-				}
-			}
+      if (this.startsWith('**')) {
+        const node = this.tryDelimited('**', 'bold');
+        if (node) {
+          flush();
+          out.push(node);
+          continue;
+        }
+      } else if (c === '*') {
+        const node = this.tryDelimited('*', 'italic');
+        if (node) {
+          flush();
+          out.push(node);
+          continue;
+        }
+      } else if (c === '_' && !this.isWordChar(this.s[this.i - 1])) {
+        const node = this.tryDelimited('_', 'italic');
+        if (node) {
+          flush();
+          out.push(node);
+          continue;
+        }
+      } else if (c === '[') {
+        const node = this.tryLink();
+        if (node) {
+          flush();
+          out.push(node);
+          continue;
+        }
+      }
 
-			text += c;
-			this.i++;
-		}
-		flush();
-		if (closer) throw new Unclosed();
-		return out;
-	}
+      text += c;
+      this.i++;
+    }
+    flush();
+    if (closer) throw new Unclosed();
+    return out;
+  }
 
-	private isWordChar(ch: string | undefined) {
-		return !!ch && /[\p{L}\p{N}]/u.test(ch);
-	}
+  private isWordChar(ch: string | undefined) {
+    return !!ch && /[\p{L}\p{N}]/u.test(ch);
+  }
 
-	private tryDelimited(delim: string, type: 'bold' | 'italic'): Inline | null {
-		const start = this.i;
-		// Opening delimiter must be followed by a non-space, non-delimiter character.
-		const next = this.s[this.i + delim.length];
-		if (!next || /\s/.test(next) || next === delim[0]) return null;
-		this.i += delim.length;
-		try {
-			const children = this.parseUntil(delim);
-			if (children.length === 0) throw new Unclosed();
-			return { type, children };
-		} catch (e) {
-			if (e instanceof Unclosed) {
-				this.i = start;
-				return null;
-			}
-			throw e;
-		}
-	}
+  private tryDelimited(delim: string, type: 'bold' | 'italic'): Inline | null {
+    const start = this.i;
+    // Opening delimiter must be followed by a non-space, non-delimiter character.
+    const next = this.s[this.i + delim.length];
+    if (!next || /\s/.test(next) || next === delim[0]) return null;
+    this.i += delim.length;
+    try {
+      const children = this.parseUntil(delim);
+      if (children.length === 0) throw new Unclosed();
+      return { type, children };
+    } catch (e) {
+      if (e instanceof Unclosed) {
+        this.i = start;
+        return null;
+      }
+      throw e;
+    }
+  }
 
-	private tryLink(): Inline | null {
-		const start = this.i;
-		this.i++; // [
-		let children: Inline[];
-		try {
-			children = this.parseUntil(']');
-		} catch (e) {
-			if (e instanceof Unclosed) {
-				this.i = start;
-				return null;
-			}
-			throw e;
-		}
-		if (this.peek() !== '(') {
-			this.i = start;
-			return null;
-		}
-		const close = this.s.indexOf(')', this.i + 1);
-		if (close === -1) {
-			this.i = start;
-			return null;
-		}
-		const href = this.s.slice(this.i + 1, close).trim();
-		if (!URL_OK.test(href) || /\s/.test(href)) {
-			this.i = start;
-			return null;
-		}
-		this.i = close + 1;
-		return { type: 'link', href, children };
-	}
+  private tryLink(): Inline | null {
+    const start = this.i;
+    this.i++; // [
+    let children: Inline[];
+    try {
+      children = this.parseUntil(']');
+    } catch (e) {
+      if (e instanceof Unclosed) {
+        this.i = start;
+        return null;
+      }
+      throw e;
+    }
+    if (this.peek() !== '(') {
+      this.i = start;
+      return null;
+    }
+    const close = this.s.indexOf(')', this.i + 1);
+    if (close === -1) {
+      this.i = start;
+      return null;
+    }
+    const href = this.s.slice(this.i + 1, close).trim();
+    if (!URL_OK.test(href) || /\s/.test(href)) {
+      this.i = start;
+      return null;
+    }
+    this.i = close + 1;
+    return { type: 'link', href, children };
+  }
 }
 
 class Unclosed extends Error {}
 
 /** Concatenated text content, markup stripped. */
 export function textOf(nodes: Inline[]): string {
-	let out = '';
-	for (const n of nodes) {
-		if (n.type === 'text') out += n.value;
-		else out += textOf(n.children);
-	}
-	return out;
+  let out = '';
+  for (const n of nodes) {
+    if (n.type === 'text') out += n.value;
+    else out += textOf(n.children);
+  }
+  return out;
 }
 
 /** Every link in document order. */
 export function linksOf(nodes: Inline[]): { href: string; text: string }[] {
-	const out: { href: string; text: string }[] = [];
-	for (const n of nodes) {
-		if (n.type === 'link') out.push({ href: n.href, text: textOf(n.children) });
-		if (n.type !== 'text') out.push(...linksOf(n.children));
-	}
-	return out;
+  const out: { href: string; text: string }[] = [];
+  for (const n of nodes) {
+    if (n.type === 'link') out.push({ href: n.href, text: textOf(n.children) });
+    if (n.type !== 'text') out.push(...linksOf(n.children));
+  }
+  return out;
 }
