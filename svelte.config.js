@@ -22,7 +22,12 @@ export default {
     paths: {
       // Empty at the custom domain; '/portfolio-website' when serving from
       // project Pages without the custom domain (set by CI).
-      base: process.env.BASE_PATH || ''
+      base: process.env.BASE_PATH || '',
+      // Pages serves 404.html for every unknown URL at whatever depth it was
+      // asked for, so relative asset paths there resolve under the missing
+      // directory and the page loads with no styles or scripts. The base is
+      // known at build time, so root-relative paths work everywhere.
+      relative: false
     },
     prerender: {
       entries: ['*', '/404']
