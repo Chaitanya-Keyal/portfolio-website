@@ -7,8 +7,6 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages
@@ -17,9 +15,14 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # The base path step reads the custom domain from the Pages settings.
+      pages: read
     steps:
       - uses: actions/checkout@v7
-      - uses: oven-sh/setup-bun@v2
+      # Third-party, so pinned to a commit (v2.2.0) rather than a tag that can move.
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6
       - run: bun install --frozen-lockfile
       - run: bun run fonts
       - run: bun run og
@@ -45,16 +48,24 @@ jobs:
             echo "BASE_PATH=/${GITHUB_REPOSITORY#*/}" >> "$GITHUB_ENV"
           fi
       - run: bun run build
+      - name: check the address files
+        # Wallets and nostr clients read these byte for byte, so the build must ship them as is.
+        run: |
+          cmp static/.well-known/lnurlp/okaybro build/.well-known/lnurlp/okaybro
+          cmp static/.well-known/nostr.json build/.well-known/nostr.json
       - uses: actions/upload-pages-artifact@v5
         with:
           path: build
-          # Since v4 dot directories are left out by default, and the Lightning address lives
-          # in .well-known/lnurlp/.
+          # v4 always leaves dot directories out, v5 only by default, and the Lightning
+          # address lives in .well-known/lnurlp/.
           include-hidden-files: true
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
