@@ -1,6 +1,7 @@
 import { posts } from '$lib/blog';
 import { listed } from '$lib/visibility';
 import { education } from '$lib/data/education';
+import { lnaddress } from '$lib/data/lnaddress';
 import { profile } from '$lib/data/profile';
 import { projects } from '$lib/data/projects';
 
@@ -35,6 +36,7 @@ function build(): string {
     `- [Work history](${profile.site}/work)`,
     `- [Plain-text resume](${profile.site}/resume.txt)`,
     `- [GitHub](${profile.contact.github})`,
+    `- Lightning address and Nostr: ${lnaddress}`,
     ''
   ].join('\n');
 }

@@ -1,3 +1,4 @@
+import { lnaddress } from '$lib/data/lnaddress';
 import { profile } from '$lib/data/profile';
 import { eggs, messages, trainArt } from '$lib/data/terminal';
 import { docPath, manLines } from '$lib/text/mandoc';
@@ -297,7 +298,8 @@ export const commands: CommandSpec[] = [
       lines: [
         `email     ${profile.contact.email}`,
         `github    ${profile.contact.github}`,
-        `linkedin  ${profile.contact.linkedin}`
+        `linkedin  ${profile.contact.linkedin}`,
+        `ln/nostr  ${lnaddress}`
       ]
     })
   },

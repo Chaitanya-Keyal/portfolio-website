@@ -3,11 +3,9 @@
   import Meta from '$lib/components/Meta.svelte';
   import PixelPortrait from '$lib/components/PixelPortrait.svelte';
   import { education } from '$lib/data/education';
-  import { listed } from '$lib/visibility';
+  import { lnaddress } from '$lib/data/lnaddress';
   import { profile } from '$lib/data/profile';
   import { host } from '$lib/data/terminal';
-  import { projects } from '$lib/data/projects';
-  import { experience } from '$lib/data/experience';
 
   const rule = '─'.repeat(host.length);
   /** Link text: the URL without its protocol, the way a terminal would show it. */
@@ -188,10 +186,6 @@ setTimeout(function(){delete d.dataset.boot},3000)}catch(e){}`;
         <dd>{profile.role}</dd>
       </div>
       <div class="row">
-        <dt>packages</dt>
-        <dd>{listed(projects).length} projects · {listed(experience).length} roles</dd>
-      </div>
-      <div class="row">
         <dt>status</dt>
         <dd class="status">{profile.status}</dd>
       </div>
@@ -221,6 +215,12 @@ setTimeout(function(){delete d.dataset.boot},3000)}catch(e){}`;
         <dt>linkedin</dt>
         <dd>
           <a href={profile.contact.linkedin} rel="me noopener">{bare(profile.contact.linkedin)}</a>
+        </dd>
+      </div>
+      <div class="row">
+        <dt>ln/nostr</dt>
+        <dd>
+          <a href="lightning:{lnaddress}" title="Lightning address and Nostr name">{lnaddress}</a>
         </dd>
       </div>
       <div class="row">
