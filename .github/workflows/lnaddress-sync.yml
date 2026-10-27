@@ -17,10 +17,10 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  LNADDRESS_SOURCE: https://pay.polecat-zebra.ts.net/.well-known/lnurlp/okaybro
+  LNADDRESS_SOURCE: https://pay.chaitanyakeyal.com/.well-known/lnurlp/okaybro
   LNADDRESS_TARGET: static/.well-known/lnurlp/okaybro
   LNADDRESS_IDENTIFIER: okaybro@chaitanyakeyal.com
-  LNADDRESS_CALLBACK_HOST: pay.polecat-zebra.ts.net
+  LNADDRESS_CALLBACK_HOST: pay.chaitanyakeyal.com
   # The zap key the response must keep, and the live copy that must match once it's current.
   LNADDRESS_NOSTR_PUBKEY: bc0e2b085b699abf917c43ba72ae036b32e3c393cd0a19d21b7b10cc64611c69
   LNADDRESS_PUBLISHED_URL: https://chaitanyakeyal.com/.well-known/lnurlp/okaybro
