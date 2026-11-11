@@ -32,12 +32,12 @@ jobs:
       - name: resume pdf
         # After the fast checks, since installing TeX is the slow step. pdflatex
         # plus the resume builder's own TeX files: the same PDF the builder shows.
+        # A dead mirror falls back to the published PDF rather than blocking the deploy.
+        timeout-minutes: 10
         env:
           RESUME_PHONE: '+91 9148043218'
-        run: |
-          sudo apt-get update -qq
-          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends texlive-latex-base >/dev/null
-          bun run resume
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/ci-resume-pdf.sh
       - name: resolve base path
         env:
           GH_TOKEN: ${{ github.token }}
