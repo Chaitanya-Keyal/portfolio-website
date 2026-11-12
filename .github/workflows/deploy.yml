@@ -29,15 +29,42 @@ jobs:
       - run: bun run lint
       - run: bun run check
       - run: bun run test
+      # TeX's packages are cached per runner image: debs fetched for one image could
+      # quietly downgrade something on the next. ImageOS and ImageVersion are runner
+      # variables, which the env context in expressions doesn't see.
+      - name: runner image
+        id: image
+        run: |
+          if [ -n "${ImageOS:-}" ] && [ -n "${ImageVersion:-}" ]; then
+            echo "tex-key=texlive-latex-base-$ImageOS-$ImageVersion" >> "$GITHUB_OUTPUT"
+          fi
+      - name: restore the TeX packages
+        if: steps.image.outputs.tex-key
+        continue-on-error: true
+        uses: actions/cache/restore@v6
+        with:
+          path: ${{ runner.temp }}/texlive-debs
+          key: ${{ steps.image.outputs.tex-key }}
       - name: resume pdf
+        id: resume
         # After the fast checks, since installing TeX is the slow step. pdflatex
         # plus the resume builder's own TeX files: the same PDF the builder shows.
         # A dead mirror falls back to the published PDF rather than blocking the deploy.
-        timeout-minutes: 10
+        # The script bounds every stage; this is only the backstop above their sum.
+        timeout-minutes: 15
         env:
           RESUME_PHONE: '+91 9148043218'
           GH_TOKEN: ${{ github.token }}
+          TEX_DEBS: ${{ steps.image.outputs.tex-key && format('{0}/texlive-debs', runner.temp) || '' }}
         run: scripts/ci-resume-pdf.sh
+      - name: save the TeX packages
+        # Only a freshly fetched set that installed and rendered.
+        if: steps.resume.outputs.fresh-debs == 'true'
+        continue-on-error: true
+        uses: actions/cache/save@v6
+        with:
+          path: ${{ runner.temp }}/texlive-debs
+          key: ${{ steps.image.outputs.tex-key }}
       - name: resolve base path
         env:
           GH_TOKEN: ${{ github.token }}
