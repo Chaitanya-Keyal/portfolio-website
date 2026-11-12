@@ -285,7 +285,7 @@
        the last line, and the whole thing scrolls pinned to the bottom. -->
   <div class="term" bind:this={scrollback} role="log" aria-live="polite">
     {#each lines as line, i (i)}
-      <p class={line.kind}>{line.text}</p>
+      <div class={line.kind}>{line.text}</div>
     {/each}
     <div class="promptline">
       <label for="prompt" class="ps1">
@@ -391,7 +391,9 @@
     }
   }
 
-  .term p {
+  /* Divs, not paragraphs: copying paragraphs puts an empty line between every
+     one, so pasted output came out double-spaced. */
+  .term > div:not(.promptline) {
     white-space: pre-wrap;
     word-break: break-word;
   }
