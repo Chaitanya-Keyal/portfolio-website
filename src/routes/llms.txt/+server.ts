@@ -36,7 +36,7 @@ function build(): string {
     `- [Work history](${profile.site}/work)`,
     `- [Plain-text resume](${profile.site}/resume.txt)`,
     `- [GitHub](${profile.contact.github})`,
-    `- Lightning address and Nostr: ${lnaddress}`,
+    `- Lightning address, BIP 353 and Nostr: ${lnaddress}`,
     ''
   ].join('\n');
 }

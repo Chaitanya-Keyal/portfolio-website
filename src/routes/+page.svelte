@@ -220,7 +220,9 @@ setTimeout(function(){delete d.dataset.boot},3000)}catch(e){}`;
       <div class="row">
         <dt>ln/nostr</dt>
         <dd>
-          <a href="lightning:{lnaddress}" title="Lightning address and Nostr name">{lnaddress}</a>
+          <a href="lightning:{lnaddress}" title="Lightning address, BIP 353 name and Nostr name"
+            >{lnaddress}</a
+          >
         </dd>
       </div>
       <div class="row">
