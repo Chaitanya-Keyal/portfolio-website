@@ -3,7 +3,7 @@
 	"name": "General",
 	"labels": [],
 	"createdAt": "2026-09-07T20:44:32.212Z",
-	"updatedAt": "2026-09-07T23:17:59.352Z",
+	"updatedAt": "2026-11-19T07:15:12.946Z",
 	"template": "jake",
 	"options": {
 		"paper": "a4paper",
@@ -41,6 +41,15 @@
 			"type": "work",
 			"items": [
 				{
+					"ref": "work:bitshala/role",
+					"bullets": [
+						"h_qjldbee3",
+						"h_tx1v5r0a",
+						"h_b8ulpw1r",
+						"h_so4sdzco"
+					]
+				},
+				{
 					"ref": "work:summer-of-bitcoin/2026",
 					"bullets": [
 						"h_0005",
@@ -64,16 +73,7 @@
 					"bullets": [
 						"h_0008",
 						"h_pvjtdcik"
-					],
-					"overrides": {
-						"bullets": {
-							"h_0008": {
-								"text": "Extended BIP-85 support on SeedSigner to enable direct child seed loading.",
-								"baseText": "Extended BIP-85 support on SeedSigner (air-gapped Bitcoin hardware wallet) to enable direct child seed loading.",
-								"origin": "user"
-							}
-						}
-					}
+					]
 				},
 				{
 					"ref": "work:sellersetu/role",

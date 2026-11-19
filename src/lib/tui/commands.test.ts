@@ -125,7 +125,7 @@ describe('man', () => {
     const out = run('man work', '/');
     expect(out.kind).toBe('print');
     expect(out.kind === 'print' && out.lines[0]).toContain('is a section');
-    expect(out.kind === 'print' && out.lines[0]).toContain('crux');
+    expect(out.kind === 'print' && out.lines[0]).toContain('sellersetu');
   });
 
   it('takes a slug, a path, or a .1 suffix', () => {
@@ -288,10 +288,10 @@ describe('tab completion', () => {
   // keystroke carries straight on into the path.
   it('completes paths after a command that takes one', () => {
     expect(complete('cd wo', '/').value).toBe('cd work/');
-    // `work` has entries under it, `crux` is a leaf, and completion marks
-    // the difference the same way `ls` does.
-    expect(complete('cd ', '/work').options).toContain('crux');
-    expect(complete('cd ', '/work').options).not.toContain('crux/');
+    // `work` has entries under it, `sellersetu` is a leaf, and completion
+    // marks the difference the same way `ls` does.
+    expect(complete('cd ', '/work').options).toContain('sellersetu');
+    expect(complete('cd ', '/work').options).not.toContain('sellersetu/');
   });
 
   it('completes through aliases', () => {

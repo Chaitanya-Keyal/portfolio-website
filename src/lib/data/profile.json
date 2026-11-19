@@ -6,7 +6,7 @@
 		"label": "Backend Systems | AI Engineering | Open Source",
 		"email": "chaitanyakeyal@gmail.com",
 		"url": "https://chaitanyakeyal.com",
-		"summary": "AI engineering intern and open-source developer working on backend systems, AI agents, and Bitcoin tooling.",
+		"summary": "Open-source developer and AI engineer working on Bitcoin tooling, AI agents, and backend systems.",
 		"location": {
 			"city": "Bengaluru",
 			"countryCode": "India",
@@ -36,7 +36,7 @@
 		],
 		"x": {
 			"handle": "okaybro",
-			"role": "AI engineering intern · open-source developer",
+			"role": "open-source developer · AI engineer",
 			"status": "Open to Summer 2027 internships: AI agents · backend · Bitcoin",
 			"repo": "https://github.com/Chaitanya-Keyal/portfolio-website",
 			"tagline": "backend systems · ai agents · open source"
@@ -44,21 +44,86 @@
 	},
 	"work": [
 		{
+			"id": "bitshala",
+			"name": "Bitshala",
+			"url": "https://bitshala.org",
+			"location": "Remote",
+			"description": "Bitshala is a grassroots initiative led by Indian Bitcoiners that trains and supports developers of open-source Bitcoin software. I am a Bitshala Fellow, continuing my work on [SeedSigner](https://github.com/SeedSigner/seedsigner), an air-gapped Bitcoin signing device, after two Summer of Bitcoin terms on it.",
+			"positions": [
+				{
+					"id": "role",
+					"position": "Open Source Developer",
+					"startDate": "2026-11",
+					"highlights": [
+						{
+							"id": "h_qjldbee3",
+							"text": "Review and test pull requests across the SeedSigner repos: the app, the OS and the translations."
+						},
+						{
+							"id": "h_tx1v5r0a",
+							"text": "Review and test the new microcontroller port (ESP32-P4, MicroPython, LVGL) on real hardware."
+						},
+						{
+							"id": "h_b8ulpw1r",
+							"text": "Contribute features and fixes to the app and the OS, most recently in PSBT handling and localization."
+						},
+						{
+							"id": "h_so4sdzco",
+							"text": "Help with triage and release chores."
+						},
+						{
+							"id": "h_h8qq8f04",
+							"text": "Published [seedsigner-devkit](https://github.com/Chaitanya-Keyal/seedsigner-devkit), tools for developing on real hardware: one-command deploy to a Pi dev device, HDMI mirror, USB keyboard as buttons, and log, REPL and flashing for ESP32-P4 boards."
+						}
+					]
+				}
+			],
+			"x": {
+				"slug": "bitshala",
+				"oneLiner": "fellowship to keep working on SeedSigner",
+				"stack": [
+					"Python",
+					"Bitcoin",
+					"MicroPython",
+					"Buildroot",
+					"Raspberry Pi"
+				],
+				"links": [
+					{
+						"label": "my contributions",
+						"href": "https://github.com/SeedSigner/seedsigner/issues?q=involves%3AChaitanya-Keyal+sort%3Aupdated-desc"
+					},
+					{
+						"label": "seedsigner-devkit",
+						"href": "https://github.com/Chaitanya-Keyal/seedsigner-devkit"
+					}
+				],
+				"related": [
+					{
+						"label": "seedsigner",
+						"href": "/projects/seedsigner"
+					}
+				],
+				"periodLabel": "Nov 2026 to present"
+			}
+		},
+		{
 			"id": "onfinance",
 			"name": "OnFinance AI",
 			"url": "https://onfinance.ai",
 			"location": "Bengaluru, India",
-			"description": "OnFinance builds an AI compliance platform for financial institutions. I mainly work on the agent side of it: pipelines that read regulation so compliance teams do not have to, and the plumbing that keeps autonomous agents reliable enough for production use.",
+			"description": "OnFinance builds an AI compliance platform for financial institutions. I mainly worked on the agent side of it: pipelines that read regulation so compliance teams do not have to, and the plumbing that keeps autonomous agents reliable enough for production use.",
 			"positions": [
 				{
 					"id": "role",
 					"position": "AI Engineering Intern",
 					"startDate": "2025-06",
+					"endDate": "2026-11",
 					"location": "Bengaluru (Hybrid)",
 					"highlights": [
 						{
 							"id": "h_0001",
-							"text": "Built LangChain/LangGraph agents from scratch that automate circular analysis for various regulators like SEBI, RBI, AMFI, etc., cutting interpretation time by ~90% and saving 100+ hours per regulatory update."
+							"text": "Started the platform's AI agent service and wrote most of it: LangGraph agents that automate circular analysis for regulators like SEBI and RBI, cutting interpretation time by ~90%."
 						},
 						{
 							"id": "h_0002",
@@ -66,11 +131,23 @@
 						},
 						{
 							"id": "h_0003",
-							"text": "Orchestrated end-to-end pipelines spanning document parsing, action-item generation, evidence review, and risk analysis."
+							"text": "Started the rebuild of that service as a new agent runtime with resumable, checkpointed, parallel runs, and was its main contributor through launch."
 						},
 						{
 							"id": "h_0004",
-							"text": "Migrated the backend service to PostgreSQL from MongoDB, improving query performance by 2 to 3x."
+							"text": "Replaced bounding-box PDF parsing with structured clause extraction driven by a sandboxed coding agent."
+						},
+						{
+							"id": "h_gbbqdcp9",
+							"text": "The new runtime replaced the old service in production and now hosts 90+ agent nodes."
+						},
+						{
+							"id": "h_vebonmna",
+							"text": "Fixed agent failures found in production traces: a guard against tool-call loops, batching for slow cascades, and recovery for runs orphaned by pod restarts."
+						},
+						{
+							"id": "h_8ibduhny",
+							"text": "Also built a change-management agent for amended circulars, a project-planning agent, per-organization feature gates, and most of the nightly workflow that patches service images against CVEs."
 						}
 					]
 				}
@@ -80,16 +157,16 @@
 				"oneLiner": "AI agents for financial compliance",
 				"stack": [
 					"Python",
-					"LangChain",
 					"LangGraph",
+					"LangChain",
 					"FastAPI",
-					"Kubernetes",
-					"PostgreSQL",
-					"MongoDB"
+					"MongoDB",
+					"Redis",
+					"Kubernetes"
 				],
 				"links": [],
 				"related": [],
-				"periodLabel": "Jun 2025 to present"
+				"periodLabel": "Jun 2025 to Nov 2026"
 			}
 		},
 		{
@@ -107,7 +184,7 @@
 					"highlights": [
 						{
 							"id": "h_0005",
-							"text": "Now one of the top contributors to SeedSigner, involved in 80+ PRs and issues."
+							"text": "Now one of the top contributors to SeedSigner, involved in 110+ PRs and issues."
 						},
 						{
 							"id": "h_hsecp8a7",
@@ -115,7 +192,8 @@
 						},
 						{
 							"id": "h_rkda8ats",
-							"text": "Built CI tooling to detect missing and stale translations across supported languages, catching errors pre-review and cutting manual maintainer effort."
+							"text": "Built CI tooling to detect missing and stale translations across supported languages, catching errors pre-review and cutting manual maintainer effort.",
+							"hidden": true
 						}
 					]
 				},
@@ -127,7 +205,7 @@
 					"highlights": [
 						{
 							"id": "h_0008",
-							"text": "Extended BIP-85 support on SeedSigner (air-gapped Bitcoin hardware wallet) to enable direct child seed loading."
+							"text": "Extended BIP-85 support on SeedSigner to enable direct child seed loading."
 						},
 						{
 							"id": "h_pvjtdcik",
@@ -135,7 +213,8 @@
 						},
 						{
 							"id": "h_quvh8mpq",
-							"text": "Hardened CI/CD pipelines and resolved targeted bugs, improving build reliability and code quality across releases."
+							"text": "Reviewed pull requests and resolved edge-case bugs across different parts of the project.",
+							"hidden": true
 						}
 					]
 				}
@@ -174,7 +253,7 @@
 					"id": "role",
 					"position": "Software Engineering Intern",
 					"startDate": "2024-03",
-					"endDate": "2025-03",
+					"endDate": "2025-02",
 					"highlights": [
 						{
 							"id": "h_0009",
@@ -203,14 +282,14 @@
 				],
 				"links": [],
 				"related": [],
-				"periodLabel": "Mar 2024 to Mar 2025"
+				"periodLabel": "Mar 2024 to Feb 2025"
 			}
 		}
 	],
 	"volunteer": [
 		{
 			"id": "new",
-			"name": "Central Analytical Laboratory",
+			"name": "Central Instrumentation Facility",
 			"location": "Hyderabad, India",
 			"positions": [
 				{
@@ -220,7 +299,7 @@
 					"highlights": [
 						{
 							"id": "h_hntud69f",
-							"text": "Maintained the [online instrument booking portal](https://github.com/CAL-BPHC/onlineCAL), improving reliability for university researchers."
+							"text": "Maintain the [instrument booking portal](https://github.com/CAL-BPHC/onlineCAL) used by 1,100+ researchers; built usage panels, reports and CI/CD."
 						}
 					]
 				}
@@ -257,6 +336,7 @@
 			],
 			"x": {
 				"slug": "crux",
+				"hidden": true,
 				"oneLiner": "the programming and computing club at BITS Hyderabad",
 				"stack": [
 					"Python",
@@ -313,7 +393,7 @@
 				"summary": "dual degree",
 				"campus": [
 					{
-						"text": "Undergraduate TA at the Central Analytical Laboratory, maintaining",
+						"text": "Undergraduate TA at the Central Instrumentation Facility, maintaining",
 						"link": "/projects/onlinecal",
 						"linkText": "onlinecal"
 					},
@@ -339,7 +419,7 @@
 			"name": "SeedSigner",
 			"description": "SeedSigner is a DIY, air-gapped, stateless Bitcoin signing device built with off-the-shelf parts. I have contributed across two Summer of Bitcoin terms, and stayed on after both, working on features, bugfixes, release chores, PR review and translations.",
 			"url": "https://github.com/SeedSigner/seedsigner",
-			"entity": "Summer of Bitcoin 2025 & 2026",
+			"entity": "Summer of Bitcoin 2025 & 2026, Bitshala Fellowship",
 			"keywords": [
 				"Python",
 				"Bitcoin",
@@ -350,11 +430,15 @@
 			"highlights": [
 				{
 					"id": "h_000f",
-					"text": "Automating the localization workflow across the code and translation repos, so a change to the source strings no longer means routine work for translators, contributors and maintainers."
+					"text": "Automated the localization workflow across the code and translation repos, so a change to the source strings no longer means routine work for translators, contributors and maintainers."
+				},
+				{
+					"id": "h_ymflwugc",
+					"text": "Built that automation to be safe on untrusted fork PRs: read-only jobs run the contributed code without secrets, and a separate trusted job validates their output before anything is written."
 				},
 				{
 					"id": "h_000g",
-					"text": "Built CI tooling that detects missing and stale translations across the 21 supported languages, catching errors before review rather than after it."
+					"text": "Built CI tooling that detects missing and stale translations across the 20+ supported languages, catching errors before review rather than after it."
 				},
 				{
 					"id": "h_000h",
@@ -370,7 +454,7 @@
 				},
 				{
 					"id": "h_000k",
-					"text": "Hardened the CI/CD pipelines and fixed targeted bugs, improving build reliability across releases."
+					"text": "Added the Hindi translation, made hard-coded strings translatable, and did the 0.8.7 version bump."
 				}
 			],
 			"x": {
@@ -388,6 +472,18 @@
 					{
 						"label": "translations repo",
 						"href": "https://github.com/SeedSigner/seedsigner-translations/issues?q=involves%3AChaitanya-Keyal+sort%3Aupdated-desc"
+					},
+					{
+						"label": "automation tracking issue",
+						"href": "https://github.com/SeedSigner/seedsigner/issues/946"
+					},
+					{
+						"label": "write-up",
+						"href": "https://chaitanyakeyal.com/blog/seedsigner-translation-automation"
+					},
+					{
+						"label": "seedsigner-devkit",
+						"href": "https://github.com/Chaitanya-Keyal/seedsigner-devkit"
 					}
 				],
 				"periodLabel": "April 2025 to present"
@@ -515,25 +611,33 @@
 		},
 		{
 			"id": "onlinecal",
-			"name": "onlineCAL",
-			"description": "The production portal researchers use to book time on lab instruments. Requests flow through faculty and lab-assistant approval chains with per-instrument pricing. I maintain it as the undergraduate TA.",
+			"name": "OnlineCIF",
+			"description": "The production portal 1,100+ researchers at BITS Hyderabad use to book time on the Central Instrumentation Facility's 50+ instruments (formerly onlineCAL, when the facility was the Central Analytical Laboratory). Requests flow through faculty and lab-staff approval with per-instrument pricing billed to departments. I maintain it as the undergraduate TA.",
 			"url": "https://github.com/CAL-BPHC/onlineCAL",
-			"entity": "Central Analytical Laboratory, BITS Hyderabad",
+			"entity": "Central Instrumentation Facility, BITS Hyderabad",
 			"keywords": [
 				"Python",
 				"Django",
 				"MySQL",
-				"DevOps"
+				"GitHub Actions"
 			],
 			"startDate": "2024-08",
 			"highlights": [
 				{
 					"id": "h_000o",
-					"text": "Maintain a real system with real users: approval workflows, pricing rules, email notifications."
+					"text": "Built live usage panels for faculty and departments: hours and cost by instrument, student and faculty for any date range, updating as requests are approved."
+				},
+				{
+					"id": "h_cjia8bqy",
+					"text": "Moved the portal from PythonAnywhere to an in-house server and set it up end to end: nginx with TLS, gunicorn, MySQL and background workers."
 				},
 				{
 					"id": "h_000p",
-					"text": "Set up automated CI/CD so deploys stopped being manual events."
+					"text": "Set up CI and automatic deploys with GitHub Actions, and moved the project to uv and ruff."
+				},
+				{
+					"id": "h_gp2q0lw1",
+					"text": "Added utilisation reports per instrument, department and faculty, and booking forms for 19 new instruments."
 				}
 			],
 			"x": {
