@@ -29,13 +29,17 @@ export function period(d: DateRange): string {
   return formatRange(d, RANGE);
 }
 
-/** Every site path that some entry's "related" links point at. A hidden entry
- * is unlisted; it only gets a page at all when one of these links reaches it,
- * so hiding something nobody links to leaves it off the site entirely. */
+/** Every site path that another page links to: an entry's "related" links and
+ * the campus lines on the education page. A hidden entry is unlisted; it only
+ * gets a page at all when one of these links reaches it, so hiding something
+ * nobody links to leaves it off the site entirely. */
 export const linkedPaths: ReadonlySet<string> = new Set(
-  [...data.work, ...data.volunteer, ...data.projects].flatMap((e) =>
-    (e.x?.related ?? []).map((l) => l.href.replace(/\/+$/, ''))
-  )
+  [
+    ...[...data.work, ...data.volunteer, ...data.projects].flatMap((e) =>
+      (e.x?.related ?? []).map((l) => l.href)
+    ),
+    ...data.education.flatMap((e) => (e.x?.campus ?? []).flatMap((c) => c.link ?? []))
+  ].map((href) => href.replace(/\/+$/, ''))
 );
 
 export function reachable(kind: 'work' | 'projects', slug: string, hidden: boolean | undefined) {
